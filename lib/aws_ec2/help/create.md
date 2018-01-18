@@ -1,3 +1,3 @@
 Examples:
 
-$ aws-ec2 hello
+$ aws-ec2 create my-instance

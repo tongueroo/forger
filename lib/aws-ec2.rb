@@ -6,5 +6,7 @@ module AwsEc2
   autoload :Command, "aws_ec2/command"
   autoload :CLI, "aws_ec2/cli"
   autoload :AwsServices, "aws_ec2/aws_services"
+  autoload :Util, "aws_ec2/util"
   autoload :Create, "aws_ec2/create"
+  autoload :Spot, "aws_ec2/spot"
 end

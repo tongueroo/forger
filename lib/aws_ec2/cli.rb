@@ -8,5 +8,11 @@ module AwsEc2
     def create(name)
       Create.new(options.merge(name: name)).run
     end
+
+    desc "spot NAME", "create spot ec2 instance"
+    long_desc Help.text(:spot)
+    def spot(name)
+      Spot.new(options.merge(name: name)).run
+    end
   end
 end

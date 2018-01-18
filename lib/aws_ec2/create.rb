@@ -4,6 +4,7 @@ require 'active_support/core_ext/hash'
 module AwsEc2
   class Create
     include AwsServices
+    include Util
 
     def initialize(options)
       @options = options
@@ -12,42 +13,20 @@ module AwsEc2
     def run
       puts "Creating EC2 instance #{@options[:name]}..."
       display_info
-
       if @options[:noop]
         puts "NOOP mode enabled. EC2 instance not created."
         return
       end
+
       resp = ec2.run_instances(params)
       puts "EC2 instance #{@options[:name]} created! 🎉"
       puts "Visit https://console.aws.amazon.com/ec2/home to check on the status"
     end
 
-    def display_info
-      puts "Using the following parameters:"
-      pp params
-
-      display_launch_template
-    end
-
-    def display_launch_template
-      launch_template = params[:launch_template]
-      return unless launch_template
-
-      resp = ec2.describe_launch_template_versions(
-        launch_template_id: launch_template[:launch_template_id],
-        launch_template_name: launch_template[:launch_template_name],
-      )
-      versions = resp.launch_template_versions
-      launch_template_data = {} # combined launch_template_data
-      versions.sort_by { |v| v[:version_number] }.each do |v|
-        launch_template_data.merge!(v[:launch_template_data])
-      end
-      puts "launch template data (versions combined):"
-      pp launch_template_data
-    rescue Aws::EC2::Errors::InvalidLaunchTemplateNameNotFoundException => e
-      puts "ERROR: The specified launched template #{launch_template.inspect} was not found."
-      puts "Please double check that it exists."
-      exit
+    # params are main derived from profile files
+    def params
+      params = load_profiles(profile_name)
+      normalize_launch_template(params).deep_symbolize_keys
     end
 
     # Allow adding launch template as a simple string.
@@ -86,41 +65,32 @@ module AwsEc2
       }
     end
 
-    # params are main derived from the profile file
-    def params
-      params = defaults.merge({}) # load from profile
+    def display_info
+      puts "Using the following parameters:"
+      pp params
+
+      display_launch_template
     end
 
-    def params
-      profile_file = "#{root}/profiles/#{profile_name}.yml"
-      default_file = "#{root}/profiles/default.yml"
-      if !File.exist?(profile_file) && !File.exist?(default_file)
-        puts "Unable to find a #{profile_file} or #{default_file} profile file."
-        puts "Please double check."
-        exit
+    def display_launch_template
+      launch_template = params[:launch_template]
+      return unless launch_template
+
+      resp = ec2.describe_launch_template_versions(
+        launch_template_id: launch_template[:launch_template_id],
+        launch_template_name: launch_template[:launch_template_name],
+      )
+      versions = resp.launch_template_versions
+      launch_template_data = {} # combined launch_template_data
+      versions.sort_by { |v| v[:version_number] }.each do |v|
+        launch_template_data.merge!(v[:launch_template_data])
       end
-
-      defaults = load_profile(default_file)
-      params = load_profile(profile_file)
-      params = defaults.merge(params)
-
-      normalize_launch_template(params).deep_symbolize_keys
-    end
-
-    def load_profile(file)
-      return {} unless File.exist?(file)
-
-      data = YAML.load_file(file)
-      data ? data : {}
-    end
-
-    def profile_name
-      # conventional profile is the name of the database
-      @options[:profile] || @options[:name]
-    end
-
-    def root
-      ENV['AWS_EC2_ROOT'] || '.'
+      puts "launch template data (versions combined):"
+      pp launch_template_data
+    rescue Aws::EC2::Errors::InvalidLaunchTemplateNameNotFoundException => e
+      puts "ERROR: The specified launched template #{launch_template.inspect} was not found."
+      puts "Please double check that it exists."
+      exit
     end
   end
 end
