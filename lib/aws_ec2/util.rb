@@ -23,13 +23,19 @@ module AwsEc2
     def load_profile(file)
       return {} unless File.exist?(file)
 
+      puts "Using profile #{file}"
       data = YAML.load_file(file)
       data ? data : {} # in case the file is empty
     end
 
     def profile_name
-      # conventional profile is the name of the database
-      @options[:profile] || @options[:name]
+      # allow user to specify the path also
+      if File.exist?(@options[:profile])
+        profile = File.basename(@options[:profile], '.yml')
+      end
+
+      # conventional profile is the name of the ec2 instance
+      profile || @options[:profile] || @options[:name]
     end
 
     def root

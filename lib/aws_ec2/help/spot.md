@@ -1,3 +1,3 @@
 Examples:
 
-$ aws-ec2 spot my-instance
+$ aws-ec2 spot my-request

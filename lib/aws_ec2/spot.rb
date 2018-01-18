@@ -24,7 +24,7 @@ module AwsEc2
 
     # params are main derived from profile files
     def params
-      load_profiles("spot/#{profile_name}")
+      load_profiles("spot/#{profile_name}").deep_symbolize_keys
     end
 
     def display_info

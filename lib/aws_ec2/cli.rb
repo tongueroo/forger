@@ -2,6 +2,7 @@ module AwsEc2
   class CLI < Command
     class_option :verbose, type: :boolean
     class_option :noop, type: :boolean
+    class_option :profile, desc: "profile name to use"
 
     desc "create NAME", "create ec2 instance"
     long_desc Help.text(:create)
