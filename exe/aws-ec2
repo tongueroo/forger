@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+# Trap ^C
+Signal.trap("INT") {
+  puts "\nCtrl-C detected. Exiting..."
+  sleep 1
+  exit
+}
+
+$:.unshift(File.expand_path("../../lib", __FILE__))
+require "aws-ec2"
+require "aws_ec2/cli"
+
+AwsEc2::CLI.start(ARGV)
