@@ -26,7 +26,52 @@ module AwsEc2
     # params are main derived from profile files
     def params
       params = load_profiles(profile_name)
+      decorate_params(params)
       normalize_launch_template(params).deep_symbolize_keys
+    end
+
+    # Adds instance ec2 tag if not already provided
+    def decorate_params(params)
+      upsert_name_tag(params)
+      params
+    end
+
+    def upsert_name_tag(params)
+      specs = params["tag_specifications"] || []
+
+      # insert an empty spec placeholder if one not found
+      spec = specs.find do |s|
+        s["resource_type"] == "instance"
+      end
+      unless spec
+        spec = {
+            "resource_type" => "instance",
+            "tags" => []
+          }
+        specs << spec
+      end
+      # guaranteed there's a tag_specifications with resource_type instance at this point
+
+      tags = spec["tags"] || []
+
+      unless tags.map { |t| t["key"] }.include?("Name")
+        tags << { "key" => "Name", "value" => @options[:name] }
+      end
+
+      specs = specs.map do |s|
+        # replace the name tag value
+        if s["resource_type"] == "instance"
+          {
+            "resource_type" => "instance",
+            "tags" => tags
+          }
+        else
+          s
+        end
+      end
+
+      params["tag_specifications"] = specs
+      params
     end
 
     # Allow adding launch template as a simple string.

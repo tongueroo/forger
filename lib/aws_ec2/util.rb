@@ -5,7 +5,7 @@ module AwsEc2
     def pretty_display(data)
       data = data.deep_stringify_keys
 
-      message = "[base64-encoded use aws-ec2 userdata command to view"
+      message = "base64-encoded: use aws-ec2 userdata command to view"
       # TODO: generalize this
       data["user_data"] = message if data["user_data"]
       data["spot_fleet_request_config"]["launch_specifications"].each do |spec|
@@ -16,6 +16,8 @@ module AwsEc2
     end
 
     def load_profiles(profile_name)
+      return @profile_params if @profile_params
+
       profile_file = "#{root}/profiles/#{profile_name}.yml"
       base_path = File.dirname(profile_file)
       default_file = "#{base_path}/default.yml"
@@ -25,6 +27,7 @@ module AwsEc2
       defaults = load_profile(default_file)
       params = load_profile(profile_file)
       params = defaults.deep_merge(params)
+      @profile_params = params
     end
 
     def params_exit_check!(profile_file, default_file)
