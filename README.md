@@ -12,7 +12,9 @@ Example:
 $ aws-ec2 create myserver --profile myserver
 ```
 
-## Convention
+In a nutshell, the profile parameters are passed to the ruby aws-sdk [AWS::EC2::Client#run_instances](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Client.html#run_instances-instance_method) method.  So you can generally specify any parameter you wish that is available there.
+
+### Convention
 
 By convention, the profile name matches the first parameter after the create command.  So the command above could be shortened to:
 
@@ -43,6 +45,8 @@ The tool also supports launching spot instances instead of on-demand instances. 
 ec2 spot myspot --profile myspot
 ec2 spot myspot # same as above by convention
 ```
+
+In a nutshell, the profile parameters are passed to the ruby aws-sdk [AWS::EC2::Client#request_spot_fleet](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Client.html#request_spot_fleet-instance_method) method.  So you can generally specify any parameter you wish that is available there.
 
 ## More Help
 
