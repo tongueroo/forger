@@ -9,7 +9,7 @@ Example:
 ## Usage
 
 ```sh
-$ aws-ec2 create myserver --profile myserver
+aws-ec2 create myserver --profile myserver
 ```
 
 In a nutshell, the profile parameters are passed to the ruby aws-sdk [AWS::EC2::Client#run_instances](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Client.html#run_instances-instance_method) method.  So you can specify any parameter you wish that is available there.
@@ -19,7 +19,7 @@ In a nutshell, the profile parameters are passed to the ruby aws-sdk [AWS::EC2::
 By convention, the profile name matches the first parameter after the create command.  So the command above could be shortened to:
 
 ```
-$ aws-ec2 create myserver
+aws-ec2 create myserver
 ```
 
 ## User-Data
@@ -33,6 +33,14 @@ The user-data script is generated on the machine that is running the aws-ec2 com
 * aws userdata myserver # shows a preview of the user-data script
 
 To use the user-data script when creating an EC2 instance, you can use the helper method in the profile.
+
+## Noop mode
+
+You can do a test run with the `--noop` flag.  This will print out what settings will be used to launch the instance.
+
+```sh
+aws-ec2 create myserver --profile myserver --noop
+```
 
 ## Spot Instance Support
 
