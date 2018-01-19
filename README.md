@@ -1,6 +1,6 @@
 # AWS EC2 Tool
 
-Simple tool to create AWS ec2 instances in a consistent way with pre-configured settings.  The pre-configured settings are stored in the profiles folder of the current directory.
+Simple tool to create AWS ec2 instances consistently with pre-configured settings.  The pre-configured settings are stored in the profiles folder of the current directory.
 Example:
 
 * profiles/default.yml: default settings.  Takes the lowest precedence.
@@ -12,7 +12,7 @@ Example:
 $ aws-ec2 create myserver --profile myserver
 ```
 
-In a nutshell, the profile parameters are passed to the ruby aws-sdk [AWS::EC2::Client#run_instances](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Client.html#run_instances-instance_method) method.  So you can generally specify any parameter you wish that is available there.
+In a nutshell, the profile parameters are passed to the ruby aws-sdk [AWS::EC2::Client#run_instances](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Client.html#run_instances-instance_method) method.  So you can specify any parameter you wish that is available there.
 
 ### Convention
 
@@ -34,22 +34,26 @@ To see the generated user-data script, you can use the `aws userdata NAME`.  Exa
 
 To use the user-data script when creating an EC2 instance, you can use the helper method in the profile.
 
-## Spot Fleet Instance Support
+## Spot Instance Support
 
-The create command above supports spot instances by using the instance_market_options.
-The tool also supports launching a spot instance via a spot fleet request. The spot instance profile files are stored in the the profiles/spot folder.  Example:
+Spot instance support natively supported by the AWS run_instances command.  Simply add `instance_market_options` to the parameters to request for a spot instance.  The available spot market options are available here:
+
+* [https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_LaunchTemplateSpotMarketOptionsRequest.html](https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_LaunchTemplateSpotMarketOptionsRequest.html)
+* [https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Types/SpotMarketOptions.html](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Types/SpotMarketOptions.html)
+
+## Spot Fleet Support
+
+Additionally, spot fleet is supported.  Launching a fleet request is slighlyt more complicated but is useful if you are okay with multiple types of instances.  The spot instance profile files are stored in the profiles/spot folder.  Example:
 
 * profiles/spot/default.yml: default settings.  Takes the lowest precedence.
 * profiles/spot/myspot.yml: myspot settings get combined with the default settings
 
-Note the parameters structure of a spot fleet request is different from the parameter structure to run a single instance with the create command above.
+Note the parameters structure of a spot fleet request is different from the parameter structure to run a single instance with the create command above. The profile parameters are passed to the ruby aws-sdk [AWS::EC2::Client#request_spot_fleet](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Client.html#request_spot_fleet-instance_method) method.  So you can specify any parameter you wish that is available there.
 
 ```sh
 ec2 spot myspot --profile myspot
 ec2 spot myspot # same as above by convention
 ```
-
-In a nutshell, the profile parameters are passed to the ruby aws-sdk [AWS::EC2::Client#request_spot_fleet](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Client.html#request_spot_fleet-instance_method) method.  So you can generally specify any parameter you wish that is available there.
 
 ## More Help
 
@@ -60,7 +64,7 @@ aws-ec2 spot help
 aws-ec2 help # general help
 ```
 
-There is also examples in the [examples](examples) folder.
+Examples are in the [example](example) folder.  You will have to update settings like your subnet and security group ids.
 
 ## Installation
 
