@@ -12,7 +12,7 @@ Example:
 aws-ec2 create myserver --profile myserver
 ```
 
-In a nutshell, the profile parameters are passed to the ruby aws-sdk [AWS::EC2::Client#run_instances](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Client.html#run_instances-instance_method) method.  So you can specify any parameter you wish that is available there. To check out what a profile looks like check out the [example default](example/profiles/default.yml)
+In a nutshell, the profile parameters are passed to the ruby aws-sdk [AWS::EC2::Client#run_instances](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Client.html#run_instances-instance_method) method.  So you can specify any parameter you wish that is available there. To check out what a profile looks look at the [example default](example/profiles/default.yml)
 
 ### Convention
 
