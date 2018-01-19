@@ -34,12 +34,15 @@ To see the generated user-data script, you can use the `aws userdata NAME`.  Exa
 
 To use the user-data script when creating an EC2 instance, you can use the helper method in the profile.
 
-## Spot Instance Support
+## Spot Fleet Instance Support
 
-The tool also supports launching spot instances instead of on-demand instances. The spot instance profile files are stored in the the profiles/spot folder.  Example:
+The create command above supports spot instances by using the instance_market_options.
+The tool also supports launching a spot instance via a spot fleet request. The spot instance profile files are stored in the the profiles/spot folder.  Example:
 
 * profiles/spot/default.yml: default settings.  Takes the lowest precedence.
 * profiles/spot/myspot.yml: myspot settings get combined with the default settings
+
+Note the parameters structure of a spot fleet request is different from the parameter structure to run a single instance with the create command above.
 
 ```sh
 ec2 spot myspot --profile myspot

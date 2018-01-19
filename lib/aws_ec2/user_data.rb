@@ -16,7 +16,7 @@ module AwsEc2
       end
 
       filename ||= @options[:name]
-      path = "profiles/user_data/#{filename}.sh"
+      path = "profiles/user-data/#{filename}.sh"
       puts erb_result(path)
     end
   end

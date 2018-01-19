@@ -75,7 +75,7 @@ module AwsEc2
 
     def display_info
       puts "Using the following parameters:"
-      puts YAML.dump(params.deep_stringify_keys)
+      pretty_display(params)
     end
   end
 end

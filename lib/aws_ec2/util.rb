@@ -2,6 +2,19 @@ module AwsEc2
   module Util
     include TemplateHelper
 
+    def pretty_display(data)
+      data = data.deep_stringify_keys
+
+      message = "[base64-encoded use aws-ec2 userdata command to view"
+      # TODO: generalize this
+      data["user_data"] = message if data["user_data"]
+      data["spot_fleet_request_config"]["launch_specifications"].each do |spec|
+        spec["user_data"] = message if spec["user_data"]
+      end if data["spot_fleet_request_config"] && data["spot_fleet_request_config"]["launch_specifications"]
+
+      puts YAML.dump(data)
+    end
+
     def load_profiles(profile_name)
       profile_file = "#{root}/profiles/#{profile_name}.yml"
       base_path = File.dirname(profile_file)
