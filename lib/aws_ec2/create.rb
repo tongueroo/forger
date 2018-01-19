@@ -30,12 +30,12 @@ module AwsEc2
       normalize_launch_template(params).deep_symbolize_keys
     end
 
-    # Adds instance ec2 tag if not already provided
     def decorate_params(params)
       upsert_name_tag(params)
       params
     end
 
+    # Adds instance ec2 tag if not already provided
     def upsert_name_tag(params)
       specs = params["tag_specifications"] || []
 
