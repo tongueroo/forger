@@ -15,5 +15,11 @@ module AwsEc2
     def spot(name)
       Spot.new(options.merge(name: name)).run
     end
+
+    desc "userdata NAME", "displays generated userdata script"
+    long_desc Help.text(:user_data)
+    def userdata(name)
+      UserData.new(options.merge(name: name)).run
+    end
   end
 end
