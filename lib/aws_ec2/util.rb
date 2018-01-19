@@ -23,14 +23,14 @@ module AwsEc2
     def load_profile(file)
       return {} unless File.exist?(file)
 
-      puts "Using profile #{file}"
+      puts "Using profile: #{file}"
       data = YAML.load_file(file)
       data ? data : {} # in case the file is empty
     end
 
     def profile_name
       # allow user to specify the path also
-      if File.exist?(@options[:profile])
+      if @options[:profile] && File.exist?(@options[:profile])
         profile = File.basename(@options[:profile], '.yml')
       end
 
