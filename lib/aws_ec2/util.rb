@@ -1,5 +1,7 @@
 module AwsEc2
   module Util
+    include TemplateHelper
+
     def load_profiles(profile_name)
       profile_file = "#{root}/profiles/#{profile_name}.yml"
       base_path = File.dirname(profile_file)
@@ -9,7 +11,7 @@ module AwsEc2
 
       defaults = load_profile(default_file)
       params = load_profile(profile_file)
-      params = defaults.merge(params)
+      params = defaults.deep_merge(params)
     end
 
     def params_exit_check!(profile_file, default_file)
@@ -24,7 +26,7 @@ module AwsEc2
       return {} unless File.exist?(file)
 
       puts "Using profile: #{file}"
-      data = YAML.load_file(file)
+      data = YAML.load(erb_result(file))
       data ? data : {} # in case the file is empty
     end
 

@@ -67,7 +67,7 @@ module AwsEc2
 
     def display_info
       puts "Using the following parameters:"
-      pp params
+      pp params.deep_stringify_keys
 
       display_launch_template
     end
@@ -86,7 +86,7 @@ module AwsEc2
         launch_template_data.merge!(v[:launch_template_data])
       end
       puts "launch template data (versions combined):"
-      pp launch_template_data
+      pp launch_template_data.deep_stringify_keys
     rescue Aws::EC2::Errors::InvalidLaunchTemplateNameNotFoundException => e
       puts "ERROR: The specified launched template #{launch_template.inspect} was not found."
       puts "Please double check that it exists."

@@ -1,34 +1,39 @@
-# AwsEc2
+# AWS EC2 Tool
 
-[![Build Status](https://magnum.travis-ci.com/)](https://magnum.travis-ci.com/)
-[![Code Climate](https://codeclimate.com/)](https://codeclimate.com/)
-[![Code Climate](https://codeclimate.com/)](https://codeclimate.com/)
+Simple tool to create AWS ec2 instances with in a consistency way with pre-configured settings.  The pre-configured settings are stored in files in the profiles folder of the current directory.
+For example, say you have:
 
-TODO: Write a gem description
+* profiles/default.yml
+* profiles/myserver.yml
 
-## Installation
+Then `myserver.yml` gets combined with `default.yml` profile.  The `default.yml` takes the lowest precedence.
 
-Add this line to your application's Gemfile:
-
-```sh
-gem "aws-ec2"
-```
-
-And then execute:
-
-```sh
-$ bundle
-```
-
-Or install it yourself as:
-
-```sh
-$ gem install aws-ec2
-```
 ## Usage
 
 ```sh
-aws-ec2 hello yourname
+$ aws-ec2 create myserver --profile myserver
+```
+
+## Convention
+
+By convention, the profile is name of the db.  So the command above could be shortened to:
+
+```
+$ aws-rds create myserver
+```
+
+## User-Data
+
+You can provide you own custom user-data script to customize the server upon launch.  The user data scripts are under the profiles/user-data folder.
+
+* profiles/user-data/myserver.yml
+
+To use the the user-data
+
+## Installation
+
+```sh
+gem install aws-rds
 ```
 
 ## Contributing
