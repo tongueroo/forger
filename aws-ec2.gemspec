@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = AwsEc2::VERSION
   spec.authors       = ["Tung Nguyen"]
   spec.email         = ["tongueroo@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.description   = %q{Simple tool to create AWS ec2 instances consistently with pre-configured settings}
+  spec.summary       = %q{Simple tool to create AWS ec2 instances}
+  spec.homepage      = "https://github.com/tongueroo/aws-ec2"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
