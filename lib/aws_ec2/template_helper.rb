@@ -9,7 +9,7 @@ module AwsEc2
         name = File.basename(name) # normalize name, change path to name
       end
       name = File.basename(name, '.sh')
-      path = "#{root}/profiles/user_data/#{name}.sh"
+      path = "#{root}/profiles/user-data/#{name}.sh"
       result = erb_result(path)
 
       Base64.encode64(result).strip
