@@ -1,0 +1,12 @@
+---
+image_id: ami-97785bed
+instance_type: t2.medium
+key_name: default
+max_count: 1
+min_count: 1
+security_group_ids:
+- sg-111
+subnet_id: <%= %w[subnet-111 subnet-222].shuffle.first %>
+user_data: "<%= user_data("dev") %>"
+iam_instance_profile:
+  name: IAMProfileName
