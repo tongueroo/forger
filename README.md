@@ -28,7 +28,7 @@ You can provide user-data script to customize the server upon launch.  The user-
 
 * profiles/user-data/myserver.yml
 
-To see the generated user-data script, you can use the `aws userdata NAME`.  Example:
+The user-data script is generated on the machine that is running the aws-ec2 command. If this is your local macosx machine, then the context is your local macosx machine is available. To see the generated user-data script, you can use the `aws userdata NAME`.  Example:
 
 * aws userdata myserver # shows a preview of the user-data script
 
