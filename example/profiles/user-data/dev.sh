@@ -4,7 +4,7 @@ exec > >(tee "/var/log/user-data.log" | logger -t user-data -s 2>/dev/console) 2
 export HOME=/root # user-data env runs in weird shell where user is root but HOME is not set
 <% pubkey_path = "#{ENV['HOME']}/.ssh/id_rsa.pub" -%>
 <% if File.exist?(pubkey_path) -%>
-  <% pubkey = IO.read(pubkey_path) %>
+<% pubkey = IO.read(pubkey_path).strip -%>
 # Automatically add user's public key
 echo <%= pubkey %> >> ~/.ssh/authorized_keys
 echo <%= pubkey %> >> /home/ec2-user/.ssh/authorized_keys
@@ -24,7 +24,7 @@ yum install -y git gcc make readline-devel openssl-devel
 git clone git://github.com/sstephenson/ruby-build.git /tmp/ruby-build
 cd /tmp/ruby-build
 ./install.sh
-echo 'export PATH="/usr/local/bin:$PATH' >> ~/.bashrc
+echo 'export PATH="/usr/local/bin:$PATH"' >> ~/.bashrc
 
 # Install rbenv for root
 git clone git://github.com/sstephenson/rbenv.git ~/.rbenv
