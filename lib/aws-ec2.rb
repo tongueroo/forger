@@ -12,4 +12,8 @@ module AwsEc2
   autoload :Spot, "aws_ec2/spot"
   autoload :TemplateHelper, "aws_ec2/template_helper"
   autoload :UserData, "aws_ec2/user_data"
+  autoload :Config, "aws_ec2/config"
+  autoload :Core, "aws_ec2/core"
+
+  extend Core
 end
