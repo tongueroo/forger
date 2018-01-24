@@ -24,9 +24,9 @@ module AwsEc2
 
       params_exit_check!(profile_file, default_file)
 
-      defaults = load_profile(default_file)
-      params = load_profile(profile_file)
-      params = defaults.deep_merge(params)
+      params = File.exist?(profile_file) ?
+                  load_profile(profile_file) :
+                  load_profile(default_file)
       @profile_params = params
     end
 
