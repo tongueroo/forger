@@ -5,15 +5,11 @@ module AwsEc2
     end
 
     def user_data_snippet
-      <<-EOL
-#!/bin/bash -exu
-
-# Create AMI Bundle
-AMI_NAME="#{@ami_name}"
-INSTANCE_ID=$(wget -q -O - http://169.254.169.254/latest/meta-data/instance-id)
-aws ec2 create-image --name $AMI_NAME --instance-id $INSTANCE_ID
-EOL
+      region = `aws configure get region`.strip rescue 'us-east-1'
+      # the shebang line is here in case there's currently an
+      # empty user-data script.  If there is not, then it wont hurt.
+      template = IO.read(File.expand_path("../scripts/ami_creation.sh", __FILE__))
+      ERB.new(template, nil, "-").result(binding)
     end
   end
 end
-
