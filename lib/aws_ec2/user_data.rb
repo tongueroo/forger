@@ -11,13 +11,7 @@ module AwsEc2
     end
 
     def run
-      if File.exist?(@options[:name])
-        filename = File.basename(@options[:name], '.sh')
-      end
-
-      filename ||= @options[:name]
-      path = "profiles/user-data/#{filename}.sh"
-      puts erb_result(path)
+      puts user_data(@options[:name], false)
     end
   end
 end

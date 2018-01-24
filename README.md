@@ -14,6 +14,13 @@ aws-ec2 create myserver --profile myserver
 
 In a nutshell, the profile parameters are passed to the ruby aws-sdk [AWS::EC2::Client#run_instances](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Client.html#run_instances-instance_method) method.  So you can specify any parameter you wish that is available there. To check out what a profile looks like look at the [example default](example/profiles/default.yml)
 
+You can use ERB in the profile files. Some useful helper methods in the profile files are:
+
+* user_data: a helper method that allows you to embed a generated user_data script.  More details on the user_data helper are provided below.
+* config:
+
+The template helpers defined in [template_helper.rb](lib/aws_ec2/template_helper.rb).
+
 ### Convention
 
 By convention, the profile name matches the first parameter after the create command.  So the command above could be shortened to:
@@ -33,6 +40,10 @@ The user-data script is generated on the machine that is running the aws-ec2 com
 * aws userdata myserver # shows a preview of the user-data script
 
 To use the user-data script when creating an EC2 instance, you can use the helper method in the profile.
+
+### Config
+
+You can set a config file and define variables in there that are available to in your profiles and user_data scripts.
 
 ## Noop mode
 

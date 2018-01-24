@@ -44,6 +44,7 @@ module AwsEc2
       puts "Using profile: #{file}"
       data = YAML.load(erb_result(file))
       data ? data : {} # in case the file is empty
+      data.has_key?("run_instances") ? data["run_instances"] : data
     end
 
     def profile_name

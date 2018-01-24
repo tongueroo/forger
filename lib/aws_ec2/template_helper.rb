@@ -3,7 +3,7 @@ require "erb"
 
 module AwsEc2
   module TemplateHelper
-    def user_data(name)
+    def user_data(name, base64=true)
       # allow user to specify the path also
       if File.exist?(name)
         name = File.basename(name) # normalize name, change path to name
@@ -11,8 +11,36 @@ module AwsEc2
       name = File.basename(name, '.sh')
       path = "#{root}/profiles/user-data/#{name}.sh"
       result = erb_result(path)
+      result = append_ami_creation(result)
 
-      Base64.encode64(result).strip
+      base64 ? Base64.encode64(result).strip : result
+    end
+
+    # provides access to config/* settings as variables
+    #   AWS_EC2_ENV=development => config/development.yml
+    #   AWS_EC2_ENV=production => config/production.yml
+    def config
+      AwsEc2.config
+    end
+
+    # pretty timestamp that is useful for ami ids.
+    # the timestamp is generated once and cached.
+    def timestamp
+      @timestamp ||= Time.now.strftime("%Y-%m-%d-%H-%M-%S")
+    end
+
+  private
+    def append_ami_creation(user_data)
+      ami = @options[:ami]
+
+      if ami
+        # assuming that the user-data script is a bash script here for simplicity
+        # TODO: add support for other types of scripts
+        # might be able to do this by wrapping all scripts in cloud-init
+        ami_creation_snippet = AwsEc2::Ami.new(ami).user_data_snippet
+        user_data += ami_creation_snippet
+      end
+      user_data
     end
 
     def erb_result(path)
