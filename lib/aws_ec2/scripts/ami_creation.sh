@@ -18,7 +18,7 @@ cat >~/terminate-myself.sh <<EOL
 INSTANCE_ID=$(wget -q -O - http://169.254.169.254/latest/meta-data/instance-id)
 aws ec2 terminate-instances --instance-ids \$INSTANCE_ID
 EOL
-at now + 1 minutes -f ~/terminate-myself.sh
+# at now + 1 minutes -f ~/terminate-myself.sh
 
 # Create AMI Bundle
 AMI_NAME="<%= @ami_name %>"

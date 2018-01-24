@@ -1,3 +1,5 @@
+require 'pathname'
+
 module AwsEc2
   module Core
     @@config = nil
@@ -10,7 +12,8 @@ module AwsEc2
     end
 
     def root
-      ENV['AWS_EC2_ROOT'] || '.'
+      path = ENV['AWS_EC2_ROOT'] || '.'
+      Pathname.new(path)
     end
   end
 end

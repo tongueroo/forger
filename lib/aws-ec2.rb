@@ -15,6 +15,9 @@ module AwsEc2
   autoload :Ami, "aws_ec2/ami"
   autoload :Config, "aws_ec2/config"
   autoload :Core, "aws_ec2/core"
+  autoload :Dotenv, "aws_ec2/dotenv"
 
   extend Core
 end
+
+AwsEc2::Dotenv.load!
