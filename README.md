@@ -31,9 +31,9 @@ aws-ec2 create myserver
 
 ## User-Data
 
-You can provide user-data script to customize the server upon launch.  The user-data scripts are under the profiles/user-data folder.
+You can provide user-data script to customize the server upon launch.  The user-data scripts are under the app/user-data folder.
 
-* profiles/user-data/myserver.yml
+* app/user-data/myserver.yml
 
 The user-data script is generated on the machine that is running the aws-ec2 command. If this is your local macosx machine, then the context is your local macosx machine is available. To see the generated user-data script, you can use the `aws userdata NAME`.  Example:
 

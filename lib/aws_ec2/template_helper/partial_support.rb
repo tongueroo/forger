@@ -8,7 +8,7 @@ module AwsEc2::TemplateHelper::PartialSupport
   # The partial's path is a relative path given without the extension and
   #
   # Example:
-  # Given: file in profiles/partials/mypartial.sh
+  # Given: file in app/partials/mypartial.sh
   # The path should be: mypartial
   #
   # If the user specifies the extension then use that instead of auto-adding
@@ -39,7 +39,7 @@ module AwsEc2::TemplateHelper::PartialSupport
 
 private
   def partial_path_for(path)
-    "#{AwsEc2.root}/profiles/partials/#{path}"
+    "#{AwsEc2.root}/app/partials/#{path}"
   end
 
   def auto_add_format(path)

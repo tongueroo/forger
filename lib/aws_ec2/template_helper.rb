@@ -13,7 +13,7 @@ module AwsEc2
         name = File.basename(name) # normalize name, change path to name
       end
       name = File.basename(name, '.sh')
-      path = "#{root}/profiles/user-data/#{name}.sh"
+      path = "#{root}/app/user-data/#{name}.sh"
       result = erb_result(path)
       result = append_ami_creation(result)
 
@@ -49,7 +49,7 @@ module AwsEc2
 
     # Load custom helper methods from the project repo
     def load_custom_helpers
-      Dir.glob("#{AwsEc2.root}/profiles/helpers/**/*_helper.rb").each do |path|
+      Dir.glob("#{AwsEc2.root}/app/helpers/**/*_helper.rb").each do |path|
         filename = path.sub(%r{.*/},'').sub('.rb','')
         module_name = filename.classify
 
