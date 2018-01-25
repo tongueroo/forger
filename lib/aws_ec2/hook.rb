@@ -7,6 +7,7 @@ module AwsEc2
     end
 
     def run(name)
+      return if @options[:noop]
       return unless hooks[name]
       command = hooks[name]
       puts "Running hook #{name}: #{command}"
@@ -24,8 +25,8 @@ module AwsEc2
       system(command)
     end
 
-    def self.run(name)
-      Hook.new.run(name.to_s)
+    def self.run(name, options={})
+      Hook.new(options).run(name.to_s)
     end
   end
 end
