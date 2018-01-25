@@ -3,6 +3,9 @@ require "erb"
 
 module AwsEc2
   module TemplateHelper
+    autoload :PartialSupport, 'aws_ec2/template_helper/partial_support'
+    include PartialSupport
+
     def user_data(name, base64=true)
       # allow user to specify the path also
       if File.exist?(name)
