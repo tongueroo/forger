@@ -1,5 +1,6 @@
 require "base64"
 require "erb"
+require "active_support/all"
 
 module AwsEc2
   module TemplateHelper
@@ -46,7 +47,20 @@ module AwsEc2
       user_data
     end
 
+    # Load custom helper methods from the project repo
+    def load_custom_helpers
+      Dir.glob("#{AwsEc2.root}/profiles/helpers/**/*_helper.rb").each do |path|
+        filename = path.sub(%r{.*/},'').sub('.rb','')
+        module_name = filename.classify
+
+        require path
+        self.class.send :include, module_name.constantize
+      end
+
+    end
+
     def erb_result(path)
+      load_custom_helpers
       template = IO.read(path)
       begin
         ERB.new(template, nil, "-").result(binding)
