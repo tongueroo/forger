@@ -23,5 +23,11 @@ module AwsEc2
     def userdata(name)
       UserData.new(options.merge(name: name)).run
     end
+
+    desc "compile_scripts", "compiles app/scripts into tmp/app/scripts"
+    long_desc Help.text(:compile_scripts)
+    def compile_scripts
+      CompileScripts.new(options).compile
+    end
   end
 end
