@@ -18,6 +18,7 @@ module AwsEc2
         return
       end
 
+      Hook.run(:before_run_instances)
       resp = ec2.run_instances(params)
       puts "EC2 instance #{@options[:name]} created! 🎉"
       puts "Visit https://console.aws.amazon.com/ec2/home to check on the status"
