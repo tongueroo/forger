@@ -9,7 +9,8 @@ module AwsEc2
       # the shebang line is here in case there's currently an
       # empty user-data script.  If there is not, then it wont hurt.
       template = IO.read(File.expand_path("../scripts/ami_creation.sh", __FILE__))
-      ERB.new(template, nil, "-").result(binding)
+      text = ERB.new(template, nil, "-").result(binding)
+      "#" * 60 + "\n#{text}"
     end
   end
 end
