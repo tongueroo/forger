@@ -10,7 +10,7 @@ module AwsEc2
 
     def create_ami
       # set some variables for the template
-      @ami_name = options[:ami]
+      @ami_name = @options[:ami]
       region = `aws configure get region`.strip rescue 'us-east-1'
       load_template("ami_creation.sh")
     end
