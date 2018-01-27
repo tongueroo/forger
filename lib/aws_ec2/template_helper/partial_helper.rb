@@ -1,4 +1,4 @@
-module AwsEc2::TemplateHelper::PartialSupport
+module AwsEc2::TemplateHelper::PartialHelper
   def partial_exist?(path)
     path = partial_path_for(path)
     path = auto_add_format(path)

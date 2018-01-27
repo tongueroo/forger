@@ -4,8 +4,17 @@ require "active_support/all"
 
 module AwsEc2
   module TemplateHelper
-    autoload :PartialSupport, 'aws_ec2/template_helper/partial_support'
-    include PartialSupport
+    # auto load all the template_helpers
+    template_helper_path = File.expand_path("../template_helper", __FILE__)
+    Dir.glob("#{template_helper_path}/*").each do |path|
+      next if File.directory?(path)
+      filename = File.basename(path, '.rb')
+      class_name = filename.classify
+      instance_eval do
+        autoload class_name.to_sym, "aws_ec2/template_helper/#{filename}"
+        include const_get(class_name)
+      end
+    end
 
     def user_data(name, base64=true)
       # allow user to specify the path also
