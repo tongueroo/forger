@@ -1,5 +1,5 @@
 module AwsEc2
-  class Ami
+  class AmiScript
     def initialize(ami_name)
       @ami_name = ami_name
     end
