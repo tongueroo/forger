@@ -1,4 +1,6 @@
 #!/bin/bash -exu
+# The shebang line is here in case there's is currently an empty user-data script.
+# It wont hurt.
 
 # ami_creation.sh: added to the end of user-data automatically.
 

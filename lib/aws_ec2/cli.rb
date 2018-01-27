@@ -6,6 +6,7 @@ module AwsEc2
 
     desc "create NAME", "create ec2 instance"
     option :ami, desc: "ami name, if specified an ami will be created at the end of user data"
+    option :auto_terminate, desc: "automatically terminate the instance at the end of a successfully user-data run"
     long_desc Help.text(:create)
     def create(name)
       Create.new(options.merge(name: name)).run

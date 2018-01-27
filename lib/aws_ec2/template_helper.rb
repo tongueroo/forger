@@ -24,7 +24,7 @@ module AwsEc2
       name = File.basename(name, '.sh')
       path = "#{root}/app/user-data/#{name}.sh"
       result = erb_result(path)
-      result = append_ami_creation(result)
+      result = append_scripts(result)
 
       base64 ? Base64.encode64(result).strip : result
     end
@@ -43,16 +43,11 @@ module AwsEc2
     end
 
   private
-    def append_ami_creation(user_data)
-      ami = @options[:ami]
-
-      if ami
-        # assuming that the user-data script is a bash script here for simplicity
-        # TODO: add support for other types of scripts
-        # might be able to do this by wrapping all scripts in cloud-init
-        ami_creation_snippet = AwsEc2::Ami.new(ami).user_data_snippet
-        user_data += ami_creation_snippet
-      end
+    def append_scripts(user_data)
+      # assuming user-data script is a bash script for simplicity
+      script = AwsEc2::Script.new(options)
+      user_data += script.auto_terminate if @options[:auto_terminate]
+      user_data += script.create_ami if @options[:ami]
       user_data
     end
 
