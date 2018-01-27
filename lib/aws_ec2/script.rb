@@ -5,7 +5,7 @@ module AwsEc2
     end
 
     def auto_terminate
-      load_template("ami_creation.sh")
+      load_template("auto_terminate.sh")
     end
 
     def create_ami

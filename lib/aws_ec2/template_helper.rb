@@ -45,7 +45,7 @@ module AwsEc2
   private
     def append_scripts(user_data)
       # assuming user-data script is a bash script for simplicity
-      script = AwsEc2::Script.new(options)
+      script = AwsEc2::Script.new(@options)
       user_data += script.auto_terminate if @options[:auto_terminate]
       user_data += script.create_ami if @options[:ami]
       user_data

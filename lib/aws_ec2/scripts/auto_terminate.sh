@@ -1,9 +1,10 @@
+##################
+# auto_terminate.sh script
 # When creating an AMI, a aws ec2 create-image command is added to the end of
 # the user-data script. Creating AMIs prevent the script going any further.
 #
 # To get around this the this is script is added before that happens.
 #
-##################
 # https://stackoverflow.com/questions/27920806/how-to-avoid-heredoc-expanding-variables
 cat >/root/terminate-myself.sh << 'EOL'
 #!/bin/bash -exu
