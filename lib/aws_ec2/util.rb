@@ -1,3 +1,5 @@
+require 'fileutils'
+
 module AwsEc2
   module Util
     include TemplateHelper
@@ -5,9 +7,10 @@ module AwsEc2
     def pretty_display(data)
       data = data.deep_stringify_keys
 
-      message = "base64-encoded: use aws-ec2 userdata command to view"
-      # TODO: generalize this
-      data["user_data"] = message if data["user_data"]
+      if data["user_data"]
+        message = "base64-encoded: cat /tmp/aws-ec2/user-data.txt to view"
+        data["user_data"] = message
+      end
 
       puts YAML.dump(data)
     end

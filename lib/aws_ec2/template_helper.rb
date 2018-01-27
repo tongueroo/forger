@@ -26,6 +26,11 @@ module AwsEc2
       result = erb_result(path)
       result = append_scripts(result)
 
+      # save the unencoded user-data script for easy debugging
+      temp_path = "/tmp/aws-ec2/user-data.txt"
+      FileUtils.mkdir_p(File.dirname(temp_path))
+      IO.write(temp_path, result)
+
       base64 ? Base64.encode64(result).strip : result
     end
 
@@ -47,7 +52,7 @@ module AwsEc2
       # assuming user-data script is a bash script for simplicity
       script = AwsEc2::Script.new(@options)
       user_data += script.auto_terminate if @options[:auto_terminate]
-      user_data += script.create_ami if @options[:ami]
+      user_data += script.create_ami if @options[:ami_name]
       user_data
     end
 

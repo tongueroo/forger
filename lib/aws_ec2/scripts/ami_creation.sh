@@ -1,9 +1,16 @@
 #!/bin/bash -exu
 # The shebang line is here in case there's is currently an empty user-data script.
-# It wont hurt.
+# It wont hurt if already there.
+#######################################
 
+<% if @options[:auto_terminate] %>
+# make the script run upon reboot
+chmod +x /etc/rc.d/rc.local
+echo "/root/terminate-myself.sh >> /var/log/terminate-myself.log 2>&1" >> /etc/rc.d/rc.local
+<% end %>
+
+######################################
 # ami_creation.sh: added to the end of user-data automatically.
-
 function configure_aws_cli() {
   local home_dir=$1
   # Configure aws cli in case it is not yet configured
@@ -11,7 +18,7 @@ function configure_aws_cli() {
   if [ ! -f $home_dir/.aws/config ]; then
     cat >$home_dir/.aws/config <<EOL
 [default]
-region = <%= region %>
+region = <%= @region %>
 output = json
 EOL
   fi
