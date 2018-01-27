@@ -9,7 +9,6 @@ module AwsEc2
   autoload :AwsServices, "aws_ec2/aws_services"
   autoload :Util, "aws_ec2/util"
   autoload :Create, "aws_ec2/create"
-  autoload :Spot, "aws_ec2/spot"
   autoload :TemplateHelper, "aws_ec2/template_helper"
   autoload :UserData, "aws_ec2/user_data"
   autoload :Script, "aws_ec2/script"

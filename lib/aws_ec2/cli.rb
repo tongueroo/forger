@@ -12,12 +12,6 @@ module AwsEc2
       Create.new(options.merge(name: name)).run
     end
 
-    desc "spot NAME", "create spot ec2 instance"
-    long_desc Help.text(:spot)
-    def spot(name)
-      Spot.new(options.merge(name: name)).run
-    end
-
     desc "userdata NAME", "displays generated userdata script"
     long_desc Help.text(:user_data)
     option :ami, desc: "ami name, if specified an ami will be created at the end of user data"

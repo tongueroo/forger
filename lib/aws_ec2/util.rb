@@ -8,9 +8,6 @@ module AwsEc2
       message = "base64-encoded: use aws-ec2 userdata command to view"
       # TODO: generalize this
       data["user_data"] = message if data["user_data"]
-      data["spot_fleet_request_config"]["launch_specifications"].each do |spec|
-        spec["user_data"] = message if spec["user_data"]
-      end if data["spot_fleet_request_config"] && data["spot_fleet_request_config"]["launch_specifications"]
 
       puts YAML.dump(data)
     end

@@ -65,7 +65,6 @@ Spot instance support natively supported by the AWS run_instances command.  Simp
 ```sh
 aws-ec2 create help
 aws-ec2 userdata help
-aws-ec2 spot help
 aws-ec2 help # general help
 ```
 
