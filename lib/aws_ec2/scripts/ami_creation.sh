@@ -18,16 +18,6 @@ EOL
 configure_aws_cli /home/ec2-user
 configure_aws_cli /root
 
-# The aws ec2 create-image command below reboots the instance.
-# So before rebooting the instance, schedule a job to terminate the instance
-# in 20 mins after the machine has rebooted
-cat >~/terminate-myself.sh <<EOL
-#!/bin/bash -exu
-INSTANCE_ID=$(wget -q -O - http://169.254.169.254/latest/meta-data/instance-id)
-aws ec2 terminate-instances --instance-ids \$INSTANCE_ID
-EOL
-# at now + 1 minutes -f ~/terminate-myself.sh
-
 echo "############################################" >> /var/log/user-data.log
 echo "# Logs above is from the original AMI baking at: $(date)" >> /var/log/user-data.log
 echo "# New logs below" >> /var/log/user-data.log
