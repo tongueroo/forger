@@ -11,7 +11,6 @@ module AwsEc2
   autoload :Create, "aws_ec2/create"
   autoload :Ami, "aws_ec2/ami"
   autoload :TemplateHelper, "aws_ec2/template_helper"
-  autoload :UserData, "aws_ec2/user_data"
   autoload :Script, "aws_ec2/script"
   autoload :Config, "aws_ec2/config"
   autoload :Core, "aws_ec2/core"

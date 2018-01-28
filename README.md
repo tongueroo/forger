@@ -47,7 +47,7 @@ You can set a config file and define variables in there that are available to in
 
 ## Noop mode
 
-You can do a test run with the `--noop` flag.  This will print out what settings will be used to launch the instance.
+You can do a test run with the `--noop` flag.  This will print out what settings will be used to launch the instance.  This is a good way to inspect the generated user-data script.
 
 ```sh
 aws-ec2 create myserver --profile myserver --noop

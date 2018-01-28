@@ -7,13 +7,13 @@ require "spec_helper"
 #   $ rake clean:vcr ; time rake
 describe AwsEc2::CLI do
   before(:all) do
-    @args = "--from Tung"
+    @args = "--noop"
   end
 
   describe "aws-ec2" do
-    it "should hello world" do
-      out = execute("exe/aws-ec2 hello world #{@args}")
-      expect(out).to include("from: Tung\nHello world")
+    it "create" do
+      out = execute("exe/aws-ec2 create server #{@args}")
+      expect(out).to include("Creating EC2 instance server")
     end
   end
 end

@@ -72,6 +72,13 @@ terminate_instance
 EOL
 chmod a+x /root/terminate-myself.sh
 
-# make the script run upon reboot
+<% if @options[:auto_terminate] %>
+<% if @options[:ami_name] %>
+# schedule termination upon reboot
 chmod +x /etc/rc.d/rc.local
-echo "/root/terminate-myself.sh <%= @ami_name %> >> /var/log/terminate-myself.log 2>&1" >> /etc/rc.d/rc.local
+echo "/root/terminate-myself.sh >> /var/log/terminate-myself.log 2>&1" >> /etc/rc.d/rc.local
+<% else %>
+# terminate immediately
+/root/terminate-myself.sh >> /var/log/terminate-myself.log 2>&1
+<% end %>
+<% end %>

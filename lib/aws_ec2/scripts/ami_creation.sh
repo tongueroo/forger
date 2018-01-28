@@ -1,14 +1,6 @@
 #!/bin/bash -exu
 # The shebang line is here in case there's is currently an empty user-data script.
 # It wont hurt if already there.
-#######################################
-
-<% if @options[:auto_terminate] %>
-# make the script run upon reboot
-chmod +x /etc/rc.d/rc.local
-echo "/root/terminate-myself.sh >> /var/log/terminate-myself.log 2>&1" >> /etc/rc.d/rc.local
-<% end %>
-
 ######################################
 # ami_creation.sh: added to the end of user-data automatically.
 function configure_aws_cli() {
@@ -36,4 +28,6 @@ echo "############################################" >> /var/log/user-data.log
 AMI_NAME="<%= @ami_name %>"
 INSTANCE_ID=$(wget -q -O - http://169.254.169.254/latest/meta-data/instance-id)
 REGION=$(aws configure get region)
+# Note this will cause the instance to reboot.  Not using the --no-reboot flag
+# to ensure consistent AMI creation.
 aws ec2 create-image --name $AMI_NAME --instance-id $INSTANCE_ID --region $REGION
