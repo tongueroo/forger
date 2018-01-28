@@ -13,7 +13,7 @@ module AwsEc2
       Create.new(options.merge(name: name)).run
     end
 
-    desc "ami NAME", "laucnhes instance and uses it create AMI"
+    desc "ami NAME", "launches instance and uses it create AMI"
     long_desc Help.text(:ami)
     option :auto_terminate, type: :boolean, default: true, desc: "automatically terminate the instance at the end of a successfully user-data run"
     def ami(name)
