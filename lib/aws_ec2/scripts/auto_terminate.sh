@@ -1,3 +1,6 @@
+#!/bin/bash -exu
+# The shebang line is here in case there's is currently an empty user-data script.
+# It wont hurt if already there.
 ##################
 # auto_terminate.sh script
 # When creating an AMI, a aws ec2 create-image command is added to the end of
