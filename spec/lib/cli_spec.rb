@@ -13,7 +13,12 @@ describe AwsEc2::CLI do
   describe "aws-ec2" do
     it "create" do
       out = execute("exe/aws-ec2 create server #{@args}")
-      expect(out).to include("Creating EC2 instance server")
+      expect(out).to include("Creating EC2 instance")
+    end
+
+    it "ami" do
+      out = execute("exe/aws-ec2 ami myimage #{@args}")
+      expect(out).to include("Creating EC2 instance")
     end
   end
 end
