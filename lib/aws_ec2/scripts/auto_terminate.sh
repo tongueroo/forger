@@ -47,9 +47,20 @@ function cancel_spot_request() {
   aws ec2 cancel-spot-instance-requests --spot-instance-request-ids $SPOT_INSTANCE_REQUEST_ID
 }
 
+###
 # program starts here
+###
+export PATH=/usr/local/bin:$PATH
 install_jq
 configure_aws_cli /root
+
+AMI_NAME=$1
+
+# wait for the ami to be successfully created before terminating the instance
+# https://docs.aws.amazon.com/cli/latest/reference/ec2/wait/image-available.html
+# It will poll every 15 seconds until a successful state has been reached. This will exit with a return code of 255 after 40 failed checks.
+# so it'll wait for 10 mins max
+aws ec2 wait image-available --filters "Name=name,Values=$AMI_NAME" --owners self
 
 INSTANCE_ID=$(wget -q -O - http://169.254.169.254/latest/meta-data/instance-id)
 SPOT_INSTANCE_REQUEST_ID=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID | jq -r '.Reservations[].Instances[].SpotInstanceRequestId')
@@ -63,4 +74,4 @@ chmod a+x /root/terminate-myself.sh
 
 # make the script run upon reboot
 chmod +x /etc/rc.d/rc.local
-echo "/root/terminate-myself.sh >> /var/log/terminate-myself.log 2>&1" >> /etc/rc.d/rc.local
+echo "/root/terminate-myself.sh <%= @ami_name %> >> /var/log/terminate-myself.log 2>&1" >> /etc/rc.d/rc.local

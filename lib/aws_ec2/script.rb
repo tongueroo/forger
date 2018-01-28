@@ -5,6 +5,7 @@ module AwsEc2
     end
 
     def auto_terminate
+      @ami_name = @options[:ami_name]
       load_template("auto_terminate.sh")
     end
 
