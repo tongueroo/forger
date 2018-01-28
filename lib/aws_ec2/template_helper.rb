@@ -71,6 +71,13 @@ module AwsEc2
     def erb_result(path)
       load_custom_helpers
       template = IO.read(path)
+
+      # Allow a way to bypass the custom ERB error handling in case
+      # the error is in the lambdagem code.
+      if ENV['DEBUG']
+        return ERB.new(template, nil, "-").result(binding)
+      end
+
       begin
         ERB.new(template, nil, "-").result(binding)
       rescue Exception => e
@@ -97,6 +104,8 @@ module AwsEc2
             printf("%#{spacing}d %s\n", line_number, line_content)
           end
         end
+
+        puts "\nIf the this error does not make sense and the error is not in the ERB template. Run the command again with DEBUG=1 to show the full lambdagem backtrace"
         exit 1 unless ENV['TEST']
       end
     end

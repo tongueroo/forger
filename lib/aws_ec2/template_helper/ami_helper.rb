@@ -1,4 +1,6 @@
 module AwsEc2::TemplateHelper::AmiHelper
+  include AwsEc2::AwsServices
+
   # Example:
   #
   #   latest_ami("ruby-2.5.0_*") => ami-122

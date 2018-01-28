@@ -1,3 +1,6 @@
+require "byebug"
+
+
 class AwsEc2::Create
   class Params
     include AwsEc2::TemplateHelper
@@ -6,19 +9,45 @@ class AwsEc2::Create
       @options = options
     end
 
+    # deep_symbolize_keys is ran at the very end only.
+    # up until that point we're dealing with String keys.
     def generate
+      cleanup
       params = load_profiles(profile_name)
       decorate_params(params)
       normalize_launch_template(params).deep_symbolize_keys
     end
 
     def decorate_params(params)
-      upsert_name_tag(params)
+      upsert_name_tag!(params)
+      replace_runtime_options!(params)
       params
     end
 
+    # Expose a list of runtime params that are convenient. Try to limit the
+    # number of options from the cli to keep tool simple. Most options can
+    # be easily control through profile files. The runtime options that are
+    # very convenient to have at the CLI are modified here.
+    def replace_runtime_options!(params)
+      params["image_id"] = @options[:source_ami_id] if @options[:source_ami_id]
+
+      # TODO: decent amount of duplication here and in template_helper.rb
+      # user_data.  Figure out a way to clean this up.
+      user_data = @options[:user_data]
+      if user_data
+        IO.write("/tmp/aws-ec2/user-data.txt", user_data) # save for debugging
+        result = Base64.encode64(user_data).strip
+        params["user_data"] = result
+      end
+      params
+    end
+
+    def cleanup
+      FileUtils.rm_f("/tmp/aws-ec2/user-data.txt")
+    end
+
     # Adds instance ec2 tag if not already provided
-    def upsert_name_tag(params)
+    def upsert_name_tag!(params)
       specs = params["tag_specifications"] || []
 
       # insert an empty spec placeholder if one not found
