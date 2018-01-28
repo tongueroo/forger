@@ -9,7 +9,6 @@ module AwsEc2
     option :ami_name, desc: "when specified, an ami creation script is appended to the user-data script"
     option :auto_terminate, type: :boolean, default: false, desc: "automatically terminate the instance at the end of a successfully user-data run"
     option :source_ami_id, desc: "override the source image_id in profile"
-    option :user_data, desc: "override user_data in the profile. one-off tests"
     def create(name)
       Create.new(options.merge(name: name)).run
     end

@@ -30,15 +30,6 @@ class AwsEc2::Create
     # very convenient to have at the CLI are modified here.
     def replace_runtime_options!(params)
       params["image_id"] = @options[:source_ami_id] if @options[:source_ami_id]
-
-      # TODO: decent amount of duplication here and in template_helper.rb
-      # user_data.  Figure out a way to clean this up.
-      user_data = @options[:user_data]
-      if user_data
-        IO.write("/tmp/aws-ec2/user-data.txt", user_data) # save for debugging
-        result = Base64.encode64(user_data).strip
-        params["user_data"] = result
-      end
       params
     end
 
