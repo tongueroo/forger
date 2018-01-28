@@ -3,8 +3,8 @@ require 'active_support/core_ext/hash'
 
 module AwsEc2
   class Create
+    autoload :Params, "aws_ec2/create/params"
     include AwsServices
-    include Util
 
     def initialize(options)
       @options = options
@@ -26,89 +26,7 @@ module AwsEc2
 
     # params are main derived from profile files
     def params
-      params = load_profiles(profile_name)
-      decorate_params(params)
-      normalize_launch_template(params).deep_symbolize_keys
-    end
-
-    def decorate_params(params)
-      upsert_name_tag(params)
-      params
-    end
-
-    # Adds instance ec2 tag if not already provided
-    def upsert_name_tag(params)
-      specs = params["tag_specifications"] || []
-
-      # insert an empty spec placeholder if one not found
-      spec = specs.find do |s|
-        s["resource_type"] == "instance"
-      end
-      unless spec
-        spec = {
-            "resource_type" => "instance",
-            "tags" => []
-          }
-        specs << spec
-      end
-      # guaranteed there's a tag_specifications with resource_type instance at this point
-
-      tags = spec["tags"] || []
-
-      unless tags.map { |t| t["key"] }.include?("Name")
-        tags << { "key" => "Name", "value" => @options[:name] }
-      end
-
-      specs = specs.map do |s|
-        # replace the name tag value
-        if s["resource_type"] == "instance"
-          {
-            "resource_type" => "instance",
-            "tags" => tags
-          }
-        else
-          s
-        end
-      end
-
-      params["tag_specifications"] = specs
-      params
-    end
-
-    # Allow adding launch template as a simple string.
-    #
-    # Standard structure:
-    # {
-    #   launch_template: { launch_template_name: "TestLaunchTemplate" },
-    # }
-    #
-    # Simple string:
-    # {
-    #   launch_template: "TestLaunchTemplate",
-    # }
-    #
-    # When launch_template is a simple String it will get transformed to the
-    # standard structure.
-    def normalize_launch_template(params)
-      if params["launch_template"].is_a?(String)
-        launch_template_identifier = params["launch_template"]
-        launch_template = if launch_template_identifier =~ /^lt-/
-            { "launch_template_id" => launch_template_identifier }
-          else
-            { "launch_template_name" => launch_template_identifier }
-          end
-        params["launch_template"] = launch_template
-      end
-      params
-    end
-
-    # Hard coded sensible defaults.
-    # Can be overridden easily with profiles
-    def defaults
-      {
-        max_count: 1,
-        min_count: 1,
-      }
+      @params ||= Params.new(@options).generate
     end
 
     def display_info
@@ -137,6 +55,17 @@ module AwsEc2
       puts "ERROR: The specified launched template #{launch_template.inspect} was not found."
       puts "Please double check that it exists."
       exit
+    end
+
+    def pretty_display(data)
+      data = data.deep_stringify_keys
+
+      if data["user_data"]
+        message = "base64-encoded: cat /tmp/aws-ec2/user-data.txt to view"
+        data["user_data"] = message
+      end
+
+      puts YAML.dump(data)
     end
   end
 end

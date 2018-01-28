@@ -22,7 +22,7 @@ module AwsEc2
         name = File.basename(name) # normalize name, change path to name
       end
       name = File.basename(name, '.sh')
-      path = "#{root}/app/user-data/#{name}.sh"
+      path = "#{AwsEc2.root}/app/user-data/#{name}.sh"
       result = erb_result(path)
       result = append_scripts(result)
 

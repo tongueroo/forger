@@ -5,11 +5,11 @@ module AwsEc2
     class_option :profile, desc: "profile name to use"
     class_option :show_user_data, type: :boolean, desc: "do not summarize userdata, show the full script"
 
-
     desc "create NAME", "create ec2 instance"
     long_desc Help.text(:create)
     option :ami_name, desc: "when specified, an ami creation script is appended to the user-data script"
     option :auto_terminate, default: false, desc: "automatically terminate the instance at the end of a successfully user-data run"
+    option :source_ami_id, desc: "override the source image_id at runtime"
     def create(name)
       Create.new(options.merge(name: name)).run
     end
