@@ -2,13 +2,9 @@ require 'yaml'
 require 'active_support/core_ext/hash'
 
 module AwsEc2
-  class Create
+  class Create < Base
     autoload :Params, "aws_ec2/create/params"
     include AwsServices
-
-    def initialize(options)
-      @options = options
-    end
 
     def run
       puts "Creating EC2 instance #{@options[:name]}..."

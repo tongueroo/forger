@@ -1,13 +1,9 @@
 require 'fileutils'
 
 module AwsEc2
-  class CompileScripts
+  class CompileScripts < Base
     include TemplateHelper
     BUILD_ROOT = "tmp"
-
-    def initialize(options)
-      @options = options
-    end
 
     def compile
       clean

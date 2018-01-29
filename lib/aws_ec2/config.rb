@@ -1,9 +1,10 @@
 require 'yaml'
 
 module AwsEc2
-  class Config
-    def initialize(path="#{AwsEc2.root}/config/#{AwsEc2.env}.yml")
-      @path = path
+  class Config < Base
+    def initialize(options={})
+      super
+      @path = options[:path] || "#{AwsEc2.root}/config/#{AwsEc2.env}.yml"
     end
 
     def settings
