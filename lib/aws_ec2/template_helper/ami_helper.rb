@@ -11,13 +11,17 @@ module AwsEc2::TemplateHelper::AmiHelper
   #
   # Returns latest ami ami
   def latest_ami(query, owners=["self"])
+    images = search_ami(query, owners)
+    image = images.sort_by(&:name).reverse.first
+    image.image_id
+  end
+
+  def search_ami(query, owners=["self"])
     images = ec2.describe_images(
       owners: owners,
       filters: [
         {name: "name", values: [query]}
       ]
     ).images
-    image = images.sort_by(&:name).reverse.first
-    image.image_id
   end
 end

@@ -1,7 +1,7 @@
 require 'fileutils'
 
 module AwsEc2
-  class CompileScripts < Base
+  class Compile < Base
     include TemplateHelper
     BUILD_ROOT = "tmp"
 
