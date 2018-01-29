@@ -104,7 +104,7 @@ subnet_id: <%= config["subnets"].shuffle %>
 ...
 ```
 
-## Dot Env File Support
+## Dotenv File Support
 
 You can set and configure environment variables in `.env*` files.  Examples of this is in the [doc/example](doc/example) project.
 
@@ -116,6 +116,12 @@ There is only one hook: before_run_instances.  You can configure this with `conf
 ---
 before_run_instances: /path/to/my/script.sh
 ```
+
+## AMI Creation
+
+To create AMIs you can use the `aws-ec2 ami` command.  This command will run launch an EC2 instance with one of the profiles and create an AMI after the user-data script completes successfully. It does this by adding an AMI creation script at the end of the user-data script.  It is recommended to use the `set -e` option so that any error halts the script and the AMI does not get created.
+
+After the AMI is created successfully, the instance will also terminate itself automatically so you do not have to worry about cleanup.  For more help run `aws-ec2 ami help`.
 
 ## Spot Instance Support
 
