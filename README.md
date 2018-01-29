@@ -96,6 +96,8 @@ scripts_s3_bucket: mybucket # enables s3 uploading of generated app/scripts
 
 The variables are accessible via the `config` helper method. Example (only showing the part of the profile), `profiles/default.yml`:
 
+The `scripts_s3_bucket` is an option that changes the behavior of aws-ec2 to automatically sync the generated scripts from app/scripts to the s3 bucket right before the internal call to run_instances to launch the instance.  If you need more custom logic, look at the hooks section.
+
 ```yaml
 image_id: ami-4fffc834 # Amazon Lambda AMI
 instance_type: t2.medium
