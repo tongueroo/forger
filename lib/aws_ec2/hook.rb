@@ -22,7 +22,8 @@ module AwsEc2
 
     def sh(command)
       puts "=> #{command}".colorize(:cyan)
-      system(command)
+      success = system(command)
+      abort("Command failed") unless success
     end
 
     def self.run(name, options={})

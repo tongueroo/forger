@@ -24,9 +24,9 @@ module AwsEc2
     # Configured by config/[AWS_EC2_ENV].yml.
     # Example: config/development.yml:
     #
-    #   s3_bucket_for_scripts: my-bucket
+    #   scripts_s3_bucket: my-bucket
     def sync_scripts_to_s3
-      if AwsEc2.config["s3_bucket_for_scripts"]
+      if AwsEc2.config["scripts_s3_bucket"]
         S3.new(@options).upload
       end
     end

@@ -12,8 +12,9 @@ module AwsEc2
 
     def sync_scripts_to_s3
       puts "Uploading tmp/app to s3..."
-      s3_bucket = AwsEc2.config["s3_bucket_for_scripts"]
-      sh "aws s3 sync tmp/app s3://#{s3_bucket}/ec2/app"
+      s3_bucket = AwsEc2.config["scripts_s3_bucket"]
+      s3_path = AwsEc2.config["scripts_s3_path"] || "ec2/app"
+      sh "aws s3 sync tmp/app s3://#{s3_bucket}/#{s3_path}"
     end
 
     def sh(command)

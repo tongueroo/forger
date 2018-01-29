@@ -91,7 +91,7 @@ db_subnet_group_name: default
   - subnet-789
 security_group_ids:
   - sg-123
-s3_bucket: mybucket # for the user-data shared scripts
+scripts_s3_bucket: mybucket # enables s3 uploading of generated app/scripts
 ```
 
 The variables are accessible via the `config` helper method. Example (only showing the part of the profile), `profiles/default.yml`:
