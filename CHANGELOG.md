@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.5.2]
+- remove byebug debugging
+
 ## [0.5.1]
 - show a friendly user message if not an aws-ec2 project
 
