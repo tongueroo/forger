@@ -60,7 +60,7 @@ tmp  | Where the generated scripts get compiled to. You can manually invoke the 
 
 ## User-Data
 
-You can provide user-data script to customize the server upon launch.  The user-data scripts are under the app/user-data folder.
+You can provide user-data script to customize the server upon launch.  The user-data scripts are under the `app/user-data` folder.
 
 * app/user-data/myserver.yml
 
