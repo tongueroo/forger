@@ -8,7 +8,7 @@ module AwsEc2
     long_desc Help.text(:create)
     option :ami_name, desc: "when specified, an ami creation script is appended to the user-data script"
     option :auto_terminate, type: :boolean, default: false, desc: "automatically terminate the instance at the end of user-data"
-    option :source_ami_id, desc: "override the source image_id in profile"
+    option :source_ami, desc: "override the source image_id in profile"
     def create(name)
       Create.new(options.merge(name: name)).run
     end
