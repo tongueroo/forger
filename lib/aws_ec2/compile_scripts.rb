@@ -10,9 +10,14 @@ module AwsEc2
     end
 
     def compile
-      puts "Compiling app/scripts to..."
       clean
-      Dir.glob("#{AwsEc2.root}/app/scripts/**/*").each do |path|
+      compile_folder("scripts")
+      compile_folder("user-data")
+    end
+
+    def compile_folder(folder)
+      puts "Compiling app/#{folder}:"
+      Dir.glob("#{AwsEc2.root}/app/#{folder}/**/*").each do |path|
         next if File.directory?(path)
         result = erb_result(path)
         tmp_path = path.sub(%r{.*/app/}, "#{BUILD_ROOT}/app/")
@@ -20,7 +25,6 @@ module AwsEc2
         FileUtils.mkdir_p(File.dirname(tmp_path))
         IO.write(tmp_path, result)
       end
-      puts "Compiled app/scripts."
     end
 
     def clean
