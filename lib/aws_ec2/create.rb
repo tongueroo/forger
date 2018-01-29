@@ -15,9 +15,20 @@ module AwsEc2
       end
 
       Hook.run(:before_run_instances, @options)
+      sync_scripts_to_s3
       resp = ec2.run_instances(params)
       puts "EC2 instance #{@options[:name]} created! 🎉"
       puts "Visit https://console.aws.amazon.com/ec2/home to check on the status"
+    end
+
+    # Configured by config/[AWS_EC2_ENV].yml.
+    # Example: config/development.yml:
+    #
+    #   s3_bucket_for_scripts: my-bucket
+    def sync_scripts_to_s3
+      if AwsEc2.config["s3_bucket_for_scripts"]
+        S3.new(@options).upload
+      end
     end
 
     # params are main derived from profile files

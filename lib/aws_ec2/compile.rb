@@ -24,7 +24,7 @@ module AwsEc2
     end
 
     def clean
-      FileUtils.rm_rf(BUILD_ROOT)
+      FileUtils.rm_rf("#{BUILD_ROOT}/app")
     end
   end
 end
