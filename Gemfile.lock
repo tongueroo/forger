@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    aws-ec2 (0.3.0)
+    aws-ec2 (0.5.1)
       activesupport
       aws-sdk-ec2
       colorize

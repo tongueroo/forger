@@ -1,6 +1,3 @@
-require "byebug"
-
-
 class AwsEc2::Create
   class Params
     include AwsEc2::TemplateHelper
