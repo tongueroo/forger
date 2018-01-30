@@ -81,6 +81,8 @@ db_subnet_group_name: default
 security_group_ids:
   - sg-123
 scripts_s3_bucket: mybucket # enables s3 uploading of generated app/scripts
+compile_keep: true # false by default. after aws-ec2 create command, the compiled
+                   # scripts in tmp are removed by default.
 ```
 
 The variables are accessible via the `config` helper method. Example (only showing the part of the profile), `profiles/default.yml`:
