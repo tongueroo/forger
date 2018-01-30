@@ -7,6 +7,7 @@ module AwsEc2
   autoload :Command, "aws_ec2/command"
   autoload :CLI, "aws_ec2/cli"
   autoload :AwsServices, "aws_ec2/aws_services"
+  autoload :Profile, "aws_ec2/profile"
   autoload :Base, "aws_ec2/base"
   autoload :Create, "aws_ec2/create"
   autoload :Ami, "aws_ec2/ami"

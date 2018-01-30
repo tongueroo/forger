@@ -4,6 +4,7 @@ require 'active_support/core_ext/hash'
 module AwsEc2
   class Create < Base
     autoload :Params, "aws_ec2/create/params"
+
     include AwsServices
 
     def run

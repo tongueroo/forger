@@ -1,7 +1,5 @@
 class AwsEc2::Create
   class Params
-    include AwsEc2::TemplateHelper
-
     def initialize(options)
       @options = options
     end
@@ -10,7 +8,7 @@ class AwsEc2::Create
     # up until that point we're dealing with String keys.
     def generate
       cleanup
-      params = load_profiles(profile_name)
+      params = AwsEc2::Profile.new(@options).load
       decorate_params(params)
       normalize_launch_template(params).deep_symbolize_keys
     end
@@ -107,48 +105,6 @@ class AwsEc2::Create
         max_count: 1,
         min_count: 1,
       }
-    end
-
-    def load_profiles(profile_name)
-      return @profile_params if @profile_params
-
-      profile_file = "#{AwsEc2.root}/profiles/#{profile_name}.yml"
-      base_path = File.dirname(profile_file)
-      default_file = "#{base_path}/default.yml"
-
-      params_exit_check!(profile_file, default_file)
-
-      params = File.exist?(profile_file) ?
-                  load_profile(profile_file) :
-                  load_profile(default_file)
-      @profile_params = params
-    end
-
-    def params_exit_check!(profile_file, default_file)
-      return if File.exist?(profile_file) or File.exist?(default_file)
-
-      puts "Unable to find a #{profile_file} or #{default_file} profile file."
-      puts "Please double check."
-      exit # EXIT HERE
-    end
-
-    def load_profile(file)
-      return {} unless File.exist?(file)
-
-      puts "Using profile: #{file}"
-      data = YAML.load(erb_result(file))
-      data ? data : {} # in case the file is empty
-      data.has_key?("run_instances") ? data["run_instances"] : data
-    end
-
-    def profile_name
-      # allow user to specify the path also
-      if @options[:profile] && File.exist?(@options[:profile])
-        profile = File.basename(@options[:profile], '.yml')
-      end
-
-      # conventional profile is the name of the ec2 instance
-      profile || @options[:profile] || @options[:name]
     end
   end
 end

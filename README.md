@@ -3,7 +3,7 @@
 Simple tool to create AWS ec2 instances consistently with pre-configured settings.  The pre-configured settings are stored in the profiles folder of the current directory.
 Example:
 
-* profiles/default.yml: default settings.
+* profiles/default.yml: default settings. used when no profile is specified.
 * profiles/myserver.yml: myserver settings.
 
 ## Usage
@@ -29,14 +29,6 @@ The template helpers defined in:
 * [aws_ec2/template_helper](lib/aws_ec2/template_helper).
 
 You can also define your own custom helpers in the `app/helpers` folder as ruby modules with the naming convention `'*_helper.rb`.  Example, the module FooHelper  should be defined in `app/helpers/foo_helper.rb`.  The custom helpers are first class citizens and have access to the same variables and methods as built in helpers.
-
-### Convention
-
-By convention, the profile name matches the first parameter after the create command.  So the command above could be shortened to:
-
-```
-aws-ec2 create myserver
-```
 
 ## Noop mode
 
