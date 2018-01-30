@@ -13,7 +13,7 @@ module AwsEc2::TemplateHelper::Core
     result = append_scripts(result)
 
     # save the unencoded user-data script for easy debugging
-    temp_path = "/tmp/aws-ec2/user-data.txt"
+    temp_path = "#{AwsEc2.root}/tmp/user-data.txt"
     FileUtils.mkdir_p(File.dirname(temp_path))
     IO.write(temp_path, result)
 

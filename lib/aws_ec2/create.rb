@@ -69,7 +69,7 @@ module AwsEc2
       data = data.deep_stringify_keys
 
       if data["user_data"]
-        message = "base64-encoded: cat /tmp/aws-ec2/user-data.txt to view"
+        message = "base64-encoded: cat tmp/user-data.txt to view"
         data["user_data"] = message
       end
 

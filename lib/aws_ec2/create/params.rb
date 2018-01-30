@@ -29,7 +29,7 @@ class AwsEc2::Create
     end
 
     def cleanup
-      FileUtils.rm_f("/tmp/aws-ec2/user-data.txt")
+      FileUtils.rm_f("#{AwsEc2.root}/tmp/user-data.txt")
     end
 
     # Adds instance ec2 tag if not already provided
