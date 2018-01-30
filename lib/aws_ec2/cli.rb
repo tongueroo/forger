@@ -19,16 +19,16 @@ module AwsEc2
       Ami.new(options.merge(name: name)).run
     end
 
-    desc "compile_scripts", "compiles app/scripts and app/user-data to tmp folder"
-    long_desc Help.text(:compile_scripts)
-    def compile_scripts
+    desc "compile", "compiles app/scripts and app/user-data to tmp folder"
+    long_desc Help.text(:compile)
+    def compile
       Script::Compile.new(options).compile
     end
 
-    desc "upload_scripts", "compiles and uploads scripts to s3"
-    long_desc Help.text(:upload_scripts)
+    desc "upload", "compiles and uploads scripts to s3"
+    long_desc Help.text(:upload)
     option :compile, type: :boolean, default: true, desc: "compile scripts before uploading"
-    def upload_scripts
+    def upload
       Script::Upload.new(options).upload
     end
   end

@@ -1,6 +1,6 @@
 require 'fileutils'
 
-# Class for aws-ec2 upload_scripts command
+# Class for aws-ec2 upload command
 class AwsEc2::Script
   class Upload < AwsEc2::Base
     def initialize(options={})

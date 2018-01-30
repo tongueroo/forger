@@ -1,6 +1,6 @@
 require 'fileutils'
 
-# Class for aws-ec2 compile_scripts command
+# Class for aws-ec2 compile command
 class AwsEc2::Script
   class Compile < AwsEc2::Base
     include AwsEc2::TemplateHelper
