@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.7.0]
+- Rid of name to profile convention, check profile exists and report to user
+  if it does not exist. This is a more expected interface.
+
 ## [0.6.0]
 - add scripts_s3_bucket config option
 - halt script if hooks fail
