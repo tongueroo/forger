@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.8.4]
+- add doc/example
+- rename to commands to compile and upload
+- rename to core_helper, only require specfic activesupport dependencies
+- generate user-data in tmp/user-data.txt instead
+
 ## [0.8.3]
 - change compile_keep to compile_clean option instead
 
