@@ -1,7 +1,7 @@
 require "base64"
 require "erb"
 
-module AwsEc2::TemplateHelper::Core
+module AwsEc2::TemplateHelper::CoreHelper
   def user_data(name, base64=true)
     # allow user to specify the path also
     if File.exist?(name)

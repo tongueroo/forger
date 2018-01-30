@@ -57,8 +57,14 @@ You can provide a user-data script to customize the server upon launch.  The use
 The user-data script is generated on the machine that is running the aws-ec2 command. If this is your local macosx machine, then the context of your local macosx machine is available. To see the generated user-data script, you can use the run the create command in noop mode and then inspect the generated script.  Example:
 
 ```sh
-aws create myserver --noop
+aws-ec2 create myserver --noop
 cat /tmp/aws-ec2/user-data.txt
+```
+
+Another way of viewing the generated user-data scripts is the `aws-ec2 compile` command.  It generates the files in the tmp folder.  Example:
+
+```
+aws-ec2 compile # generates files in tmp folder
 ```
 
 To use the user-data script when creating an EC2 instance, you use the `user_data` helper method in the profile.  Here's a grep of an example profile that uses the helper to show you want it looks like:
