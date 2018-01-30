@@ -28,7 +28,7 @@ module AwsEc2
     #   scripts_s3_bucket: my-bucket
     def sync_scripts_to_s3
       if AwsEc2.config["scripts_s3_bucket"]
-        S3.new(@options).upload
+        Script::Upload.new(@options).upload
       end
     end
 

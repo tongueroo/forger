@@ -2,10 +2,6 @@ Examples:
 
   $ aws-ec2 create my-instance
 
-If you want to create an ami at the end of of a successful user-data script run you can use the `--ami` option. Example:
+To see the snippet of code that gets added to the user-data script you can use the `--noop` option and then view the generated /tmp/aws-ec2/user-data.txt.
 
-  $ aws-ec2 create my-instance --ami myname
-
-To see the snippet of code that gets added to the user-data script you can use the aws-ec2 userdata command.
-
-  $ aws-ec2 userdata myscript --ami myname
+  $ aws-ec2 create myscript --noop

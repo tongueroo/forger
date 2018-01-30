@@ -1,8 +1,9 @@
 require 'fileutils'
 
-module AwsEc2
-  class Compile < Base
-    include TemplateHelper
+# Class for aws-ec2 compile_scripts command
+class AwsEc2::Script
+  class Compile < AwsEc2::Base
+    include AwsEc2::TemplateHelper
     BUILD_ROOT = "tmp"
 
     def compile

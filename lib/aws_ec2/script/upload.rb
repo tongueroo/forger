@@ -1,13 +1,16 @@
-module AwsEc2
-  class S3
+require 'fileutils'
+
+# Class for aws-ec2 upload_scripts command
+class AwsEc2::Script
+  class Upload < AwsEc2::Base
     def initialize(options={})
       @options = options
     end
 
-    def upload(skip_compile=false)
-      compiler.compile unless skip_compile
+    def upload
+      compiler.compile if @options[:compile]
       sync_scripts_to_s3
-      compiler.clean unless ENV['AWS_EC2_KEEP'] || skip_compile
+      compiler.clean if @options[:compile] and !ENV['AWS_EC2_KEEP']
     end
 
     def sync_scripts_to_s3
