@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.8.2]
+- add compile_keep option
+
 ## [0.8.1]
 - reorganize template helpers into core and update readme
 
