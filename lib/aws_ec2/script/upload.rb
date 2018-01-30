@@ -11,7 +11,7 @@ class AwsEc2::Script
     def upload
       compiler.compile if @compile
       sync_scripts_to_s3
-      compiler.clean if @compile and !AwsEc2.config["compile_keep"]
+      compiler.clean if @compile and AwsEc2.config["compile_clean"]
     end
 
     def sync_scripts_to_s3
