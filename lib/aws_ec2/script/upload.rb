@@ -5,12 +5,13 @@ class AwsEc2::Script
   class Upload < AwsEc2::Base
     def initialize(options={})
       @options = options
+      @compile = @options[:compile] ? @options[:compile] : true
     end
 
     def upload
-      compiler.compile if @options[:compile]
+      compiler.compile if @compile
       sync_scripts_to_s3
-      compiler.clean if @options[:compile] and !ENV['AWS_EC2_KEEP']
+      compiler.clean if @compile and !ENV['AWS_EC2_KEEP']
     end
 
     def sync_scripts_to_s3

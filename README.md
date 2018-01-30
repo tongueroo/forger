@@ -23,10 +23,7 @@ config | Access to the variables set in config/[AWS_EC2_ENV].yml.
 latest_ami | Returns an AMI id by searching the ami name pattern and sorting in reverse older.  Example: `latest_ami("ruby-2.5.0_*")`
 search_ami | Returns a collection of AMI image objects based on a search pattern. The query searches on the AMI name.
 
-The template helpers defined in:
-
-* [aws_ec2/template_helper.rb](lib/aws_ec2/template_helper.rb).
-* [aws_ec2/template_helper](lib/aws_ec2/template_helper).
+For a full list of all the template helpers checkout: [aws_ec2/template_helper](lib/aws_ec2/template_helper).
 
 You can also define your own custom helpers in the `app/helpers` folder as ruby modules with the naming convention `'*_helper.rb`.  Example, the module FooHelper  should be defined in `app/helpers/foo_helper.rb`.  The custom helpers are first class citizens and have access to the same variables and methods as built in helpers.
 
