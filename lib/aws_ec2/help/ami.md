@@ -6,7 +6,7 @@ Launches an EC2 instance to create an AMI.  An AMI creation script is appended t
 
 It is useful to include to timestamp as a part of the AMI name with the date command.
 
-  $ aws-ec2 ami $(date "+ruby-2.5.0_%Y-%m-%d-%H-%M") --profile ruby --noop
+  $ aws-ec2 ami ruby-2.5.0_$(date "+%Y-%m-%d-%H-%M") --profile ruby --noop
 
 The instance also automatically gets terminated and cleaned up by a termination script appended to user-data.
 

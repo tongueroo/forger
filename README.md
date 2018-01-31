@@ -131,6 +131,12 @@ To create AMIs you can use the `aws-ec2 ami` command.  This command launches an 
 
 After the AMI is created successfully, the instance will also terminate itself automatically so you do not have to worry about cleanup.  For more help run `aws-ec2 ami help`.
 
+In order for the instance to bake and terminate itself, the EC2 IAM role for the instance requires IAM permission for:
+
+* aws ec2 create-image
+* aws ec2 cancel-spot-instance-requests # in case a spot instance was used
+* aws ec2 terminate-instances
+
 ## Spot Instance Support
 
 Spot instance is natively supported by the AWS run_instances command.  So, simply add `instance_market_options` to the parameters to request for a spot instance.  The available spot market options are available here:
