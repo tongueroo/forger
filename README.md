@@ -58,7 +58,7 @@ The user-data script is generated on the machine that is running the aws-ec2 com
 
 ```sh
 aws-ec2 create myserver --noop
-cat aws-ec2/user-data.txt
+cat tmp/user-data.txt
 ```
 
 Another way of viewing the generated user-data scripts is the `aws-ec2 compile` command.  It generates the files in the tmp folder.  Example:
