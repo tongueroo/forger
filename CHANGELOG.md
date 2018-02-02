@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.9.0]
+- much improved error messaging
+- rename docs folder
+- update readme
+
 ## [0.8.4]
 - add doc/example
 - rename to commands to compile and upload
