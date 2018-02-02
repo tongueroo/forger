@@ -28,7 +28,7 @@ cat tmp/user-data.txt # to view generated user-data script
 Directory  | Description
 ------------- | -------------
 app/helpers  | Custom helpers methods.  Define them as modules and their methods are made available whenever ERB is available: `profiles`, `app/scripts`, `app/user-data` files, etc. For example, you would define a `module FooHelper` in `app/helpers/foo_helper.rb`.
-app/partials  | Your partials that can to be included in other scripts.  This is used in conjunction with the `partial` helper method.
+app/partials  | Your partials that can to be included in other scripts.  This is used in conjunction with the `partial` helper method. With great power comes great responsibility.  It is recommended to use partials sparely to keep scripts simpler.
 app/scripts  | Where you define common scripts that can be used to configure the server. These scripts can be automatically uploaded to an s3 bucket for later downloading in your user-data script by setting the `scripts_s3_bucket` config option.
 app/user-data  | Your user-data scripts that are used to bootstrap EC2 instance.
 config/[AWS_EC2_ENV].yml  | The config file where you set configs that you want available in your templating logic.  Examples are: `config/development.yml` and `config/production.yml`. You access the config variables with the `<%= config["var"] %>` helper.
