@@ -4,8 +4,10 @@ require 'active_support/core_ext/hash'
 module AwsEc2
   class Create < Base
     autoload :Params, "aws_ec2/create/params"
+    autoload :ErrorMessages, "aws_ec2/create/error_messages"
 
     include AwsServices
+    include ErrorMessages
 
     def run
       puts "Creating EC2 instance #{@options[:name]}..."
@@ -17,9 +19,15 @@ module AwsEc2
 
       Hook.run(:before_run_instances, @options)
       sync_scripts_to_s3
-      resp = ec2.run_instances(params)
+      run_instances(params)
       puts "EC2 instance #{@options[:name]} created! 🎉"
       puts "Visit https://console.aws.amazon.com/ec2/home to check on the status"
+    end
+
+    def run_instances(params)
+      resp = ec2.run_instances(params)
+    rescue Aws::EC2::Errors::ServiceError => e
+      handle_ec2_service_error!(e)
     end
 
     # Configured by config/[AWS_EC2_ENV].yml.

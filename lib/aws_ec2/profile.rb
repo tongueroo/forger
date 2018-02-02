@@ -25,7 +25,7 @@ module AwsEc2
     def load_profile(file)
       return {} unless File.exist?(file)
 
-      puts "Using profile: #{file}"
+      puts "Using profile: #{file}".colorize(:green)
       data = YAML.load(erb_result(file))
       data ? data : {} # in case the file is empty
       data.has_key?("run_instances") ? data["run_instances"] : data

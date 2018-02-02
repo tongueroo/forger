@@ -13,7 +13,7 @@ class AwsEc2::Script
     end
 
     def compile_folder(folder)
-      puts "Compiling app/#{folder}:"
+      puts "Compiling app/#{folder}:".colorize(:green)
       Dir.glob("#{AwsEc2.root}/app/#{folder}/**/*").each do |path|
         next if File.directory?(path)
         result = erb_result(path)
