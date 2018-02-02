@@ -146,7 +146,7 @@ Spot instance is natively supported by the AWS run_instances command.  So, simpl
 * [https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_LaunchTemplateSpotMarketOptionsRequest.html](https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_LaunchTemplateSpotMarketOptionsRequest.html)
 * [https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Types/SpotMarketOptions.html](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Types/SpotMarketOptions.html)
 
-An example of a spot instance profile is provided in [doc/example/profiles/spot.yml](doc/example/profiles/spot.yml).
+An example of a spot instance profile is provided in [example/profiles/spot.yml](docs/example/profiles/spot.yml).
 
 ## More Help
 
