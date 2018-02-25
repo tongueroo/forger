@@ -31,5 +31,10 @@ module AwsEc2
     def upload
       Script::Upload.new(options).upload
     end
+
+    desc "version", "prints version"
+    def version
+      puts VERSION
+    end
   end
 end

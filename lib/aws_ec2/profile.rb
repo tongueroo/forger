@@ -18,8 +18,8 @@ module AwsEc2
       return if File.exist?(profile_file)
 
       puts "Unable to find a #{profile_file.colorize(:green)} profile file."
-      puts "Please double check that it exists or that you specified the right profile."
-      exit # EXIT HERE
+      puts "Please double check that it exists or that you specified the right profile.".colorize(:red)
+      exit 1
     end
 
     def load_profile(file)

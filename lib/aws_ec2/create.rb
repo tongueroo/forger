@@ -10,6 +10,8 @@ module AwsEc2
     include ErrorMessages
 
     def run
+      Profile.new(@options).check!
+
       puts "Creating EC2 instance #{@options[:name]}..."
       display_info
       if @options[:noop]

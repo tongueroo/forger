@@ -20,7 +20,7 @@ EOL
     #   Aws::EC2::Errors::InvalidParameterCombination => invalid_parameter_combination!
     def map_exception_to_method(exception)
       class_name = File.basename(exception.class.to_s).sub(/.*::/,'')
-      method_name = class_name.underscore
+      class_name.underscore # method_name
     end
 
     def print_error_message(exception, message)
