@@ -1,6 +1,7 @@
 $:.unshift(File.expand_path("../", __FILE__))
 require "aws_ec2/version"
 require "colorize"
+require "render_me_pretty"
 
 module AwsEc2
   autoload :Help, "aws_ec2/help"
@@ -11,7 +12,7 @@ module AwsEc2
   autoload :Base, "aws_ec2/base"
   autoload :Create, "aws_ec2/create"
   autoload :Ami, "aws_ec2/ami"
-  autoload :TemplateHelper, "aws_ec2/template_helper"
+  autoload :Template, "aws_ec2/template"
   autoload :Script, "aws_ec2/script"
   autoload :Config, "aws_ec2/config"
   autoload :Core, "aws_ec2/core"

@@ -3,7 +3,8 @@ require 'fileutils'
 # Class for aws-ec2 compile command
 class AwsEc2::Script
   class Compile < AwsEc2::Base
-    include AwsEc2::TemplateHelper
+    include AwsEc2::Template
+
     BUILD_ROOT = "tmp"
 
     def compile
@@ -16,7 +17,7 @@ class AwsEc2::Script
       puts "Compiling app/#{folder}:".colorize(:green)
       Dir.glob("#{AwsEc2.root}/app/#{folder}/**/*").each do |path|
         next if File.directory?(path)
-        result = erb_result(path)
+        result = RenderMePretty.result(path, context: context)
         tmp_path = path.sub(%r{.*/app/}, "#{BUILD_ROOT}/app/")
         puts "  #{tmp_path}"
         FileUtils.mkdir_p(File.dirname(tmp_path))

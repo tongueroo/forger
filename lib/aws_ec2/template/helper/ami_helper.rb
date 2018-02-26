@@ -1,4 +1,4 @@
-module AwsEc2::TemplateHelper::AmiHelper
+module AwsEc2::Template::Helper::AmiHelper
   include AwsEc2::AwsServices
 
   # Example:
