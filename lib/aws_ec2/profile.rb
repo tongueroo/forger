@@ -1,6 +1,6 @@
 module AwsEc2
   class Profile
-    include TemplateHelper
+    include AwsEc2::Template
 
     def initialize(options)
       @options = options
@@ -26,7 +26,8 @@ module AwsEc2
       return {} unless File.exist?(file)
 
       puts "Using profile: #{file}".colorize(:green)
-      data = YAML.load(erb_result(file))
+      text = RenderMePretty.result(file, context: context)
+      data = YAML.load(text)
       data ? data : {} # in case the file is empty
       data.has_key?("run_instances") ? data["run_instances"] : data
     end

@@ -1,4 +1,4 @@
-module AwsEc2::TemplateHelper::PartialHelper
+module AwsEc2::Template::Helper::PartialHelper
   def partial_exist?(path)
     path = partial_path_for(path)
     path = auto_add_format(path)
@@ -17,7 +17,7 @@ module AwsEc2::TemplateHelper::PartialHelper
     path = partial_path_for(path)
     path = auto_add_format(path)
 
-    result = erb_result(path)
+    result = RenderMePretty.result(path, context: self)
     result = indent(result, options[:indent]) if options[:indent]
     if options[:indent]
       # Add empty line at beginning because empty lines gets stripped during

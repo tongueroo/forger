@@ -7,6 +7,7 @@ PATH
       colorize
       dotenv
       hashie
+      render_me_pretty
       thor
 
 GEM
@@ -78,6 +79,10 @@ GEM
     rb-fsevent (0.10.2)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
+    render_me_pretty (0.7.0)
+      activesupport
+      colorize
+      tilt
     rspec (3.7.0)
       rspec-core (~> 3.7.0)
       rspec-expectations (~> 3.7.0)
@@ -100,6 +105,7 @@ GEM
     simplecov-html (0.10.2)
     thor (0.20.0)
     thread_safe (0.3.6)
+    tilt (2.0.8)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
 
