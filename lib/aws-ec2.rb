@@ -13,7 +13,7 @@ module AwsEc2
   autoload :Create, "aws_ec2/create"
   autoload :Ami, "aws_ec2/ami"
   autoload :Template, "aws_ec2/template"
-  autoload :Script, "aws_ec2/script"
+  autoload :Scripter, "aws_ec2/scripter"
   autoload :Config, "aws_ec2/config"
   autoload :Core, "aws_ec2/core"
   autoload :Dotenv, "aws_ec2/dotenv"

@@ -36,9 +36,9 @@ module AwsEc2::Template::Helper::CoreHelper
 private
   def append_scripts(user_data)
     # assuming user-data script is a bash script for simplicity
-    script = AwsEc2::Script.new(@options)
-    user_data += script.auto_terminate if @options[:auto_terminate]
-    user_data += script.create_ami if @options[:ami_name]
+    scripter = AwsEc2::Scripter.new(@options)
+    user_data += scripter.auto_terminate if @options[:auto_terminate]
+    user_data += scripter.create_ami if @options[:ami_name]
     user_data
   end
 

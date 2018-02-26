@@ -23,14 +23,14 @@ module AwsEc2
     desc "compile", "compiles app/scripts and app/user-data to tmp folder"
     long_desc Help.text(:compile)
     def compile
-      Script::Compile.new(options).compile
+      Scripter::Compile.new(options).compile
     end
 
     desc "upload", "compiles and uploads scripts to s3"
     long_desc Help.text(:upload)
     option :compile, type: :boolean, default: true, desc: "compile scripts before uploading"
     def upload
-      Script::Upload.new(options).upload
+      Scripter::Upload.new(options).upload
     end
 
     desc "completion *PARAMS", "Prints words for auto-completion."

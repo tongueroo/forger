@@ -27,7 +27,7 @@ module AwsEc2
     end
 
     def run_instances(params)
-      ec2.run_instances(params)
+      # ec2.run_instances(params)
     rescue Aws::EC2::Errors::ServiceError => e
       handle_ec2_service_error!(e)
     end
@@ -38,7 +38,7 @@ module AwsEc2
     #   scripts_s3_bucket: my-bucket
     def sync_scripts_to_s3
       if AwsEc2.config["scripts_s3_bucket"]
-        Script::Upload.new(@options).upload
+        Scripter::Upload.new(@options).upload
       end
     end
 

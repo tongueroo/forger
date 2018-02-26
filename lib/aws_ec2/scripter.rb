@@ -1,7 +1,7 @@
 module AwsEc2
-  class Script
-    autoload :Compile, "aws_ec2/script/compile"
-    autoload :Upload, "aws_ec2/script/upload"
+  class Scripter
+    autoload :Compile, "aws_ec2/scripter/compile"
+    autoload :Upload, "aws_ec2/scripter/upload"
 
     def initialize(options={})
       @options = options
