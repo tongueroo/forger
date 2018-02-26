@@ -2,7 +2,7 @@ module AwsEc2
   class Base
     def initialize(options={})
       @options = options.clone
-      @name = @options[:name]
+      @name = randomize(@options[:name])
       AwsEc2.validate_in_project!
     end
 
@@ -24,5 +24,15 @@ module AwsEc2
         name
       end
     end
+
+    # Strip the random string at end of the ec2 instance name
+    def derandomize(name)
+      if @options[:randomize]
+        name.sub(/-(\w{3})$/,'') # strip the random part at the end
+      else
+        name
+      end
+    end
+
   end
 end

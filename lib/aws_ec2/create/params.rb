@@ -1,9 +1,5 @@
 class AwsEc2::Create
-  class Params
-    def initialize(options)
-      @options = options
-    end
-
+  class Params < AwsEc2::Base
     # deep_symbolize_keys is ran at the very end only.
     # up until that point we're dealing with String keys.
     def generate
@@ -52,7 +48,7 @@ class AwsEc2::Create
       tags = spec["tags"] || []
 
       unless tags.map { |t| t["key"] }.include?("Name")
-        tags << { "key" => "Name", "value" => @options[:name] }
+        tags << { "key" => "Name", "value" => @name }
       end
 
       specs = specs.map do |s|

@@ -1,10 +1,6 @@
 module AwsEc2
-  class Profile
+  class Profile < Base
     include AwsEc2::Template
-
-    def initialize(options)
-      @options = options
-    end
 
     def load
       return @profile_params if @profile_params
@@ -41,7 +37,7 @@ module AwsEc2
         filename_profile = File.basename(@options[:profile], '.yml')
       end
 
-      name = derandomize(@options[:name])
+      name = derandomize(@name)
       if File.exist?(profile_file(name))
         name_profile = name
       end
@@ -55,15 +51,5 @@ module AwsEc2
     def profile_file(name)
       "#{AwsEc2.root}/profiles/#{name}.yml"
     end
-
-    # Strip the random string at end of the ec2 instance name
-    def derandomize(name)
-      if @options[:randomize]
-        name.sub(/-(\w{3})$/,'') # strip the random part at the end
-      else
-        name
-      end
-    end
-
   end
 end
