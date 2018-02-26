@@ -1,5 +1,7 @@
 # AWS EC2 Tool
 
+[![CircleCI](https://circleci.com/gh/tongueroo/aws-ec2.svg?style=svg)](https://circleci.com/gh/tongueroo/aws-ec2)
+
 Simple tool to create AWS ec2 instances consistently with pre-configured settings.  The pre-configured settings are stored in the profiles folder of the current project directory.
 Example:
 
