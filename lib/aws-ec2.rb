@@ -17,7 +17,8 @@ module AwsEc2
   autoload :Core, "aws_ec2/core"
   autoload :Dotenv, "aws_ec2/dotenv"
   autoload :Hook, "aws_ec2/hook"
-
+  autoload :Completion, "aws_ec2/completion"
+  autoload :Completer, "aws_ec2/completer"
   extend Core
 end
 
