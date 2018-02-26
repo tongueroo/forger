@@ -39,11 +39,13 @@ module AwsEc2
     def profile_name
       # allow user to specify the path also
       if @options[:profile] && File.exist?(@options[:profile])
-        profile = File.basename(@options[:profile], '.yml')
+        filename_profile = File.basename(@options[:profile], '.yml')
       end
 
-      # conventional profile is the name of the ec2 instance
-      profile || @options[:profile] || "default"
+      filename_profile ||
+      @options[:profile] ||
+      @options[:name] || # conventional profile is the name of the ec2 instance
+      "default"
     end
   end
 end
