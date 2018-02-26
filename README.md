@@ -11,6 +11,7 @@ Example:
 ## Usage
 
 ```sh
+aws-ec2 create NAME --profile PROFILE
 aws-ec2 create myserver --profile myserver
 ```
 
@@ -23,6 +24,28 @@ You can do a test run with the `--noop` flag.  This will print out what settings
 ```sh
 aws-ec2 create myserver --profile myserver --noop
 cat tmp/user-data.txt # to view generated user-data script
+```
+
+## Conventional Profile Name
+
+If there is a profile name that matches the ec2 specified instance name, you can omit the `--profile` flag. Example
+
+```sh
+aws-ec2 create webserver --profile webserver
+aws-ec2 create webserver # same thing as --profile whatever
+```
+
+It is useful to add a random string to the end of your server name, but not use it for the `--profile` flag.  Example:
+
+```
+aws-ec2 create myserver-abc --profile myserver
+aws-ec2 create myserver-123 --profile myserver
+```
+
+You can use the `--randomize` option to automatically do this:
+
+```
+aws-ec2 create myserver --randomize
 ```
 
 ## Project Structure
