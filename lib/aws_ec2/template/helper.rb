@@ -1,11 +1,15 @@
+require "active_support/core_ext/string"
+
 module AwsEc2::Template
   module Helper
-    # TODO: add method to remove duplication
-    autoload :AmiHelper, "aws_ec2/template/helper/ami_helper"
-    autoload :CoreHelper, "aws_ec2/template/helper/core_helper"
-    autoload :PartialHelper, "aws_ec2/template/helper/partial_helper"
-    include AmiHelper
-    include CoreHelper
-    include PartialHelper
+    def autoinclude(klass)
+      autoload klass, "aws_ec2/template/helper/#{klass.to_s.underscore}"
+      include const_get(klass)
+    end
+    extend self
+
+    autoinclude :AmiHelper
+    autoinclude :CoreHelper
+    autoinclude :PartialHelper
   end
 end
