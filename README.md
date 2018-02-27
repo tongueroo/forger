@@ -56,8 +56,8 @@ app/helpers  | Custom helpers methods.  Define them as modules and their methods
 app/partials  | Your partials that can to be included in other scripts.  This is used in conjunction with the `partial` helper method. With great power comes great responsibility.  It is recommended to use partials sparely to keep scripts more straightforward.
 app/scripts  | Where you define common scripts that can be used to configure the server. These scripts can be automatically uploaded to an s3 bucket for later downloading in your user-data script by setting the `scripts_s3_bucket` config option.
 app/user-data  | Your user-data scripts that are used to bootstrap EC2 instance.
-config/[AWS_EC2_ENV].yml  | The config file where you set configs that you want available in your templating logic.  Examples are: `config/development.yml` and `config/production.yml`. You access the config variables with the `<%= config["var"] %>` helper.
 app/user-data/layouts  | user-data scripts support layouts. You user-data layouts go in here.
+config/[AWS_EC2_ENV].yml  | The config file where you set configs that you want available in your templating logic.  Examples are: `config/development.yml` and `config/production.yml`. You access the config variables with the `<%= config["var"] %>` helper.
 profiles  | Your profile files.  These files mainly contain parameters that are passed to the aws-sdk run_instances API method.
 tmp  | Where the generated scripts get compiled to. You can manually invoke the compilation via `aws-ec2 compile` to inspect what is generated.  This is automatically done as part of the `aws-ec2` create command.
 
