@@ -10,12 +10,7 @@ module AwsEc2::Template::Helper::CoreHelper
     name = File.basename(name, '.sh')
 
     layout_path = layout_path(layout)
-    unless File.exist?(layout_path)
-      layout_path = false
-    end
-
     path = "#{AwsEc2.root}/app/user-data/#{name}.sh"
-    puts "user_data layout_path #{layout_path}"
     result = RenderMePretty.result(path, context: self, layout: layout_path)
     result = append_scripts(result)
 
@@ -31,16 +26,25 @@ module AwsEc2::Template::Helper::CoreHelper
   #
   #   layout_name=false - dont use layout at all
   #   layout_name=nil - default to default.sh layout if available
-  def layout_path(name)
-    return nil unless name
+  def layout_path(name="default")
+    return false if name == false # disable layout
+    name = "default" if name.nil? # in case user passes in nil
 
     ext = File.extname(name)
     name += ".sh" if ext.empty?
-    layout_path = "#{AwsEc2.root}/app/layouts/#{name}"
+    layout_path = "#{AwsEc2.root}/app/user-data/layouts/#{name}"
+
+    # special rule for default in case there's no default layout
+    if name.include?("default") and !File.exist?(layout_path)
+      return false
+    end
+
+    # other named layouts should error if it doesnt exit
     unless File.exist?(layout_path)
       puts "ERROR: Layout #{layout_path} does not exist. Are you sure it exists?  Exiting".colorize(:red)
       exit 1
     end
+
     layout_path
   end
 
