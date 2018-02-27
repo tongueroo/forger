@@ -2,14 +2,20 @@ require "base64"
 require "erb"
 
 module AwsEc2::Template::Helper::CoreHelper
-  def user_data(name, base64=true)
+  def user_data(name, base64:true, layout:"default")
     # allow user to specify the path also
     if File.exist?(name)
       name = File.basename(name) # normalize name, change path to name
     end
     name = File.basename(name, '.sh')
+
+    layout_path = layout_path(layout)
+    unless File.exist?(layout_path)
+      layout_path = false
+    end
+
     path = "#{AwsEc2.root}/app/user-data/#{name}.sh"
-    result = RenderMePretty.result(path, context: self)
+    result = RenderMePretty.result(path, @options, layout: layout_path)
     result = append_scripts(result)
 
     # save the unencoded user-data script for easy debugging
@@ -18,6 +24,17 @@ module AwsEc2::Template::Helper::CoreHelper
     IO.write(temp_path, result)
 
     base64 ? Base64.encode64(result).strip : result
+  end
+
+  # layout_name=false - dont use layout at all
+  # layout_name=nil - default to default.sh layout if available
+  def layout_path(layout_name)
+    return nil if layout_name == false
+
+    layout_name ||= "default"
+    ext = File.extname(layout_name)
+    layout_name += ".sh" if ext.empty?
+    "#{AwsEc2.root}/app/layouts/#{layout_name}" # layout_path
   end
 
   # provides access to config/* settings as variables
