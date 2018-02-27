@@ -28,8 +28,6 @@ module AwsEc2
     end
 
     def run_instances(params)
-      puts "EXITING EARLY FOR TESTING3"
-      exit
       ec2.run_instances(params)
     rescue Aws::EC2::Errors::ServiceError => e
       handle_ec2_service_error!(e)
