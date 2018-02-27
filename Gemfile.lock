@@ -8,8 +8,8 @@ PATH
       dotenv
       filesize
       hashie
+      render_me_pretty
       thor
-      tilt
 
 GEM
   remote: https://rubygems.org/
@@ -81,6 +81,10 @@ GEM
     rb-fsevent (0.10.2)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
+    render_me_pretty (0.8.0)
+      activesupport
+      colorize
+      tilt
     rspec (3.7.0)
       rspec-core (~> 3.7.0)
       rspec-expectations (~> 3.7.0)
