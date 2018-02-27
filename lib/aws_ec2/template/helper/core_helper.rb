@@ -27,15 +27,21 @@ module AwsEc2::Template::Helper::CoreHelper
     base64 ? Base64.encode64(result).strip : result
   end
 
-  # layout_name=false - dont use layout at all
-  # layout_name=nil - default to default.sh layout if available
-  def layout_path(layout_name)
-    return nil if layout_name == false
+  # Get full path of layout from layout name
+  #
+  #   layout_name=false - dont use layout at all
+  #   layout_name=nil - default to default.sh layout if available
+  def layout_path(name)
+    return nil unless name
 
-    layout_name ||= "default"
-    ext = File.extname(layout_name)
-    layout_name += ".sh" if ext.empty?
-    "#{AwsEc2.root}/app/layouts/#{layout_name}" # layout_path
+    ext = File.extname(name)
+    name += ".sh" if ext.empty?
+    layout_path = "#{AwsEc2.root}/app/layouts/#{name}"
+    unless File.exist?(layout_path)
+      puts "ERROR: Layout #{layout_path} does not exist. Are you sure it exists?  Exiting".colorize(:red)
+      exit 1
+    end
+    layout_path
   end
 
   # provides access to config/* settings as variables

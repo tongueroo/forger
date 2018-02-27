@@ -22,7 +22,7 @@ class AwsEc2::Script
     end
 
     def compile_folder(folder)
-      layout_path = layout_path(@options[:layout])
+      layout_path = context.layout_path(@options[:layout])
 
       puts "Compiling app/#{folder}:".colorize(:green)
       Dir.glob("#{AwsEc2.root}/app/#{folder}/**/*").each do |path|
@@ -34,20 +34,6 @@ class AwsEc2::Script
         FileUtils.mkdir_p(File.dirname(tmp_path))
         IO.write(tmp_path, result)
       end
-    end
-
-    # Get full path of layout from layout name
-    def layout_path(name)
-      return nil unless name
-
-      ext = File.extname(name)
-      name += ".sh" if ext.empty?
-      path = "#{AwsEc2.root}/app/layouts/#{name}"
-      unless File.exist?(path)
-        puts "ERROR: Layout #{path} does not exist. Are you sure it exists?  Exiting".colorize(:red)
-        exit 1
-      end
-      path
     end
 
     def clean
