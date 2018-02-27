@@ -24,7 +24,7 @@ module AwsEc2
     long_desc Help.text(:compile)
     option :layout, default: "default", desc: "layout for user_data helper"
     def compile
-      Script::Compile.new(options).compile
+      Script::Compile.new(options).compile_all
     end
 
     desc "upload", "compiles and uploads scripts to s3"

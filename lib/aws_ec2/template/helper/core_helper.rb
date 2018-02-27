@@ -15,7 +15,8 @@ module AwsEc2::Template::Helper::CoreHelper
     end
 
     path = "#{AwsEc2.root}/app/user-data/#{name}.sh"
-    result = RenderMePretty.result(path, @options, layout: layout_path)
+    puts "user_data layout_path #{layout_path}"
+    result = RenderMePretty.result(path, context: self, layout: layout_path)
     result = append_scripts(result)
 
     # save the unencoded user-data script for easy debugging

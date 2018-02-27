@@ -11,7 +11,7 @@ class AwsEc2::Script
     end
 
     def run
-      compiler.compile if @compile
+      compiler.compile_scripts if @compile
       compressor.compress
       upload(tarball_path)
       compressor.clean
