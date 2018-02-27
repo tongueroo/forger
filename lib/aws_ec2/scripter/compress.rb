@@ -2,9 +2,6 @@ require 'fileutils'
 
 class AwsEc2::Scripter
   class Compress < AwsEc2::Base
-    SCRIPTS_INFO_PATH = "tmp/data/scripts_info.txt"
-    BUILD_ROOT = "tmp"
-
     def compress
       reset
       puts "Tarballing #{BUILD_ROOT}/app/scripts folder to scripts.tgz"
@@ -23,6 +20,10 @@ class AwsEc2::Scripter
       sh "cd #{BUILD_ROOT}/app && tar -c scripts | gzip -n > scripts.tgz" # temporary app/scripts.tgz file
 
       rename_with_md5!
+    end
+
+    def clean
+      FileUtils.rm_f("#{BUILD_ROOT}/scripts/scripts-#{md5sum}.tgz")
     end
 
     # Apppend a md5 to file after it's been created and moves it to

@@ -1,5 +1,9 @@
 module AwsEc2
   class Base
+    # constants really only used by scripter classes
+    SCRIPTS_INFO_PATH = "tmp/data/scripts_info.txt"
+    BUILD_ROOT = "tmp"
+
     def initialize(options={})
       @options = options.clone
       @name = randomize(@options[:name])

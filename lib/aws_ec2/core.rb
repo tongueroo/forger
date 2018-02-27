@@ -4,7 +4,11 @@ module AwsEc2
   module Core
     @@config = nil
     def config
-      @@config ||= Config.new.settings
+      @@config ||= Config.new.data
+    end
+
+    def settings
+      Setting.new.data
     end
 
     def env

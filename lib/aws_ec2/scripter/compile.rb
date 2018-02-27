@@ -5,8 +5,6 @@ class AwsEc2::Scripter
   class Compile < AwsEc2::Base
     include AwsEc2::Template
 
-    BUILD_ROOT = "tmp"
-
     def compile
       clean
       compile_folder("scripts")

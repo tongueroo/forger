@@ -27,6 +27,11 @@ module AwsEc2::Template::Helper::CoreHelper
     AwsEc2.config
   end
 
+  # provides access to config/settings.yml as variables
+  def settings
+    AwsEc2.settings
+  end
+
   # pretty timestamp that is useful for ami ids.
   # the timestamp is generated once and cached.
   def timestamp
