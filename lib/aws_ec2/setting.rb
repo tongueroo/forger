@@ -25,6 +25,7 @@ module AwsEc2
     def load_file(path)
       return Hash.new({}) unless File.exist?(path)
 
+      # return {} # TODO: TESTING AND DEBUGGING
       content = RenderMePretty.result(path)
       data = YAML.load(content)
       # ensure no nil values

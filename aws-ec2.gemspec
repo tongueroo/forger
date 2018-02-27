@@ -25,8 +25,12 @@ Gem::Specification.new do |spec|
   spec.add_dependency "dotenv"
   spec.add_dependency "filesize"
   spec.add_dependency "hashie"
-  spec.add_dependency "render_me_pretty"
   spec.add_dependency "thor"
+
+  # spec.add_dependency "render_me_pretty"
+  # spec.add_dependency "activesupport"
+  # spec.add_dependency "colorize"
+  spec.add_dependency "tilt"
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "byebug"

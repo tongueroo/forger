@@ -21,10 +21,12 @@ module AwsEc2::Template::Helper::ScriptHelper
 # Downloads scripts from s3, extract them, and setup.
 mkdir -p #{to}
 aws s3 cp #{scripts_s3_path} #{to}/
-cd #{to}
-tar zxf #{to}/#{scripts_name}
-chmod -R a+x #{to}/scripts
-chown -R #{user}:#{user} #{to}/scripts
+(
+  cd #{to}
+  tar zxf #{to}/#{scripts_name}
+  chmod -R a+x #{to}/scripts
+  chown -R #{user}:#{user} #{to}/scripts
+)
 BASH_CODE
   end
 

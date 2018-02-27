@@ -22,6 +22,7 @@ module AwsEc2
 
     desc "compile", "compiles app/scripts and app/user-data to tmp folder"
     long_desc Help.text(:compile)
+    option :layout, default: "default", desc: "layout for user_data helper"
     def compile
       Script::Compile.new(options).compile
     end
