@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "aws-sdk-ec2"
   spec.add_dependency "colorize"
   spec.add_dependency "dotenv"
+  spec.add_dependency "filesize"
   spec.add_dependency "hashie"
   spec.add_dependency "render_me_pretty"
   spec.add_dependency "thor"

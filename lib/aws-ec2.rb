@@ -20,6 +20,7 @@ module AwsEc2
   autoload :Hook, "aws_ec2/hook"
   autoload :Completion, "aws_ec2/completion"
   autoload :Completer, "aws_ec2/completer"
+  autoload :Setting, "aws_ec2/setting"
   extend Core
 end
 
