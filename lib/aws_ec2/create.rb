@@ -14,13 +14,14 @@ module AwsEc2
 
       puts "Creating EC2 instance #{@name}..."
       display_info
+
+      Hook.run(:before_run_instances, @options)
+      sync_scripts_to_s3
+
       if @options[:noop]
         puts "NOOP mode enabled. EC2 instance not created."
         return
       end
-
-      Hook.run(:before_run_instances, @options)
-      sync_scripts_to_s3
       run_instances(params)
       puts "EC2 instance #{@name} created! 🎉"
       puts "Visit https://console.aws.amazon.com/ec2/home to check on the status"

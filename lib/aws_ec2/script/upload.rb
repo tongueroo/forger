@@ -22,7 +22,11 @@ class AwsEc2::Script
       puts "Uploading scripts.tgz (#{filesize}) to #{s3_dest}"
       obj = s3_resource.bucket(bucket_name).object(key)
       start_time = Time.now
-      obj.upload_file(tarball_path)
+      if @options[:noop]
+        puts "NOOP: Not uploading file to s3"
+      else
+        obj.upload_file(tarball_path)
+      end
       time_took = pretty_time(Time.now-start_time).colorize(:green)
       puts "Time to upload code to s3: #{time_took}"
     end
