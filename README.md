@@ -71,8 +71,9 @@ user_data | Allows you to embed a generated user_data script.  More details on t
 config | Access to the variables set in config/[AWS_EC2_ENV].yml.  Examples are `config/development.yml` and `config/production.yml`.
 latest_ami | Returns an AMI id by searching the AMI name pattern and sorting in reverse order.  Example: `latest_ami("ruby-2.5.0_*")` would return the latest ruby AMIs are named with timestamps at the end like so: `ruby-2.5.0_2018-01-30-05-36-02` and `ruby-2.5.0_2018-01-29-05-36-02`.
 search_ami | Returns a collection of AMI image objects based on a search pattern. The query searches on the AMI name.
+extract_scripts | Use this in your bash script to extract the `app/scripts` files that get uploaded to s3.
 
-For a full list of all the template helpers check out: [aws_ec2/template_helper](lib/aws_ec2/template_helper).
+For a full list of all the template helpers check out: [lib/aws_ec2/template/helper](lib/aws_ec2/template/helper).
 
 You can also define custom helpers in the `app/helpers` folder as ruby modules with the naming convention `*_helper.rb`.  For example, you would define a `module FooHelper` in `app/helpers/foo_helper.rb`.  Custom helpers are first-class citizens and have access to the same variables, methods, and scope as built-in helpers.
 
@@ -177,7 +178,21 @@ scripts_s3_bucket | Set this to the bucket name where you want the generated scr
 
 ### Settings
 
-A `config/settings.yml` file controls the internal behavior of aws-ec2. It is different from config files which are meant for user defined varibles.  Settings variables are for internal use.
+A `config/settings.yml` file controls the internal behavior of aws-ec2. It is different from config files which are meant for user defined varibles.  Settings variables are for internal use.  Example:
+
+```yaml
+development:
+  # By setting s3_folder, aws-ec2 will automatically tarball and upload your scripts
+  # to set. You then can then use the extract_scripts helper method to download
+  # the scripts onto the server.
+  s3_folder: boltops-infra-stag/ec2
+  # compile_clean: true # uncomment to clean at the end of a compile
+  # extract_scripts:
+  #   to: "/opt"
+  #   as: "ec2-user"
+
+production:
+```
 
 ### Hooks
 
