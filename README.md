@@ -54,7 +54,7 @@ Directory  | Description
 ------------- | -------------
 app/helpers  | Custom helpers methods.  Define them as modules and their methods are made available whenever ERB is available: `profiles`, `app/scripts`, `app/user-data` files, etc. For example, you would define a `module FooHelper` in `app/helpers/foo_helper.rb`.
 app/partials  | Your partials that can to be included in other scripts.  This is used in conjunction with the `partial` helper method. With great power comes great responsibility.  It is recommended to use partials sparely to keep scripts more straightforward.
-app/scripts  | Where you define common scripts that can be used to configure the server. These scripts can be automatically uploaded to an s3 bucket for later downloading in your user-data script by setting the `scripts_s3_bucket` config option.
+app/scripts  | Where you define common scripts that can be used to configure the server. These scripts can be automatically uploaded to an s3 bucket for later downloading in your user-data script by setting the `s3_folder` settings option.
 app/user-data  | Your user-data scripts that are used to bootstrap EC2 instance.
 app/user-data/layouts  | user-data scripts support layouts. You user-data layouts go in here.
 config/[AWS_EC2_ENV].yml  | The config file where you set configs that you want available in your templating logic.  Examples are: `config/development.yml` and `config/production.yml`. You access the config variables with the `<%= config["var"] %>` helper.
@@ -153,9 +153,6 @@ subnets:
   - subnet-789
 security_group_ids:
   - sg-123
-scripts_s3_bucket: mybucket # enables s3 uploading of generated app/scripts
-# compile_clean: true # uncomment to automatically remove the
-                      # compiled scripts in tmp after aws-ec2 create
 ```
 
 The variables are accessed via the `config` helper method. Here's a filtered example where it shows the relevant part of a profile: `profiles/default.yml`:
@@ -167,14 +164,6 @@ security_group_ids: <%= config["security_group_ids"] %>
 subnet_id: <%= config["subnets"].shuffle %>
 ...
 ```
-
-#### Config Options
-
-There are some config options that change the behavior of the ec2-aws:
-
-Option | Description
---- | ---
-scripts_s3_bucket | Set this to the bucket name where you want the generated scripts in app/scripts and app/user-data to be uploaded to.  The upload sync happens right before the internal to run_instances call that launches the instance.  If you need more custom logic, you can use the `before_run_instances` hook, covered in the Hooks section.
 
 ### Settings
 

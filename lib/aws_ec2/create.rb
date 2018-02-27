@@ -33,10 +33,11 @@ module AwsEc2
       handle_ec2_service_error!(e)
     end
 
-    # Configured by config/[AWS_EC2_ENV].yml.
-    # Example: config/development.yml:
+    # Configured by config/settings.yml.
+    # Example: config/settings.yml:
     #
-    #   scripts_s3_bucket: my-bucket
+    #   development:
+    #     s3_folder: my-bucket/folder
     def sync_scripts_to_s3
       if AwsEc2.settings["s3_folder"]
         Script::Upload.new(@options).run
