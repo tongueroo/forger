@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.0.0]
+- Merge pull request #1 from tongueroo/cli-template-upgrade
+- Merge pull request #2 from tongueroo/render_me_pretty
+- Merge pull request #3 from tongueroo/s3-upload
+- Merge pull request #4 from tongueroo/layout-support
+- add --randomize option
+- add extract_scripts and add_ssh_key helpers
+- conventionally use name of server as profile if profile exists
+- introduce settings.yml
+- latest_ami: exit if image cannot be found
+
 ## [0.9.0]
 - much improved error messaging
 - rename docs folder
