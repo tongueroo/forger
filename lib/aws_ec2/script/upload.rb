@@ -3,7 +3,7 @@ require 'aws-sdk-s3'
 require 'fileutils'
 
 # Class for aws-ec2 upload command
-class AwsEc2::Scripter
+class AwsEc2::Script
   class Upload < AwsEc2::Base
     def initialize(options={})
       @options = options

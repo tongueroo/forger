@@ -1,6 +1,6 @@
 require 'fileutils'
 
-class AwsEc2::Scripter
+class AwsEc2::Script
   class Compress < AwsEc2::Base
     def compress
       reset

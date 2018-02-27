@@ -1,6 +1,6 @@
 module AwsEc2
   class Base
-    # constants really only used by scripter classes
+    # constants really only used by script classes
     SCRIPTS_INFO_PATH = "tmp/data/scripts_info.txt"
     BUILD_ROOT = "tmp"
 

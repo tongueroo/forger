@@ -45,7 +45,7 @@ private
   end
 
   def scripts_s3_path
-    upload = AwsEc2::Scripter::Upload.new
+    upload = AwsEc2::Script::Upload.new
     upload.s3_dest
   end
 end
