@@ -5,17 +5,27 @@ class AwsEc2::Script
   class Compile < AwsEc2::Base
     include AwsEc2::Template
 
-    def compile
+    # used in upload
+    def compile_scripts
       clean
       compile_folder("scripts")
-      compile_folder("user-data")
     end
 
-    def compile_folder(folder)
+    # use in compile cli command
+    def compile_all
+      clean
+      compile_folder("scripts")
+      layout_path = context.layout_path(@options[:layout])
+      compile_folder("user-data", layout_path)
+    end
+
+    def compile_folder(folder, layout_path=false)
       puts "Compiling app/#{folder}:".colorize(:green)
       Dir.glob("#{AwsEc2.root}/app/#{folder}/**/*").each do |path|
         next if File.directory?(path)
-        result = RenderMePretty.result(path, context: context)
+        next if path.include?("layouts")
+
+        result = RenderMePretty.result(path, layout: layout_path, context: context)
         tmp_path = path.sub(%r{.*/app/}, "#{BUILD_ROOT}/app/")
         puts "  #{tmp_path}"
         FileUtils.mkdir_p(File.dirname(tmp_path))

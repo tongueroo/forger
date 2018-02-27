@@ -6,6 +6,7 @@ PATH
       aws-sdk-ec2
       colorize
       dotenv
+      filesize
       hashie
       render_me_pretty
       thor
@@ -19,7 +20,7 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     aws-partitions (1.67.0)
-    aws-sdk-core (3.16.0)
+    aws-sdk-core (3.17.0)
       aws-partitions (~> 1.0)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
@@ -37,6 +38,7 @@ GEM
     docile (1.1.5)
     dotenv (2.2.1)
     ffi (1.9.23)
+    filesize (0.1.1)
     formatador (0.2.5)
     guard (2.14.2)
       formatador (>= 0.2.4)
@@ -79,7 +81,7 @@ GEM
     rb-fsevent (0.10.2)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
-    render_me_pretty (0.7.0)
+    render_me_pretty (0.8.0)
       activesupport
       colorize
       tilt

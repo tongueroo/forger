@@ -2,14 +2,16 @@ require "base64"
 require "erb"
 
 module AwsEc2::Template::Helper::CoreHelper
-  def user_data(name, base64=true)
+  def user_data(name, base64:true, layout:"default")
     # allow user to specify the path also
     if File.exist?(name)
       name = File.basename(name) # normalize name, change path to name
     end
     name = File.basename(name, '.sh')
+
+    layout_path = layout_path(layout)
     path = "#{AwsEc2.root}/app/user-data/#{name}.sh"
-    result = RenderMePretty.result(path, context: self)
+    result = RenderMePretty.result(path, context: self, layout: layout_path)
     result = append_scripts(result)
 
     # save the unencoded user-data script for easy debugging
@@ -18,6 +20,32 @@ module AwsEc2::Template::Helper::CoreHelper
     IO.write(temp_path, result)
 
     base64 ? Base64.encode64(result).strip : result
+  end
+
+  # Get full path of layout from layout name
+  #
+  #   layout_name=false - dont use layout at all
+  #   layout_name=nil - default to default.sh layout if available
+  def layout_path(name="default")
+    return false if name == false # disable layout
+    name = "default" if name.nil? # in case user passes in nil
+
+    ext = File.extname(name)
+    name += ".sh" if ext.empty?
+    layout_path = "#{AwsEc2.root}/app/user-data/layouts/#{name}"
+
+    # special rule for default in case there's no default layout
+    if name.include?("default") and !File.exist?(layout_path)
+      return false
+    end
+
+    # other named layouts should error if it doesnt exit
+    unless File.exist?(layout_path)
+      puts "ERROR: Layout #{layout_path} does not exist. Are you sure it exists?  Exiting".colorize(:red)
+      exit 1
+    end
+
+    layout_path
   end
 
   # provides access to config/* settings as variables
