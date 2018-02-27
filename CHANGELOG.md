@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.0.1]
+- update ordering of the info displayed
+
 ## [1.0.0]
 - Merge pull request #1 from tongueroo/cli-template-upgrade
 - Merge pull request #2 from tongueroo/render_me_pretty
