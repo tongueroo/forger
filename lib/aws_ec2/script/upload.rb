@@ -19,7 +19,7 @@ class AwsEc2::Script
     end
 
     def upload(tarball_path)
-      puts "Uploading scripts.tgz (#{filesize}) to #{s3_dest}"
+      puts "Uploading scripts.tgz (#{filesize}) to #{s3_dest}".colorize(:green)
       obj = s3_resource.bucket(bucket_name).object(key)
       start_time = Time.now
       if @options[:noop]

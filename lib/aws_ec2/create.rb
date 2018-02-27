@@ -12,12 +12,11 @@ module AwsEc2
     def run
       Profile.new(@options).check!
 
-      puts "Creating EC2 instance #{@name}..."
-      display_info
-
       Hook.run(:before_run_instances, @options)
       sync_scripts_to_s3
 
+      puts "Creating EC2 instance #{@name.colorize(:green)}"
+      display_info
       if @options[:noop]
         puts "NOOP mode enabled. EC2 instance not created."
         return

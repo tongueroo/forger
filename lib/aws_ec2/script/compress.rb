@@ -4,7 +4,7 @@ class AwsEc2::Script
   class Compress < AwsEc2::Base
     def compress
       reset
-      puts "Tarballing #{BUILD_ROOT}/app/scripts folder to scripts.tgz"
+      puts "Tarballing #{BUILD_ROOT}/app/scripts folder to scripts.tgz".colorize(:green)
       tarball_path = create_tarball
       save_scripts_info(tarball_path)
       puts "Tarball created at #{tarball_path}"
