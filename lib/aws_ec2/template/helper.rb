@@ -11,5 +11,7 @@ module AwsEc2::Template
     autoinclude :AmiHelper
     autoinclude :CoreHelper
     autoinclude :PartialHelper
+    autoinclude :ScriptHelper
+    autoinclude :SshKeyHelper
   end
 end
