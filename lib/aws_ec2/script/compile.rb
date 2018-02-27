@@ -14,7 +14,7 @@ class AwsEc2::Script
     # use in compile cli command
     def compile_all
       clean
-      compile_folder("scripts") # TODO: turn off for debugging
+      compile_folder("scripts")
       layout_path = context.layout_path(@options[:layout])
       compile_folder("user-data", layout_path)
     end
