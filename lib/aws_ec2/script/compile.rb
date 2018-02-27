@@ -24,7 +24,7 @@ class AwsEc2::Script
 
     def compile
       clean
-      # compile_folder("scripts") # TODO: comment out for debugging
+      compile_folder("scripts")
       compile_folder("user-data")
     end
 
