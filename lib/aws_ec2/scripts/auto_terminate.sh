@@ -74,9 +74,9 @@ SPOT_INSTANCE_REQUEST_ID=$(aws ec2 describe-instances --instance-ids $INSTANCE_I
 
 # Remove this script so it is only allowed to be ran once ever
 # Or else whenenver we launch the AMI, it will kill itself
-rm -f /root/terminate-myself.sh
 grep -v terminate-myself /etc/rc.d/rc.local > /etc/rc.d/rc.local.tmp
 mv /etc/rc.d/rc.local.tmp /etc/rc.d/rc.local
+rm -f /root/terminate-myself.sh
 
 if [ -n "$SPOT_INSTANCE_REQUEST_ID" ]; then
   cancel_spot_request
@@ -92,6 +92,6 @@ chmod +x /etc/rc.d/rc.local
 echo "/root/terminate-myself.sh <%= @options[:ami_name] %> >> /var/log/terminate-myself.log 2>&1" >> /etc/rc.d/rc.local
 <% else %>
 # terminate immediately
-/root/terminate-myself.sh NO-WAIT >> /var/log/terminate-myself.log 2>&1
+/root/terminate-myself.sh NO-WAIT
 <% end %>
 <% end %>
