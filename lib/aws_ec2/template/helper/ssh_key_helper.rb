@@ -13,7 +13,7 @@ chown #{user}:#{user} /home/#{user}/.ssh/authorized_keys
 SCRIPT
     else
       <<-SCRIPT
-# WARN: unable to find a ~/.ssh/id_rsa.pub locally on your machine.  user: #{ENV}['USER']
+# WARN: unable to find a ~/.ssh/id_rsa.pub locally on your machine.  user: #{ENV['USER']}
 # Unable to automatically add the public key
 SCRIPT
     end
