@@ -6,9 +6,9 @@
 function configure_aws_cli() {
   local home_dir=$1
   # Configure aws cli in case it is not yet configured
-  mkdir -p $home_dir/.aws
-  if [ ! -f $home_dir/.aws/config ]; then
-    cat >$home_dir/.aws/config <<EOL
+  mkdir -p "$home_dir/.aws"
+  if [ ! -f "$home_dir/.aws/config" ]; then
+    cat >"$home_dir/.aws/config" <<EOL
 [default]
 region = <%= @region %>
 output = json
@@ -16,13 +16,14 @@ EOL
   fi
 }
 
-configure_aws_cli /home/ec2-user
 configure_aws_cli /root
 
-echo "############################################" >> /var/log/user-data.log
-echo "# Logs above is from the original AMI baking at: $(date)" >> /var/log/user-data.log
-echo "# New logs below" >> /var/log/user-data.log
-echo "############################################" >> /var/log/user-data.log
+{
+  echo "############################################"
+  echo "# Logs above is from the original AMI baking at: $(date)"
+  echo "# New logs below"
+  echo "############################################"
+} >> /var/log/user-data.log
 
 # Create AMI Bundle
 AMI_NAME="<%= @ami_name %>"
@@ -31,5 +32,5 @@ REGION=$(aws configure get region)
 # Note this will cause the instance to reboot.  Not using the --no-reboot flag
 # to ensure consistent AMI creation.
 SOURCE_AMI_ID=$(wget -q -O - http://169.254.169.254/latest/meta-data/ami-id)
-echo $SOURCE_AMI_ID > /var/log/source-ami-id.txt
-aws ec2 create-image --name $AMI_NAME --instance-id $INSTANCE_ID --region $REGION
+echo "$SOURCE_AMI_ID" > /var/log/source-ami-id.txt
+aws ec2 create-image --name "$AMI_NAME" --instance-id "$INSTANCE_ID" --region "$REGION"

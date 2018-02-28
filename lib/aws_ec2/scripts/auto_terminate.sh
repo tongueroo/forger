@@ -4,9 +4,12 @@
 ##################
 # auto_terminate.sh script
 # When creating an AMI, a aws ec2 create-image command is added to the end of
-# the user-data script. Creating AMIs prevent the script going any further.
+# the user-data script. Creating AMIs prevent the script from going any further.
 #
 # To get around this the this is script is added before that happens.
+#
+# NOTE: this script depends on the aws cli being installed and that the server
+# has IAM permission to terminate itself.
 #
 # https://stackoverflow.com/questions/27920806/how-to-avoid-heredoc-expanding-variables
 cat >/root/terminate-myself.sh << 'EOL'
@@ -24,11 +27,11 @@ function install_jq() {
 function configure_aws_cli() {
   local home_dir=$1
   # Configure aws cli in case it is not yet configured
-  mkdir -p $home_dir/.aws
-  if [ ! -f $home_dir/.aws/config ]; then
-    EC2_AVAIL_ZONE=`curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone`
-    EC2_REGION="`echo \"$EC2_AVAIL_ZONE\" | sed -e 's:\([0-9][0-9]*\)[a-z]*\$:\\1:'`"
-    cat >$home_dir/.aws/config <<CONFIGURE_AWS_CLI
+  mkdir -p "$home_dir/.aws"
+  if [ ! -f "$home_dir/.aws/config" ]; then
+    EC2_AVAIL_ZONE=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)
+    EC2_REGION=${EC2_AVAIL_ZONE::-1}
+    cat >"$home_dir/.aws/config" <<CONFIGURE_AWS_CLI
 [default]
 region = $EC2_REGION
 output = json
@@ -65,7 +68,6 @@ if [ $AMI_NAME != "NO-WAIT" ]; then
   # so it'll wait for 10 mins max
   aws ec2 wait image-available --filters "Name=name,Values=$AMI_NAME" --owners self
 fi
-
 
 INSTANCE_ID=$(wget -q -O - http://169.254.169.254/latest/meta-data/instance-id)
 SPOT_INSTANCE_REQUEST_ID=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID | jq -r '.Reservations[].Instances[].SpotInstanceRequestId')
