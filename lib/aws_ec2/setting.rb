@@ -18,7 +18,8 @@ module AwsEc2
       end
 
       all_envs = load_file(project_settings_path)
-      @@data = all_envs[AwsEc2.env]
+      all_envs = merge_base(all_envs)
+      @@data = all_envs[AwsEc2.env] || all_envs["base"] || {}
     end
 
   private
@@ -27,11 +28,21 @@ module AwsEc2
 
       content = RenderMePretty.result(path)
       data = YAML.load(content)
-      # ensure no nil values
-      data.each do |key, value|
-        data[key] = {} if value.nil?
+      # If key is is accidentally set to nil it screws up the merge_base later.
+      # So ensure that all keys with nil value are set to {}
+      data.each do |env, _setting|
+        data[env] ||= {}
       end
       data
+    end
+
+    # automatically add base settings to the rest of the environments
+    def merge_base(all_envs)
+      base = all_envs["base"] || {}
+      all_envs.each do |env, settings|
+        all_envs[env] = base.merge(settings) unless env == "base"
+      end
+      all_envs
     end
 
     def project_settings_path
