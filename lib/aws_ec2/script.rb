@@ -20,9 +20,13 @@ module AwsEc2
       load_template("ami_creation.sh")
     end
 
+    def setup_scripts
+      load_template("setup_scripts.sh")
+    end
+
   private
     def load_template(name)
-      template = IO.read(File.expand_path("../scripts/#{name}", __FILE__))
+      template = IO.read(File.expand_path("script/templates/#{name}", File.dirname(__FILE__)))
       text = ERB.new(template, nil, "-").result(binding)
       "#" * 60 + "\n#{text}"
     end

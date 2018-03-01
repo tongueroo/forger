@@ -1,5 +1,6 @@
 require "base64"
 require "erb"
+require "byebug" if ENV['USER'] == 'tung'
 
 module AwsEc2::Template::Helper::CoreHelper
   def user_data(name, base64:true, layout:"default")
@@ -68,8 +69,10 @@ module AwsEc2::Template::Helper::CoreHelper
 
 private
   def append_scripts(user_data)
-    # assuming user-data script is a bash script for simplicity
+    # assuming user-data script is a bash script for simplicity for now
     script = AwsEc2::Script.new(@options)
+    requires_setup = @options[:auto_terminate] || @options[:ami_name]
+    user_data += script.setup_scripts if requires_setup
     user_data += script.auto_terminate if @options[:auto_terminate]
     user_data += script.create_ami if @options[:ami_name]
     user_data
