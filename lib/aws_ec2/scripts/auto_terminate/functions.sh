@@ -82,3 +82,5 @@ function terminate() {
   fi
   terminate_instance
 }
+
+source /opt/aws-ec2/auto_terminate/interface.sh
