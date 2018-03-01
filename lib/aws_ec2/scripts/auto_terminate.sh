@@ -53,10 +53,7 @@ function create_interfaces() {
   create_interface_for_amazonlinux
   create_interface_for_ubuntu
 
-  local path
-  path=/opt/aws-ec2/auto_terminate/interfaces.sh
-  mkdir -p $(dirname "$path")
-  cat >"$path" << 'EOL'
+  cat >/opt/aws-ec2/auto_terminate/interfaces.sh << 'EOL'
 #!/bin/bash
 function source_os_interface() {
   local os
@@ -91,7 +88,8 @@ function os_name() {
       ;;
   esac
 }
-source_os_interface
+source_os_interface # called immedinately when:
+  # source /opt/aws-ec2/auto_terminate/interfaces.sh
 EOL
 }
 
@@ -138,40 +136,6 @@ function terminate_instance() {
 # "sir-dzci5wsh"
 function cancel_spot_request() {
   aws ec2 cancel-spot-instance-requests --spot-instance-request-ids "$SPOT_INSTANCE_REQUEST_ID"
-}
-
-function source_os_interface() {
-  local os
-  os=$(os_name)
-  # shellcheck disable=SC1090
-  source "/opt/aws-ec2/auto_terminate/${os}.sh"
-}
-
-# Example OS values at this point:
-#   Ubuntu
-#   Amazon Linux AMI
-function os_name() {
-  # https://askubuntu.com/questions/459402/how-to-know-if-the-running-platform-is-ubuntu-or-centos-with-help-of-a-bash-scri
-  # Method 1 works for amazonlinux and ubuntu
-  # Method 3 the complex script, did not work for amazonlinux
-  local OS
-  OS=$(gawk -F= '/^NAME/{print $2}' /etc/os-release) # text surrounded by double quotes
-  # strip surrounding quotes: https://stackoverflow.com/questions/9733338/shell-script-remove-first-and-last-quote-from-a-variable
-  OS="${OS%\"}"
-  OS="${OS#\"}"
-  # Example OS values at this point:
-  #   Ubuntu
-  #   Amazon Linux AMI
-
-  # normalize values
-  case "$OS" in
-    Ubuntu)
-      echo "ubuntu"
-      ;;
-    *)
-      echo "amazonlinux" # default
-      ;;
-  esac
 }
 
 ########
