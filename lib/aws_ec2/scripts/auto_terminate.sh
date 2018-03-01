@@ -20,7 +20,7 @@ function create_interface_for_amazonlinux() {
 #!/bin/bash
 function schedule_termination() {
   chmod +x /etc/rc.d/rc.local
-  echo "/opt/aws-ec2/auto_terminate.sh <%= @options[:ami_name] %> >> /var/log/terminate-myself.log 2>&1" >> /etc/rc.d/rc.local
+  echo "/opt/aws-ec2/auto_terminate.sh >> /var/log/terminate-myself.log 2>&1" >> /etc/rc.d/rc.local
 }
 
 function unschedule_termination() {
@@ -39,7 +39,7 @@ function create_interface_for_ubuntu() {
 function schedule_termination() {
   chmod +x /etc/rc.local
   sed -i 's/exit 0//' /etc/rc.local
-  echo "/opt/aws-ec2/auto_terminate.sh <%= @options[:ami_name] %> >> /var/log/terminate-myself.log 2>&1" >> /etc/rc.local
+  echo "/opt/aws-ec2/auto_terminate.sh >> /var/log/terminate-myself.log 2>&1" >> /etc/rc.local
 }
 
 function unschedule_termination() {
@@ -138,6 +138,37 @@ function cancel_spot_request() {
   aws ec2 cancel-spot-instance-requests --spot-instance-request-ids "$SPOT_INSTANCE_REQUEST_ID"
 }
 
+# When image doesnt exist at all, an empty string is returned.
+function ami_state() {
+  local name
+  name=$1
+  aws ec2 describe-images --filters "Name=name,Values=${name}" --owners self | jq -r '.Images[].State'
+}
+
+function wait_for_ami() {
+  local name
+  name=$1
+
+  local x
+  local state
+  x=0
+
+  state=$(ami_state "$name")
+  while [ "$x" -lt 10 ] && [ "$state" != "available" ]; do
+    x=$((x+1))
+
+    state=$(ami_state "$name")
+    echo "state $state"
+    echo "sleeping for 60 seconds... times out at 10 minutes total"
+
+    type sleep
+    sleep 1
+    echo "hi"
+  done
+
+  echo "final state $state"
+}
+
 ########
 # termination program starts here
 export PATH=/usr/local/bin:$PATH
@@ -151,13 +182,24 @@ source /opt/aws-ec2/auto_terminate/interfaces.sh
 rm -f /opt/aws-ec2/auto_terminate.sh
 unschedule_termination
 
-AMI_NAME=$1
-if [ "$AMI_NAME" != "NO-WAIT" ]; then
+
+AMI_ID=${1-get-from-data-file}
+if [ "$AMI_ID" != "NO-WAIT" ]; then
+  AMI_ID=$(cat /opt/aws-ec2/data/ami-id.txt | /usr/local/bin/jq -r '.ImageId')
+fi
+
+if [ "$AMI_ID" != "NO-WAIT" ]; then
   # wait for the ami to be successfully created before terminating the instance
   # https://docs.aws.amazon.com/cli/latest/reference/ec2/wait/image-available.html
   # It will poll every 15 seconds until a successful state has been reached. This will exit with a return code of 255 after 40 failed checks.
   # so it'll wait for 10 mins max
-  aws ec2 wait image-available --filters "Name=name,Values=$AMI_NAME" --owners self
+  # aws ec2 wait image-available --filters "Name=name,Values=$AMI_ID" --owners self
+
+  aws ec2 wait image-available --image-ids "$AMI_ID" --owners self
+
+  # For some reason aws ec2 wait image-available didnt work for amazonlinux
+  # so using a custom version
+  # wait_for_ami "$AMI_ID"
 fi
 
 INSTANCE_ID=$(wget -q -O - http://169.254.169.254/latest/meta-data/instance-id)

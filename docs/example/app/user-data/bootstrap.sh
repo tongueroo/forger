@@ -1,18 +1,6 @@
 #!/bin/bash -exu
 
-exec > >(tee "/var/log/user-data.log" | logger -t user-data -s 2>/dev/console) 2>&1
 export HOME=/root # user-data env runs in weird shell where user is root but HOME is not set
-<% pubkey_path = "#{ENV['HOME']}/.ssh/id_rsa.pub" -%>
-<% if File.exist?(pubkey_path) -%>
-<% pubkey = IO.read(pubkey_path).strip -%>
-# Automatically add user's public key
-echo <%= pubkey %> >> ~/.ssh/authorized_keys
-echo <%= pubkey %> >> /home/ec2-user/.ssh/authorized_keys
-chown ec2-user:ec2-user /home/ec2-user/.ssh/authorized_keys
-<% else %>
-# WARN: unable to find a ~/.ssh/id_rsa.pub locally on your machine.  user: <%= ENV['USER'] %>
-# Unable to automatically add the public key
-<% end -%>
 
 sudo yum install -y postgresql
 

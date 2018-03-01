@@ -18,12 +18,10 @@ EOL
 
 configure_aws_cli /root
 
-{
-  echo "############################################"
-  echo "# Logs above is from the original AMI baking at: $(date)"
-  echo "# New logs below"
-  echo "############################################"
-} >> /var/log/user-data.log
+echo "############################################"
+echo "# Logs above is from the original AMI baking at: $(date)"
+echo "# New logs below"
+echo "############################################"
 
 # Create AMI Bundle
 AMI_NAME="<%= @ami_name %>"
@@ -33,4 +31,5 @@ REGION=$(aws configure get region)
 # to ensure consistent AMI creation.
 SOURCE_AMI_ID=$(wget -q -O - http://169.254.169.254/latest/meta-data/ami-id)
 echo "$SOURCE_AMI_ID" > /var/log/source-ami-id.txt
-aws ec2 create-image --name "$AMI_NAME" --instance-id "$INSTANCE_ID" --region "$REGION"
+mkdir -p /opt/aws-ec2/data
+aws ec2 create-image --name "$AMI_NAME" --instance-id "$INSTANCE_ID" --region "$REGION" > /opt/aws-ec2/data/ami-id.txt
