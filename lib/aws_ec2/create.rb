@@ -21,8 +21,9 @@ module AwsEc2
         puts "NOOP mode enabled. EC2 instance not created."
         return
       end
-      run_instances(params)
-      puts "EC2 instance #{@name} created! 🎉"
+      resp = run_instances(params)
+      instance_id = resp.instances.first.instance_id
+      puts "EC2 instance #{@name} created: #{instance_id} 🎉"
       puts "Visit https://console.aws.amazon.com/ec2/home to check on the status"
     end
 
