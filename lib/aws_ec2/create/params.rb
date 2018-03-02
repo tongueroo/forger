@@ -11,7 +11,24 @@ class AwsEc2::Create
 
     def decorate_params(params)
       upsert_name_tag!(params)
+      # prepare_user_data!(params)
       replace_runtime_options!(params)
+      params
+    end
+
+    def prepare_user_data!(params)
+      script = AwsEc2::Script.new(@options)
+      user_data = script.add_to_user_data!(params["user_data"])
+      puts "HII"
+      pp user_data
+      raise
+
+      # save the unencoded user-data script for easy debugging
+      temp_path = "#{AwsEc2.root}/tmp/user-data.txt"
+      FileUtils.mkdir_p(File.dirname(temp_path))
+      IO.write(temp_path, user_data)
+
+      params["user_data"] = Base64.encode64(user_data).strip if user_data
       params
     end
 

@@ -25,7 +25,14 @@ module AwsEc2
 
       puts "Using profile: #{file}".colorize(:green)
       text = RenderMePretty.result(file, context: context)
-      data = YAML.load(text)
+      puts text
+      begin
+        data = YAML.load(text)
+      rescue Psych::SyntaxError => e
+        puts "There was an error in your yaml file #{file}".colorize(:red)
+        puts "ERROR: #{e.message}"
+        exit 1
+      end
       data ? data : {} # in case the file is empty
       data.has_key?("run_instances") ? data["run_instances"] : data
     end

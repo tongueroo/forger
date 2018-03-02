@@ -83,4 +83,6 @@ function terminate() {
   terminate_instance
 }
 
-source /opt/aws-ec2/auto_terminate/interface.sh
+source "/opt/aws-ec2/shared/functions.sh"
+os=$(os_name)
+source "/opt/aws-ec2/auto_terminate/schedule/${os}.sh"

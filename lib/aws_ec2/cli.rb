@@ -3,19 +3,24 @@ module AwsEc2
     class_option :noop, type: :boolean
     class_option :profile, desc: "profile name to use"
 
+    common_options = Proc.new do
+      option :auto_terminate, type: :boolean, default: false, desc: "automatically terminate the instance at the end of user-data"
+      option :cloudwatch, type: :boolean, default: true, desc: "enable cloudwatch logging"
+    end
+
     desc "create NAME", "create ec2 instance"
     long_desc Help.text(:create)
     option :ami_name, desc: "when specified, an ami creation script is appended to the user-data script"
-    option :auto_terminate, type: :boolean, default: false, desc: "automatically terminate the instance at the end of user-data"
-    option :source_ami, desc: "override the source image_id in profile"
     option :randomize, type: :boolean, desc: "append random characters to end of name"
+    option :source_ami, desc: "override the source image_id in profile"
+    common_options.call
     def create(name)
       Create.new(options.merge(name: name)).run
     end
 
     desc "ami NAME", "launches instance and uses it create AMI"
     long_desc Help.text(:ami)
-    option :auto_terminate, type: :boolean, default: true, desc: "automatically terminate the instance at the end of user-data"
+    common_options.call
     def ami(name)
       Ami.new(options.merge(name: name)).run
     end
