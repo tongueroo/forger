@@ -26,18 +26,6 @@ log_group_name = ${LOG_GROUP_NAME}
 log_stream_name = {instance_id}/var/log/messages
 datetime_format = %b %d %H:%M:%S
 
-[/var/log/docker]
-file = /var/log/docker
-log_group_name = ${LOG_GROUP_NAME}
-log_stream_name = {instance_id}/var/log/docker
-datetime_format = %Y-%m-%dT%H:%M:%S.%f
-
-[/var/log/ecs/audit.log]
-file = /var/log/ecs/audit.log.*
-log_group_name = ${LOG_GROUP_NAME}
-log_stream_name = {instance_id}/var/log/ecs/audit.log
-datetime_format = %Y-%m-%dT%H:%M:%SZ
-
 [/var/log/cloud-init.log]
 file = /var/log/cloud-init.log
 log_group_name = ${LOG_GROUP_NAME}
@@ -48,24 +36,6 @@ datetime_format =
 file = /var/log/cloud-init-output.log
 log_group_name = ${LOG_GROUP_NAME}
 log_stream_name = {instance_id}/var/log/cloud-init-output.log
-datetime_format =
-
-[/var/log/cfn-init.log]
-file = /var/log/cfn-init.log
-log_group_name = ${LOG_GROUP_NAME}
-log_stream_name = {instance_id}/var/log/cfn-init.log
-datetime_format =
-
-[/var/log/cfn-hup.log]
-file = /var/log/cfn-hup.log
-log_group_name = ${LOG_GROUP_NAME}
-log_stream_name = {instance_id}/var/log/cfn-hup.log
-datetime_format =
-
-[/var/log/cfn-wire.log]
-file = /var/log/cfn-wire.log
-log_group_name = ${LOG_GROUP_NAME}
-log_stream_name = {instance_id}/var/log/cfn-wire.log
 datetime_format =
 
 [/var/log/secure]

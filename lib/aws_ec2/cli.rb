@@ -5,7 +5,7 @@ module AwsEc2
 
     common_options = Proc.new do
       option :auto_terminate, type: :boolean, default: false, desc: "automatically terminate the instance at the end of user-data"
-      option :cloudwatch, type: :boolean, default: false, desc: "enable cloudwatch logging"
+      option :cloudwatch, type: :boolean, default: false, desc: "enable cloudwatch logging, only supported for amazonlinux"
     end
 
     desc "create NAME", "create ec2 instance"

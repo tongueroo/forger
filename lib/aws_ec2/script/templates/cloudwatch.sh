@@ -1,3 +1,4 @@
 #!/bin/bash -eux
 
-/opt/aws-ec2/cloudwatch.sh
+/opt/aws-ec2/cloudwatch.sh ec2
+exit
