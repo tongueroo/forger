@@ -34,22 +34,6 @@ module AwsEc2
     end
 
   private
-    def prepend_scripts(user_data)
-      text = ''
-      text += script.cloudwatch if @options[:cloudwatch]
-      text + user_data
-    end
-
-    def append_scripts(user_data)
-      # assuming user-data script is a bash script for simplicity for now
-      script = AwsEc2::Script.new(@options)
-      requires_setup = @options[:auto_terminate] || @options[:ami_name]
-      user_data += script.setup_scripts if requires_setup
-      user_data += script.auto_terminate if @options[:auto_terminate]
-      user_data += script.create_ami if @options[:ami_name]
-      user_data
-    end
-
     def load_template(name)
       template = IO.read(File.expand_path("script/templates/#{name}", File.dirname(__FILE__)))
       text = ERB.new(template, nil, "-").result(binding)

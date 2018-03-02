@@ -1,6 +1,5 @@
 require "base64"
 require "erb"
-require "byebug" if ENV['USER'] == 'tung'
 
 module AwsEc2::Template::Helper::CoreHelper
   def user_data(name, base64:true, layout:"default")
@@ -12,7 +11,20 @@ module AwsEc2::Template::Helper::CoreHelper
 
     layout_path = layout_path(layout)
     path = "#{AwsEc2.root}/app/user-data/#{name}.sh"
-    RenderMePretty.result(path, context: self, layout: layout_path)
+    result = RenderMePretty.result(path, context: self, layout: layout_path)
+    # Must prepend and append scripts in user_data here because we need to
+    # encode the user_data script for valid yaml to load in the profile.
+    # Tried moving this logic to the params but that is too late and produces
+    # invalid yaml.  Unless we want to encode and dedode twice.
+    result = prepend_scripts(result)
+    result = append_scripts(result)
+
+    # save the unencoded user-data script for easy debugging
+    temp_path = "#{AwsEc2.root}/tmp/user-data.txt"
+    FileUtils.mkdir_p(File.dirname(temp_path))
+    IO.write(temp_path, result)
+
+    base64 ? Base64.encode64(result).strip : result
   end
 
   # Get full path of layout from layout name
@@ -60,6 +72,25 @@ module AwsEc2::Template::Helper::CoreHelper
   end
 
 private
+  def prepend_scripts(user_data)
+    text = ''
+    text += script.cloudwatch if @options[:cloudwatch]
+    text + user_data
+  end
+
+  def append_scripts(user_data)
+    # assuming user-data script is a bash script for simplicity for now
+    requires_setup = @options[:auto_terminate] || @options[:ami_name]
+    user_data += script.setup_scripts if requires_setup
+    user_data += script.auto_terminate if @options[:auto_terminate]
+    user_data += script.create_ami if @options[:ami_name]
+    user_data
+  end
+
+  def script
+    @script ||= AwsEc2::Script.new(@options)
+  end
+
   # Load custom helper methods from the project repo
   def load_custom_helpers
     Dir.glob("#{AwsEc2.root}/app/helpers/**/*_helper.rb").each do |path|

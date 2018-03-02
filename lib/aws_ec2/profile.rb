@@ -25,7 +25,6 @@ module AwsEc2
 
       puts "Using profile: #{file}".colorize(:green)
       text = RenderMePretty.result(file, context: context)
-      puts text
       begin
         data = YAML.load(text)
       rescue Psych::SyntaxError => e
