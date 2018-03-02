@@ -1,6 +1,12 @@
 #!/bin/bash -eux
 
 function terminate_instance() {
+  INSTANCE_ID=$(wget -q -O - http://169.254.169.254/latest/meta-data/instance-id)
+  SPOT_INSTANCE_REQUEST_ID=$(aws ec2 describe-instances --instance-ids "$INSTANCE_ID" | jq -r '.Reservations[].Instances[].SpotInstanceRequestId')
+
+  if [ -n "$SPOT_INSTANCE_REQUEST_ID" ]; then
+    cancel_spot_request
+  fi
   aws ec2 terminate-instances --instance-ids "$INSTANCE_ID"
 }
 
@@ -52,6 +58,8 @@ function terminate() {
 
   if [ "$when" == "later" ]; then
     terminate_later
+  elif [ "$when" == "after_ami" ]; then
+    terminate_after_ami
   else
     terminate_now
   fi
@@ -61,14 +69,14 @@ function terminate_later() {
   schedule_termination
 }
 
-function terminate_now() {
+function terminate_after_ami() {
   # https://stackoverflow.com/questions/10541363/self-terminating-aws-ec2-instance
   # For some reason on amamzonlinux it stalls forever waiting for the AMI.
   # So this is an backup timeout measure.
   # Hopefully the build does not take longer than 45 minutes
   # Creating a another copy script because it'll be remove soon
   cp /opt/aws-ec2/auto_terminate{,_copy}.sh
-  echo "rm -f /opt/aws-ec2/data/ami-id.txt ; /opt/aws-ec2/auto_terminate_copy.sh now" | at now + 1 minutes
+  echo "/opt/aws-ec2/auto_terminate_copy.sh now" | at now + 1 minutes
 
   # Remove this script so it is only allowed to be ran once only, or when AMI is
   # launched, it will kill itself. This seems to be early enough to before it
@@ -89,12 +97,10 @@ function terminate_now() {
     wait_for_ami "$AMI_ID"
   fi
 
-  INSTANCE_ID=$(wget -q -O - http://169.254.169.254/latest/meta-data/instance-id)
-  SPOT_INSTANCE_REQUEST_ID=$(aws ec2 describe-instances --instance-ids "$INSTANCE_ID" | jq -r '.Reservations[].Instances[].SpotInstanceRequestId')
+  terminate_instance
+}
 
-  if [ -n "$SPOT_INSTANCE_REQUEST_ID" ]; then
-    cancel_spot_request
-  fi
+function terminate_now() {
   terminate_instance
 }
 
