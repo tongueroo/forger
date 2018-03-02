@@ -113,4 +113,4 @@ function terminate_now() {
 
 source "/opt/aws-ec2/shared/functions.sh"
 os=$(os_name)
-source "/opt/aws-ec2/auto_terminate/schedule/${os}.sh"
+source "/opt/aws-ec2/auto_terminate/functions/${os}.sh"

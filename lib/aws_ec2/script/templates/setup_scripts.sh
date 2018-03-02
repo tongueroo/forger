@@ -17,13 +17,13 @@ function setup_scripts() {
 
 <%
   # Examples:
-  #   AWS_RDS_CODE_VERSION=v1.0.0
-  #   AWS_RDS_CODE_VERSION=master
-  #   AWS_RDS_CODE_VERSION=branch-name
+  #   AWS_EC2_CODE=v1.0.0
+  #   AWS_EC2_CODE=master
+  #   AWS_EC2_CODE=branch-name
   #
   #   https://github.com/tongueroo/aws-ec2/archive/v1.0.0.tar.gz
   #   https://github.com/tongueroo/aws-ec2/archive/master.tar.gz
-  code_version = ENV['AWS_RDS_CODE_VERSION']
+  code_version = ENV['AWS_EC2_CODE']
   code_version ||= "v#{AwsEc2::VERSION}"
 %>
   url="https://github.com/tongueroo/aws-ec2/archive/<%= code_version %>.tar.gz"
