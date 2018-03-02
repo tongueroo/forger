@@ -25,7 +25,7 @@ function setup_scripts() {
   #   https://github.com/tongueroo/aws-ec2/archive/master.tar.gz
   code_version = ENV['AWS_RDS_CODE_VERSION']
   code_version ||= "v#{AwsEc2::VERSION}"
-%->
+%>
   url="https://github.com/tongueroo/aws-ec2/archive/<%= code_version %>.tar.gz"
   filename=$(basename "$url")
   folder="${filename%.tar.gz}" # remove extension
