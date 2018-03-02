@@ -16,9 +16,9 @@ function cancel_spot_request() {
 
 # When image doesnt exist at all, an empty string is returned.
 function ami_state() {
-  local name
-  name=$1
-  aws ec2 describe-images --filters "Name=name,Values=${name}" --owners self | jq -r '.Images[].State'
+  local ami_id
+  ami_id=$1
+  aws ec2 describe-images --image-ids "$ami_id" --owners self | jq -r '.Images[].State'
 }
 
 function wait_for_ami() {

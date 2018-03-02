@@ -62,6 +62,12 @@ log_group_name = ${LOG_GROUP_NAME}
 log_stream_name = {instance_id}/var/log/messages
 datetime_format =
 
+[/var/log/auto-terminate.log]
+file = /var/log/auto-terminate.log
+log_group_name = ${LOG_GROUP_NAME}
+log_stream_name = {instance_id}/var/log/auto-terminate.log
+datetime_format =
+
 EOF
 
 region=$(curl 169.254.169.254/latest/meta-data/placement/availability-zone | sed s'/.$//')
