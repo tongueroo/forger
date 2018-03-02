@@ -79,6 +79,7 @@ private
   # TODO: move script combining logic into class
   def prepend_scripts(scripts)
     scripts.unshift(script.cloudwatch) if @options[:cloudwatch]
+    scripts.unshift(script.auto_terminate_after_timeout) if @options[:auto_terminate]
     add_setup_script(scripts, :prepend)
     scripts
   end

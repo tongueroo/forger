@@ -12,6 +12,10 @@ module AwsEc2
       user_data
     end
 
+    def auto_terminate_after_timeout
+      load_template("auto_terminate_after_timeout.sh")
+    end
+
     def auto_terminate
       # set variables for the template
       @ami_name = @options[:ami_name]

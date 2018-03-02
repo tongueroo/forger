@@ -60,6 +60,8 @@ function terminate() {
     terminate_later
   elif [ "$when" == "after_ami" ]; then
     terminate_after_ami
+  elif [ "$when" == "after_timeout" ]; then
+    terminate_after_timeout
   else
     terminate_now
   fi
@@ -69,14 +71,19 @@ function terminate_later() {
   schedule_termination
 }
 
+# This gets set up twice.  At the very beginning of the user_data script
+# After during the terminate_after_ami is called in case at jobs do not get
+# restore after a reboot.
+function terminate_after_timeout() {
+  echo "/opt/aws-ec2/auto_terminate/after_timeout.sh now" | at now + 45 minutes
+}
+
 function terminate_after_ami() {
   # https://stackoverflow.com/questions/10541363/self-terminating-aws-ec2-instance
   # For some reason on amamzonlinux it stalls forever waiting for the AMI.
   # So this is an backup timeout measure.
   # Hopefully the build does not take longer than 45 minutes
-  # Creating a another copy script because it'll be remove soon
-  cp /opt/aws-ec2/auto_terminate{,_copy}.sh
-  echo "/opt/aws-ec2/auto_terminate_copy.sh now" | at now + 45 minutes
+  terminate_after_timeout # must call again because I dont know if at jobs persist after a linux reboot , which happens right before terminate_after_ami is called
 
   # Remove this script so it is only allowed to be ran once only, or when AMI is
   # launched, it will kill itself. This seems to be early enough to before it
