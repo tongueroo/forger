@@ -1,10 +1,5 @@
 #!/bin/bash -eux
 
-# https://github.com/tongueroo/aws-ec2/archive/v1.0.0.tar.gz
-# https://github.com/tongueroo/aws-ec2/archive/master.zip
-# https://github.com/tongueroo/aws-ec2/archive/master.tar.gz
-# https://github.com/tongueroo/aws-ec2/archive/v1.0.0.zip
-
 # Downloads and extract the scripts.
 # The extracted folder from github looks like this:
 #   branch-name.tar.gz => aws-ec2-branch-name
@@ -20,9 +15,18 @@ function setup_scripts() {
   mkdir -p "$temp_folder"
   cd "$temp_folder"
 
-  url="https://github.com/tongueroo/aws-ec2/archive/v<%= AwsEc2::VERSION %>.tar.gz"
-  # hard code to branch for testing
-  url="https://github.com/tongueroo/aws-ec2/archive/auto-terminate.tar.gz"
+<%
+  # Examples:
+  #   AWS_RDS_CODE_VERSION=v1.0.0
+  #   AWS_RDS_CODE_VERSION=master
+  #   AWS_RDS_CODE_VERSION=branch-name
+  #
+  #   https://github.com/tongueroo/aws-ec2/archive/v1.0.0.tar.gz
+  #   https://github.com/tongueroo/aws-ec2/archive/master.tar.gz
+  code_version = ENV['AWS_RDS_CODE_VERSION']
+  code_version ||= "v#{AwsEc2::VERSION}"
+%->
+  url="https://github.com/tongueroo/aws-ec2/archive/<%= code_version %>.tar.gz"
   filename=$(basename "$url")
   folder="${filename%.tar.gz}" # remove extension
   folder="${folder#v}" # remove leading v character
