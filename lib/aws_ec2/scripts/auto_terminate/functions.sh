@@ -1,4 +1,4 @@
-#!/bin/bash -exu
+#!/bin/bash -eux
 
 function terminate_instance() {
   aws ec2 terminate-instances --instance-ids "$INSTANCE_ID"

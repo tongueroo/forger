@@ -1,4 +1,5 @@
-#!/bin/bash -exu
+#!/bin/bash -eux
+
 # Create AMI Bundle
 AMI_NAME="<%= @ami_name %>"
 INSTANCE_ID=$(wget -q -O - http://169.254.169.254/latest/meta-data/instance-id)

@@ -1,5 +1,4 @@
-#!/bin/bash
-
+#!/bin/bash -eux
 function install_jq() {
   if ! type jq > /dev/null ; then
     wget "https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64"

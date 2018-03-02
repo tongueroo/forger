@@ -2,6 +2,7 @@ require "base64"
 require "erb"
 
 module AwsEc2::Template::Helper::CoreHelper
+  # assuming user-data script is a bash script for simplicity for now
   def user_data(name, base64:true, layout:"default")
     # allow user to specify the path also
     if File.exist?(name)
@@ -16,8 +17,11 @@ module AwsEc2::Template::Helper::CoreHelper
     # encode the user_data script for valid yaml to load in the profile.
     # Tried moving this logic to the params but that is too late and produces
     # invalid yaml.  Unless we want to encode and dedode twice.
-    result = prepend_scripts(result)
-    result = append_scripts(result)
+    scripts = [result]
+    scripts = prepend_scripts(scripts)
+    scripts = append_scripts(scripts)
+    divider = '#' * 60 + "\n"
+    result = scripts.join(divider)
 
     # save the unencoded user-data script for easy debugging
     temp_path = "#{AwsEc2.root}/tmp/user-data.txt"
@@ -72,19 +76,35 @@ module AwsEc2::Template::Helper::CoreHelper
   end
 
 private
-  def prepend_scripts(user_data)
-    text = ''
-    text += script.cloudwatch if @options[:cloudwatch]
-    text + user_data
+  def prepend_scripts(scripts)
+    add_setup_script(scripts)
+    scripts.unshift(script.cloudwatch) if @options[:cloudwatch]
+    scripts
   end
 
-  def append_scripts(user_data)
-    # assuming user-data script is a bash script for simplicity for now
-    requires_setup = @options[:auto_terminate] || @options[:ami_name]
-    user_data += script.setup_scripts if requires_setup
-    user_data += script.auto_terminate if @options[:auto_terminate]
-    user_data += script.create_ami if @options[:ami_name]
-    user_data
+  def append_scripts(scripts)
+    add_setup_script(scripts)
+    scripts << script.auto_terminate if @options[:auto_terminate]
+    scripts << script.create_ami if @options[:ami_name]
+    scripts
+  end
+
+  def add_setup_script(scripts)
+    return if @already_setup
+
+    requires_setup = @options[:cloudwatch] ||
+                     @options[:auto_terminate] ||
+                     @options[:ami_name]
+
+    if requires_setup
+      scripts.unshift(script.setup_scripts)
+    end
+
+    @already_setup = true
+    scripts
+  end
+
+  def setup_scripts(user_data)
   end
 
   def script

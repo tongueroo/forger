@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -eux
 
 # https://github.com/tongueroo/aws-ec2/archive/v1.0.0.tar.gz
 # https://github.com/tongueroo/aws-ec2/archive/master.zip

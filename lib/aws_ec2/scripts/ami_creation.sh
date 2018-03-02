@@ -1,4 +1,4 @@
-#!/bin/bash -exu
+#!/bin/bash -eux
 # The shebang line is here in case there's is currently an empty user-data script.
 # It wont hurt if already there.
 ######################################

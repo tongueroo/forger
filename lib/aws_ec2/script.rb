@@ -37,7 +37,6 @@ module AwsEc2
     def load_template(name)
       template = IO.read(File.expand_path("script/templates/#{name}", File.dirname(__FILE__)))
       text = ERB.new(template, nil, "-").result(binding)
-      "#" * 60 + "\n#{text}"
     end
   end
 end
