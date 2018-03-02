@@ -49,19 +49,27 @@ function terminate() {
   local when
   when=$1
 
-  export PATH=/usr/local/bin:$PATH # forjq
+  export PATH=/usr/local/bin:$PATH # for jq
 
+  if [ "$when" == "later" ]; then
+    terminate_later
+  else
+    terminate_now
+  fi
+}
+
+function terminate_later() {
+  schedule_termination
+}
+
+function terminate_now() {
   # Remove this script so it is only allowed to be ran once only, or when AMI is
   # launched, it will kill itself. This seems to be early enough to before it
   # gets captured in the AMI.
   rm -f /opt/aws-ec2/auto_terminate.sh
   unschedule_termination
 
-  if [ "$when" == "later" ]; then
-    # use previously saved ami id
-    AMI_ID=$(cat /opt/aws-ec2/data/ami-id.txt | jq -r '.ImageId')
-  fi
-
+  AMI_ID=$(cat /opt/aws-ec2/data/ami-id.txt | jq -r '.ImageId')
   if [ -n "$AMI_ID" ]; then
     # wait for the ami to be successfully created before terminating the instance
     # https://docs.aws.amazon.com/cli/latest/reference/ec2/wait/image-available.html
