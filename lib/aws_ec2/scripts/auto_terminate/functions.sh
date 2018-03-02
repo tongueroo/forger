@@ -38,8 +38,7 @@ function wait_for_ami() {
     echo "sleeping for 60 seconds... times out at 10 minutes total"
 
     type sleep
-    sleep 1
-    echo "hi"
+    sleep 60
   done
 
   echo "final state $state"
@@ -63,6 +62,14 @@ function terminate_later() {
 }
 
 function terminate_now() {
+  # https://stackoverflow.com/questions/10541363/self-terminating-aws-ec2-instance
+  # For some reason on amamzonlinux it stalls forever waiting for the AMI.
+  # So this is an backup timeout measure.
+  # Hopefully the build does not take longer than 45 minutes
+  # Creating a another copy script because it'll be remove soon
+  cp /opt/aws-ec2/auto_terminate{,_copy}.sh
+  echo "/opt/aws-ec2/auto_terminate_copy.sh now" | at now + 45 minutes
+
   # Remove this script so it is only allowed to be ran once only, or when AMI is
   # launched, it will kill itself. This seems to be early enough to before it
   # gets captured in the AMI.
