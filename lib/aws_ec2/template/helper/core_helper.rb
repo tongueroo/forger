@@ -20,7 +20,7 @@ module AwsEc2::Template::Helper::CoreHelper
     scripts = [result]
     scripts = prepend_scripts(scripts)
     scripts = append_scripts(scripts)
-    divider = '#' * 60 + "\n"
+    divider = "\n############################## DIVIDER ##############################\n"
     result = scripts.join(divider)
 
     # save the unencoded user-data script for easy debugging
@@ -76,31 +76,36 @@ module AwsEc2::Template::Helper::CoreHelper
   end
 
 private
+  # TODO: move script combining logic into class
   def prepend_scripts(scripts)
-    add_setup_script(scripts)
     scripts.unshift(script.cloudwatch) if @options[:cloudwatch]
+    add_setup_script(scripts, :prepend)
     scripts
   end
 
   def append_scripts(scripts)
-    add_setup_script(scripts)
+    add_setup_script(scripts, :append)
     scripts << script.auto_terminate if @options[:auto_terminate]
     scripts << script.create_ami if @options[:ami_name]
     scripts
   end
 
-  def add_setup_script(scripts)
+  def add_setup_script(scripts, how)
     return if @already_setup
+    @already_setup = true
 
     requires_setup = @options[:cloudwatch] ||
                      @options[:auto_terminate] ||
                      @options[:ami_name]
 
-    if requires_setup
+    return unless requires_setup
+
+    if how == :prepend
       scripts.unshift(script.setup_scripts)
+    else
+      scripts << script.setup_scripts
     end
 
-    @already_setup = true
     scripts
   end
 
