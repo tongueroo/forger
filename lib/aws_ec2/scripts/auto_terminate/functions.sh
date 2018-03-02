@@ -76,7 +76,7 @@ function terminate_after_ami() {
   # Hopefully the build does not take longer than 45 minutes
   # Creating a another copy script because it'll be remove soon
   cp /opt/aws-ec2/auto_terminate{,_copy}.sh
-  echo "/opt/aws-ec2/auto_terminate_copy.sh now" | at now + 1 minutes
+  echo "/opt/aws-ec2/auto_terminate_copy.sh now" | at now + 45 minutes
 
   # Remove this script so it is only allowed to be ran once only, or when AMI is
   # launched, it will kill itself. This seems to be early enough to before it
