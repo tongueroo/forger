@@ -60,8 +60,6 @@ function terminate() {
     terminate_later
   elif [ "$when" == "after_ami" ]; then
     terminate_after_ami
-  elif [ "$when" == "after_timeout" ]; then
-    terminate_after_timeout
   else
     terminate_now
   fi
@@ -71,9 +69,8 @@ function terminate_later() {
   schedule_termination
 }
 
-# This gets set up twice.  At the very beginning of the user_data script
-# After during the terminate_after_ami is called in case at jobs do not get
-# restore after a reboot.
+# This gets set up at the very beginning of the user_data script.  This ensures
+# that after a 45 minute timeout the instance will get cleaned up and terminated.
 function terminate_after_timeout() {
   echo "/opt/aws-ec2/auto_terminate/after_timeout.sh now" | at now + 45 minutes
 }
