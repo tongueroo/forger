@@ -60,6 +60,8 @@ function terminate() {
     terminate_later
   elif [ "$when" == "after_ami" ]; then
     terminate_after_ami
+  elif [ "$when" == "after_timeout" ]; then
+    terminate_after_timeout
   else
     terminate_now
   fi

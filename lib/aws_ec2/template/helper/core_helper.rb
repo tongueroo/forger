@@ -110,9 +110,6 @@ private
     scripts
   end
 
-  def setup_scripts(user_data)
-  end
-
   def script
     @script ||= AwsEc2::Script.new(@options)
   end
