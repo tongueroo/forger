@@ -82,7 +82,6 @@ function terminate_after_ami() {
   # launched, it will kill itself. This seems to be early enough to before it
   # gets captured in the AMI.
   rm -f /opt/aws-ec2/auto_terminate.sh
-  unschedule_termination
 
   AMI_ID=$(cat /opt/aws-ec2/data/ami-id.txt | jq -r '.ImageId')
   if [ -n "$AMI_ID" ]; then
