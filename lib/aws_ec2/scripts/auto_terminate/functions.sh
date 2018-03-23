@@ -3,6 +3,9 @@
 # Key is that instance will not be terminated if source image is the same as the
 # original image id.
 function terminate_instance() {
+  local SOURCE_AMI_ID
+  local AMI_ID
+
   SOURCE_AMI_ID=$(curl -s http://169.254.169.254/latest/meta-data/ami-id)
   AMI_ID=$(cat /opt/aws-ec2/data/ami-id.txt | jq -r '.ImageId')
   if [ "$SOURCE_AMI_ID" = "$AMI_ID" ]; then
@@ -88,6 +91,9 @@ function terminate_after_timeout() {
 }
 
 function terminate_after_ami() {
+  local AMI_ID
+
+  AMI_ID=$(cat /opt/aws-ec2/data/ami-id.txt | jq -r '.ImageId')
   if [ -n "$AMI_ID" ]; then
     # wait for the ami to be successfully created before terminating the instance
     # https://docs.aws.amazon.com/cli/latest/reference/ec2/wait/image-available.html
