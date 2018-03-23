@@ -1,6 +1,8 @@
 $:.unshift(File.expand_path("../", __FILE__))
 require "aws_ec2/version"
 require "colorize"
+
+$:.unshift(File.expand_path("../../vendor/render_me_pretty/lib", __FILE__))
 require "render_me_pretty"
 
 module AwsEc2
