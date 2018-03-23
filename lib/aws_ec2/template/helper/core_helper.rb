@@ -2,6 +2,7 @@ require "base64"
 require "erb"
 
 module AwsEc2::Template::Helper::CoreHelper
+  # assuming user-data script is a bash script for simplicity for now
   def user_data(name, base64:true, layout:"default")
     # allow user to specify the path also
     if File.exist?(name)
@@ -12,7 +13,15 @@ module AwsEc2::Template::Helper::CoreHelper
     layout_path = layout_path(layout)
     path = "#{AwsEc2.root}/app/user-data/#{name}.sh"
     result = RenderMePretty.result(path, context: self, layout: layout_path)
-    result = append_scripts(result)
+    # Must prepend and append scripts in user_data here because we need to
+    # encode the user_data script for valid yaml to load in the profile.
+    # Tried moving this logic to the params but that is too late and produces
+    # invalid yaml.  Unless we want to encode and dedode twice.
+    scripts = [result]
+    scripts = prepend_scripts(scripts)
+    scripts = append_scripts(scripts)
+    divider = "\n############################## DIVIDER ##############################\n"
+    result = scripts.join(divider)
 
     # save the unencoded user-data script for easy debugging
     temp_path = "#{AwsEc2.root}/tmp/user-data.txt"
@@ -67,12 +76,42 @@ module AwsEc2::Template::Helper::CoreHelper
   end
 
 private
-  def append_scripts(user_data)
-    # assuming user-data script is a bash script for simplicity
-    script = AwsEc2::Script.new(@options)
-    user_data += script.auto_terminate if @options[:auto_terminate]
-    user_data += script.create_ami if @options[:ami_name]
-    user_data
+  # TODO: move script combining logic into class
+  def prepend_scripts(scripts)
+    scripts.unshift(script.cloudwatch) if @options[:cloudwatch]
+    scripts.unshift(script.auto_terminate_after_timeout) if @options[:auto_terminate]
+    add_setup_script(scripts, :prepend)
+    scripts
+  end
+
+  def append_scripts(scripts)
+    add_setup_script(scripts, :append)
+    scripts << script.auto_terminate if @options[:auto_terminate]
+    scripts << script.create_ami if @options[:ami_name]
+    scripts
+  end
+
+  def add_setup_script(scripts, how)
+    return if @already_setup
+    @already_setup = true
+
+    requires_setup = @options[:cloudwatch] ||
+                     @options[:auto_terminate] ||
+                     @options[:ami_name]
+
+    return unless requires_setup
+
+    if how == :prepend
+      scripts.unshift(script.extract_aws_ec2_scripts)
+    else
+      scripts << script.extract_aws_ec2_scripts
+    end
+
+    scripts
+  end
+
+  def script
+    @script ||= AwsEc2::Script.new(@options)
   end
 
   # Load custom helper methods from the project repo
