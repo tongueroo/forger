@@ -98,7 +98,7 @@ function terminate_after_ami() {
     # so it'll wait for 10 mins max
     # aws ec2 wait image-available --image-ids "$AMI_ID" --owners self
 
-    # For some reason aws ec2 wait image-available didnt work for amazonlinux
+    # For some reason aws ec2 wait image-available didnt work for amazonlinux2
     # so using a custom version
     wait_for_ami "$AMI_ID"
   fi

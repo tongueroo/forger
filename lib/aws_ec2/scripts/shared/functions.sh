@@ -21,8 +21,8 @@ CONFIGURE_AWS_CLI
 #   Amazon Linux AMI
 function os_name() {
   # https://askubuntu.com/questions/459402/how-to-know-if-the-running-platform-is-ubuntu-or-centos-with-help-of-a-bash-scri
-  # Method 1 works for amazonlinux and ubuntu
-  # Method 3 the complex script, did not work for amazonlinux
+  # Method 1 works for amazonlinux2 and ubuntu
+  # Method 3 the complex script, did not work for amazonlinux2
   local OS
   OS=$(gawk -F= '/^NAME/{print $2}' /etc/os-release) # text surrounded by double quotes
   # strip surrounding quotes: https://stackoverflow.com/questions/9733338/shell-script-remove-first-and-last-quote-from-a-variable
@@ -38,7 +38,7 @@ function os_name() {
       echo "ubuntu"
       ;;
     *)
-      echo "amazonlinux" # default
+      echo "amazonlinux2" # default
       ;;
   esac
 }
