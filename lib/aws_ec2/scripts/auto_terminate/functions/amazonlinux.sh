@@ -5,6 +5,6 @@ function schedule_termination() {
 }
 
 function unschedule_termination() {
-  grep -v terminate-myself /etc/rc.d/rc.local > /etc/rc.d/rc.local.tmp
+  grep -v auto_terminate.sh /etc/rc.d/rc.local > /etc/rc.d/rc.local.tmp
   mv /etc/rc.d/rc.local.tmp /etc/rc.d/rc.local
 }

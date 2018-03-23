@@ -16,13 +16,14 @@ module AwsEc2
       sync_scripts_to_s3
 
       puts "Creating EC2 instance #{@name.colorize(:green)}"
-      display_info
+      display_ec2_info
       if @options[:noop]
         puts "NOOP mode enabled. EC2 instance not created."
         return
       end
       resp = run_instances(params)
       instance_id = resp.instances.first.instance_id
+      display_spot_info(instance_id)
       puts "EC2 instance #{@name} created: #{instance_id} 🎉"
       puts "Visit https://console.aws.amazon.com/ec2/home to check on the status"
     end
@@ -49,7 +50,15 @@ module AwsEc2
       @params ||= Params.new(@options).generate
     end
 
-    def display_info
+    def display_spot_info(instance_id)
+      resp = ec2.describe_instances(instance_ids: [instance_id])
+      spot_id = resp.reservations.first.instances.first.spot_instance_request_id
+      return unless spot_id
+
+      puts "Spot instance request id: #{spot_id}"
+    end
+
+    def display_ec2_info
       puts "Using the following parameters:"
       pretty_display(params)
 
