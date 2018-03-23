@@ -20,14 +20,14 @@ class AwsEc2::Script
     end
 
     def compile_folder(folder, layout_path=false)
-      puts "Compiling app/#{folder}:".colorize(:green)
+      puts "Compiling app/#{folder} to tmp/app/#{folder}.".colorize(:green)
       Dir.glob("#{AwsEc2.root}/app/#{folder}/**/*").each do |path|
         next if File.directory?(path)
         next if path.include?("layouts")
 
         result = RenderMePretty.result(path, layout: layout_path, context: context)
         tmp_path = path.sub(%r{.*/app/}, "#{BUILD_ROOT}/app/")
-        puts "  #{tmp_path}"
+        puts "  #{tmp_path}" if @options[:verbose]
         FileUtils.mkdir_p(File.dirname(tmp_path))
         IO.write(tmp_path, result)
       end
