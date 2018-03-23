@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.1.0]
+- Merge pull request #5 from tongueroo/auto-terminate
+- allow AWS_RDS_CODE_VERSION env variable
+- restructure way scripts work for sanity
+- bash scripts: ami_creation.sh and auto_terminate.sh
+- support only amazonlinux2 and ubuntu
+
 ## [1.0.1]
 - update ordering of the info displayed
 
