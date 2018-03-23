@@ -93,6 +93,7 @@ function terminate_after_timeout() {
 function terminate_after_ami() {
   local AMI_ID
 
+  unschedule_termination
   AMI_ID=$(cat /opt/aws-ec2/data/ami-id.txt | jq -r '.ImageId')
   if [ -n "$AMI_ID" ]; then
     # wait for the ami to be successfully created before terminating the instance
