@@ -88,6 +88,7 @@ function terminate_later() {
 # that after a 45 minute timeout the instance will get cleaned up and terminated.
 function terminate_after_timeout() {
   rm -f /opt/aws-ec2/data/ami-id.txt # rm file possible stale file from previous ami
+  at -r 1 || true # assume only at job is a previous after_timeout.sh job from previous AMI
   echo "/opt/aws-ec2/auto_terminate/after_timeout.sh now" | at now + 45 minutes
 }
 
