@@ -91,6 +91,8 @@ function terminate_after_timeout() {
 
   # Remove all old at jobs.
   # Assume all at job are previous after_timeout.sh job from previous AMI.
+  # Note: Each new at job increments the id by 1.  So each AMI will have a different
+  # at job number.
   for i in $(atq | awk '{print $1}') ; do
     at -r $i
   done
