@@ -78,12 +78,6 @@ function terminate_after_timeout() {
 }
 
 function terminate_after_ami() {
-  # https://stackoverflow.com/questions/10541363/self-terminating-aws-ec2-instance
-  # For some reason on amamzonlinux it stalls forever waiting for the AMI.
-  # So this is an backup timeout measure.
-  # Hopefully the build does not take longer than 45 minutes
-  terminate_after_timeout # must call again because I dont know if at jobs persist after a linux reboot , which happens right before terminate_after_ami is called
-
   # Remove this script so it is only allowed to be ran once only, or when AMI is
   # launched, it will kill itself. This seems to be early enough to before it
   # gets captured in the AMI.
@@ -103,7 +97,8 @@ function terminate_after_ami() {
     wait_for_ami "$AMI_ID"
   fi
 
-  terminate_instance
+  echo "NOOP terminate_instance"
+  # terminate_instance
 }
 
 function terminate_now() {
