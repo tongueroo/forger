@@ -33,8 +33,8 @@ module AwsEc2
       load_template("ami_creation.sh")
     end
 
-    def setup_scripts
-      load_template("setup_scripts.sh")
+    def extract_aws_ec2_scripts
+      load_template("extract_aws_ec2_scripts.sh")
     end
 
   private

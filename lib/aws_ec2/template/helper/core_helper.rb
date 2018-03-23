@@ -102,9 +102,9 @@ private
     return unless requires_setup
 
     if how == :prepend
-      scripts.unshift(script.setup_scripts)
+      scripts.unshift(script.extract_aws_ec2_scripts)
     else
-      scripts << script.setup_scripts
+      scripts << script.extract_aws_ec2_scripts
     end
 
     scripts
