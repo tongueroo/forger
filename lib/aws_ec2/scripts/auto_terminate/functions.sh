@@ -1,6 +1,16 @@
 #!/bin/bash -eux
 
+# Key is that instance will not be terminated if source image is the same as the
+# original image id.
 function terminate_instance() {
+  SOURCE_AMI_ID=$(curl -s http://169.254.169.254/latest/meta-data/ami-id)
+  AMI_ID=$(cat /opt/aws-ec2/data/ami-id.txt | jq -r '.ImageId')
+  if [ "$SOURCE_AMI_ID" = "$AMI_ID" ]; then
+    echo "The source ami and ami_id are the same: $AMI_ID"
+    echo "WILL NOT TERMINATE!"
+    return
+  fi
+
   INSTANCE_ID=$(wget -q -O - http://169.254.169.254/latest/meta-data/instance-id)
   SPOT_INSTANCE_REQUEST_ID=$(aws ec2 describe-instances --instance-ids "$INSTANCE_ID" | jq -r '.Reservations[].Instances[].SpotInstanceRequestId')
 
@@ -78,12 +88,6 @@ function terminate_after_timeout() {
 }
 
 function terminate_after_ami() {
-  # Remove this script so it is only allowed to be ran once only, or when AMI is
-  # launched, it will kill itself. This seems to be early enough to before it
-  # gets captured in the AMI.
-  rm -f /opt/aws-ec2/auto_terminate.sh
-
-  AMI_ID=$(cat /opt/aws-ec2/data/ami-id.txt | jq -r '.ImageId')
   if [ -n "$AMI_ID" ]; then
     # wait for the ami to be successfully created before terminating the instance
     # https://docs.aws.amazon.com/cli/latest/reference/ec2/wait/image-available.html
@@ -96,8 +100,7 @@ function terminate_after_ami() {
     wait_for_ami "$AMI_ID"
   fi
 
-  echo "NOOP terminate_instance"
-  # terminate_instance
+  terminate_instance
 }
 
 function terminate_now() {
