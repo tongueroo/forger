@@ -13,14 +13,19 @@ module AwsEc2::Cleaner
       delete_list = images[keep..-1] || []
       puts "Deleting #{delete_list.size} images."
       delete_list.each do |i|
-        puts "Deleting image: #{i.image_id} #{i.name}"
-        # delete(i.image_id)
+        delete(i)
       end
     end
 
   private
-    def delete(image_id)
-      ec2.deregister_image(image_id: image_id)
+    def delete(image)
+      message = "Deleting image: #{image.image_id} #{image.name}"
+      if @options[:noop]
+        puts "NOOP: #{message}"
+      else
+        puts message
+        ec2.deregister_image(image_id: image.image_id)
+      end
     rescue Aws::EC2::Errors::InvalidAMIIDUnavailable
       # happens when image was just deleted but its still
       # showing up as available when calling describe_images

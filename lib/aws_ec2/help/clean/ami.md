@@ -2,6 +2,7 @@ Examples:
 
     $ aws-ec2 clean ami 'base-amazonlinux2*'
     $ aws-ec2 clean ami 'base-ubuntu*' --keep 5
+    $ aws-ec2 clean ami 'base-ubuntu*' --noop # dry-run
 
 Deletes old AMIs using the provided name as the base portion of the AMI name to search for.
 
