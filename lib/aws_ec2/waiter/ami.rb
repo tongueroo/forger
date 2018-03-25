@@ -9,6 +9,7 @@ module AwsEc2::Waiter
       current_time = 0
 
       puts "Waiting for #{@options[:name]} to be available. Delay: #{delay}s. Timeout: #{timeout}s"
+      puts "Current time: #{Time.now}"
       return if ENV['TEST']
 
       # Using while loop because of issues with ruby's Timeout module
@@ -25,7 +26,7 @@ module AwsEc2::Waiter
         puts "ERROR: Timeout. Unable to detect and available ami: #{@options[:name]}"
         exit 1
       else
-        puts "Found available ami #{@options[:name]}"
+        puts "Found available AMI: #{@options[:name]}"
       end
       puts
     end
@@ -40,7 +41,6 @@ module AwsEc2::Waiter
         owners: owners,
         filters: filters
       ).images
-      pp images
       detected = images.first
       !!detected
     end
