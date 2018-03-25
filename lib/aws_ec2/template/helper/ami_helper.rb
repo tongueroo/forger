@@ -1,5 +1,5 @@
 module AwsEc2::Template::Helper::AmiHelper
-  include AwsEc2::AwsServices
+  include AwsEc2::AwsService
 
   # Example:
   #
@@ -25,7 +25,8 @@ module AwsEc2::Template::Helper::AmiHelper
     ec2.describe_images(
       owners: owners,
       filters: [
-        {name: "name", values: [query]}
+        {name: "name", values: [query]},
+        {name: "state", values: ["available"]}
       ]
     ).images
   end

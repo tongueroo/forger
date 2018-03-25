@@ -14,6 +14,11 @@ describe AwsEc2::CLI do
       expect(out).to include("Creating EC2 instance")
     end
 
+    it "wait ami" do
+      out = execute("exe/aws-ec2 wait ami myimage")
+      expect(out).to include("Waiting for")
+    end
+
     commands = {
       "am" => "ami",
       "compile" => "--profile",

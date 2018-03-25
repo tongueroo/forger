@@ -6,7 +6,7 @@ module AwsEc2
     autoload :Params, "aws_ec2/create/params"
     autoload :ErrorMessages, "aws_ec2/create/error_messages"
 
-    include AwsServices
+    include AwsService
     include ErrorMessages
 
     def run
