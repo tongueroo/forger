@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.3.0]
+- Merge pull request #7 from tongueroo/clean: aws-ec2 clean ami command
+
 ## [1.2.2]
 - add render_me_pretty as gem instead of submodule
 
