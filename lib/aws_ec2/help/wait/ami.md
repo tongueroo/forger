@@ -3,7 +3,7 @@ Examples:
     $ aws-ec2 wait ami ruby-2.5.0_2018-03-24-17-07
     $ aws-ec2 wait ami ami-b0138dc8
 
-Polls the AMI with the given name or id is found and available.
+Polls the AMI with the given AMI name or id until AMI is found and available.
 
 ### Timeout
 
