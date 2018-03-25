@@ -3,18 +3,18 @@ module AwsEc2::Cleaner
     include AwsEc2::AwsService
 
     def clean
-      query = @options[:query] + "*" # use query as base of name for search
+      query = @options[:query]
       keep = @options[:keep] || 2
       puts "Cleaning out old AMIs with base name: #{@options[:query]}"
       return if ENV['TEST']
 
       images = search_ami(query)
-      images.sort_by! { |i| i.name }.reverse
+      images = images.sort_by { |i| i.name }.reverse
       delete_list = images[keep..-1] || []
       puts "Deleting #{delete_list.size} images."
       delete_list.each do |i|
         puts "Deleting image: #{i.image_id} #{i.name}"
-        delete(i.image_id)
+        # delete(i.image_id)
       end
     end
 
