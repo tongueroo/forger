@@ -3,31 +3,59 @@ module AwsEc2::Waiter
     include AwsEc2::AwsService
 
     def wait
-      puts "Waiting for #{@options[:name]} to be available..."
+      delay = 30
+      timeout = @options[:timeout]
+      max_attempts = timeout / delay
+      current_time = 0
 
-      begin
-        puts "waiting"
-        pp params
-        ec2.wait_until(:image_available, params, {
-          max_attempts: 5,
-          # before_attempt: -> (attempts, response) do
-          #   print '.'
-          # end
-        })
-        puts
+      puts "Waiting for #{@options[:name]} to be available. Delay: #{delay}s. Timeout: #{timeout}s"
+      return if ENV['TEST']
 
-      rescue Aws::Waiters::Errors::WaiterFailed => error
-        puts "failed waiting for instance running: #{error.message}"
+      # Using while loop because of issues with ruby's Timeout module
+      # http://www.mikeperham.com/2015/05/08/timeout-rubys-most-dangerous-api/
+      detected = detect_ami
+      until detected || current_time > timeout
+        print '.'
+        sleep delay
+        current_time += 30
+        detected = detect_ami
       end
 
+      if current_time > timeout
+        puts "ERROR: Timeout. Unable to detect and available ami: #{@options[:name]}"
+        exit 1
+      else
+        puts "Found available ami #{@options[:name]}"
+      end
+      puts
     end
 
   private
-    # normalize the params passed to wait_until / describe_images
-    def params
-      {
-        image_ids: [@options[:name]]
-      }
+    # Using custom detect_ami instead of ec2.wait_until(:image_availalbe, ...)
+    # because we start checking for the ami even before we've called
+    # create_ami.  We start checking right after we launch the instance
+    # which will create the ami at the end.
+    def detect_ami(owners=["self"])
+      images = ec2.describe_images(
+        owners: owners,
+        filters: filters
+      ).images
+      pp images
+      detected = images.first
+      !!detected
+    end
+
+    def filters
+      name_is_ami_id = @options[:name] =~ /^ami-/
+
+      filters = [{name: "state", values: ["available"]}]
+      filters << if name_is_ami_id
+          {name: "image-id", values: [@options[:name]]}
+        else
+          {name: "name", values: [@options[:name]]}
+        end
+
+      filters
     end
   end
 end
