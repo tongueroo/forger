@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.2.1]
+- fix formatting after found ami with puts
+
 ## [1.2.0]
 - Merge pull request #6 from tongueroo/wait: aws-ec2 wait ami command
 - Fix dependencies: add aws-sdk-s3 dependency
