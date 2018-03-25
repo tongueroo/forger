@@ -19,6 +19,11 @@ describe AwsEc2::CLI do
       expect(out).to include("Waiting for")
     end
 
+    it "clean ami" do
+      out = execute("exe/aws-ec2 clean ami imagebasename")
+      expect(out).to include("Cleaning out old AMIs")
+    end
+
     commands = {
       "am" => "ami",
       "compile" => "--profile",

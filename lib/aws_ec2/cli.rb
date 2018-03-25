@@ -3,6 +3,10 @@ module AwsEc2
     class_option :noop, type: :boolean
     class_option :profile, desc: "profile name to use"
 
+    desc "clean SUBCOMMAND", "clean subcommands"
+    long_desc Help.text(:clean)
+    subcommand "clean", Clean
+
     desc "wait SUBCOMMAND", "wait subcommands"
     long_desc Help.text(:wait)
     subcommand "wait", Wait

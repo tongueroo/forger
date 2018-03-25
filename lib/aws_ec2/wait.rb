@@ -2,7 +2,6 @@ module AwsEc2
   autoload :Waiter, 'aws_ec2/waiter'
 
   class Wait < Command
-
     desc "ami", "Wait until AMI available."
     long_desc Help.text("wait:ami")
     option :timeout, type: :numeric, default: 1800, desc: "Timeout in seconds."

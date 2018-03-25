@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    aws-ec2 (1.2.1)
+    aws-ec2 (1.2.2)
       activesupport
       aws-sdk-ec2
       aws-sdk-s3
