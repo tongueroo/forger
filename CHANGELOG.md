@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.3.1]
+- fix cleaning so it cleans out the oldest images
+
 ## [1.3.0]
 - Merge pull request #7 from tongueroo/clean: aws-ec2 clean ami command
 
