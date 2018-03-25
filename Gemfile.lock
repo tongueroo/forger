@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    aws-ec2 (1.1.0)
+    aws-ec2 (1.2.1)
       activesupport
       aws-sdk-ec2
       aws-sdk-s3
@@ -9,8 +9,8 @@ PATH
       dotenv
       filesize
       hashie
+      render_me_pretty
       thor
-      tilt
 
 GEM
   remote: https://rubygems.org/
@@ -89,6 +89,10 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
+    render_me_pretty (0.8.1)
+      activesupport
+      colorize
+      tilt
     rspec (3.7.0)
       rspec-core (~> 3.7.0)
       rspec-expectations (~> 3.7.0)
