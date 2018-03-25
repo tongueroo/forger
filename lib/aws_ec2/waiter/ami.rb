@@ -21,6 +21,7 @@ module AwsEc2::Waiter
         current_time += 30
         detected = detect_ami
       end
+      puts
 
       if current_time > timeout
         puts "ERROR: Timeout. Unable to detect and available ami: #{@options[:name]}"
@@ -28,7 +29,6 @@ module AwsEc2::Waiter
       else
         puts "Found available AMI: #{@options[:name]}"
       end
-      puts
     end
 
   private
