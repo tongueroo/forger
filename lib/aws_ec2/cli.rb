@@ -3,6 +3,10 @@ module AwsEc2
     class_option :noop, type: :boolean
     class_option :profile, desc: "profile name to use"
 
+    desc "wait SUBCOMMAND", "wait subcommands"
+    long_desc Help.text(:wait)
+    subcommand "wait", Wait
+
     common_options = Proc.new do
       option :auto_terminate, type: :boolean, default: false, desc: "automatically terminate the instance at the end of user-data"
       option :cloudwatch, type: :boolean, default: false, desc: "enable cloudwatch logging, only supported for amazonlinux"

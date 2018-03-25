@@ -14,6 +14,7 @@ module AwsEc2
   autoload :Base, "aws_ec2/base"
   autoload :Create, "aws_ec2/create"
   autoload :Ami, "aws_ec2/ami"
+  autoload :Wait, "aws_ec2/wait"
   autoload :Template, "aws_ec2/template"
   autoload :Script, "aws_ec2/script"
   autoload :Config, "aws_ec2/config"
