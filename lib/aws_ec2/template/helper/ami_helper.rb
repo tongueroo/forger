@@ -1,5 +1,5 @@
 module AwsEc2::Template::Helper::AmiHelper
-  include AwsEc2::AwsServices
+  include AwsEc2::AwsService
 
   # Example:
   #
