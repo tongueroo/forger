@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.2.0]
+- Merge pull request #6 from tongueroo/wait: aws-ec2 wait ami command
+- Fix dependencies: add aws-sdk-s3 dependency
+- require render_me_pretty as vendor submodule for now
+
 ## [1.1.0]
 - Merge pull request #5 from tongueroo/auto-terminate
 - allow AWS_RDS_CODE_VERSION env variable
