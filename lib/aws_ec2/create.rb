@@ -38,6 +38,15 @@ module AwsEc2
       puts "To view instance's cloudwatch logs visit:"
       puts "  #{url}"
       puts "Note: It takes a little time for the instance to launch and report logs."
+      add_to_clipboard(url)
+    end
+
+    def add_to_clipboard(text)
+      return unless RUBY_PLATFORM =~ /darwin/
+      return unless system("type pbcopy > /dev/null")
+
+      system("echo #{text} | pbcopy")
+      puts "Pro tip: The CloudWatch Console Link has been added to your copy-and-paste clipboard."
     end
 
     def run_instances(params)

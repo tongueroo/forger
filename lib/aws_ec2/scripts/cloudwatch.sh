@@ -13,8 +13,8 @@ LOG_GROUP_NAME=$1
 # shellcheck disable=SC1091
 source "/opt/aws-ec2/shared/functions.sh"
 OS=$(os_name)
-if [ "$OS" != "amazonlinux2" ] || [ "$OS" != "ubuntu" ] ; then
-  echo "Sorry, enable cloudwatch logging with the aws-ec2 tool is only supported for amazonlinux2 and ubuntu"
+if [ "$OS" != "amazonlinux2" ] && [ "$OS" != "ubuntu" ] ; then
+  echo "Sorry, cloudwatch logging with the aws-ec2 tool is supported for amazonlinux2 and ubuntu only"
   exit
 fi
 
