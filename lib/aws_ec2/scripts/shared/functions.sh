@@ -75,4 +75,4 @@ function os_name() {
 
   echo "$OS"
 }
-OS=$(normalize_os)
+

@@ -26,6 +26,18 @@ module AwsEc2
       display_spot_info(instance_id)
       puts "EC2 instance #{@name} created: #{instance_id} 🎉"
       puts "Visit https://console.aws.amazon.com/ec2/home to check on the status"
+      display_cloudwatch_info(instance_id)
+    end
+
+    def display_cloudwatch_info(instance_id)
+      return unless @options[:cloudwatch]
+
+      region = `aws configure get region`.strip
+      region = 'us-east-1' if region == ''
+      url = "https://#{region}.console.aws.amazon.com/cloudwatch/home?region=#{region}#logEventViewer:group=ec2;stream=#{instance_id}/var/log/cloud-init-output.log"
+      puts "To view instance's cloudwatch logs visit:"
+      puts "  #{url}"
+      puts "Note: It takes a little time for the instance to launch and report logs."
     end
 
     def run_instances(params)
