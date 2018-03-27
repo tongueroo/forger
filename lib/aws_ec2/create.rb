@@ -29,26 +29,6 @@ module AwsEc2
       display_cloudwatch_info(instance_id)
     end
 
-    def display_cloudwatch_info(instance_id)
-      return unless @options[:cloudwatch]
-
-      region = `aws configure get region`.strip
-      region = 'us-east-1' if region == ''
-      url = "https://#{region}.console.aws.amazon.com/cloudwatch/home?region=#{region}#logEventViewer:group=ec2;stream=#{instance_id}/var/log/cloud-init-output.log"
-      puts "To view instance's cloudwatch logs visit:"
-      puts "  #{url}"
-      puts "Note: It takes a little time for the instance to launch and report logs."
-      add_to_clipboard(url)
-    end
-
-    def add_to_clipboard(text)
-      return unless RUBY_PLATFORM =~ /darwin/
-      return unless system("type pbcopy > /dev/null")
-
-      system(%[echo "#{text}" | pbcopy])
-      puts "Pro tip: The CloudWatch Console Link has been added to your copy-and-paste clipboard."
-    end
-
     def run_instances(params)
       ec2.run_instances(params)
     rescue Aws::EC2::Errors::ServiceError => e
@@ -105,6 +85,43 @@ module AwsEc2
       puts "ERROR: The specified launched template #{launch_template.inspect} was not found."
       puts "Please double check that it exists."
       exit
+    end
+
+    def display_cloudwatch_info(instance_id)
+      return unless @options[:cloudwatch]
+
+      region = get_region
+      url = "https://#{region}.console.aws.amazon.com/cloudwatch/home?region=#{region}#logEventViewer:group=ec2;stream=#{instance_id}/var/log/cloud-init-output.log"
+      puts "To view instance's cloudwatch logs visit:"
+      puts "  #{url}"
+      puts "Note: It takes a little time for the instance to launch and report logs."
+      add_to_clipboard(url)
+    end
+
+    def add_to_clipboard(text)
+      return unless RUBY_PLATFORM =~ /darwin/
+      return unless system("type pbcopy > /dev/null")
+
+      system(%[echo "#{text}" | pbcopy])
+      puts "Pro tip: The CloudWatch Console Link has been added to your copy-and-paste clipboard."
+    end
+
+    def get_region
+      # Highest precedence is the setting in ~/.aws/config and AWS_PROFILE used
+      aws_found = system("type aws > /dev/null")
+      if aws_found
+        region = `aws configure get region`.strip
+        return region
+      end
+
+      # Assumes instace being launched in the same region as the calling ec2 instance
+      curl_found = system("type curl > /dev/null")
+      if curl_found
+        region = `curl --connect-timeout 3  -s 169.254.169.254/latest/meta-data/placement/availability-zone | sed s'/.$//'`
+        return region unless region == ''
+      end
+
+      return 'us-east-1' # fallback default
     end
 
     def pretty_display(data)

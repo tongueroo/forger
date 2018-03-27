@@ -79,6 +79,6 @@ datetime_format =
 EOF
 
 if [ -f /etc/awslogs/awscli.conf ]; then
-  region=$(curl 169.254.169.254/latest/meta-data/placement/availability-zone | sed s'/.$//')
+  region=$(curl -s 169.254.169.254/latest/meta-data/placement/availability-zone | sed s'/.$//')
   sed -i -e "s/region = us-east-1/region = $region/g" /etc/awslogs/awscli.conf
 fi
