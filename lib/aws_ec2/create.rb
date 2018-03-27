@@ -45,7 +45,7 @@ module AwsEc2
       return unless RUBY_PLATFORM =~ /darwin/
       return unless system("type pbcopy > /dev/null")
 
-      system("echo #{text} | pbcopy")
+      system(%[echo "#{text}" | pbcopy])
       puts "Pro tip: The CloudWatch Console Link has been added to your copy-and-paste clipboard."
     end
 
