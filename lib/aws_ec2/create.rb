@@ -107,7 +107,7 @@ module AwsEc2
     end
 
     def get_region
-      # Highest precedence
+      # Highest precedence: AWS_EC2_REGION env variable. Only really used here.
       if ENV['AWS_EC2_REGION']
         return ENV['AWS_EC2_REGION']
       end
