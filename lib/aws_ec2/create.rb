@@ -107,14 +107,20 @@ module AwsEc2
     end
 
     def get_region
-      # Highest precedence is the setting in ~/.aws/config and AWS_PROFILE used
+      # Highest precedence
+      if ENV['AWS_EC2_REGION']
+        return ENV['AWS_EC2_REGION']
+      end
+
+      # Pretty high in precedence: AWS_PROFILE and ~/.aws/config and
       aws_found = system("type aws > /dev/null")
       if aws_found
         region = `aws configure get region`.strip
         return region
       end
 
-      # Assumes instace being launched in the same region as the calling ec2 instance
+      # Assumes instance same region as the calling ec2 instance.
+      # It is possible for curl not to be installed.
       curl_found = system("type curl > /dev/null")
       if curl_found
         region = `curl --connect-timeout 3  -s 169.254.169.254/latest/meta-data/placement/availability-zone | sed s'/.$//'`
