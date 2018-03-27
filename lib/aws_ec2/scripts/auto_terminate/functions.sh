@@ -10,7 +10,9 @@ function terminate_instance() {
   AMI_ID=$(cat /opt/aws-ec2/data/ami-id.txt | jq -r '.ImageId')
   if [ "$SOURCE_AMI_ID" = "$AMI_ID" ]; then
     echo "The source ami and ami_id are the same: $AMI_ID"
-    echo "WILL NOT TERMINATE!"
+    echo "Will not terminate the instance for this case."
+    echo "This case can happen when an /etc/rc.local script to auto-terminate the "
+    echo "instance was capture from a previous AMI build."
     return
   fi
 
