@@ -4,7 +4,10 @@
 
 REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/availability-zone | sed s'/.$//')
 
-type python || apt-get install -y python-pip
+if ! type python ; then
+  apt-get update
+  apt-get install -y python-pip
+fi
 
 # Install awslogs and the jq JSON parser
 curl -s https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -O
