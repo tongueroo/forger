@@ -5,3 +5,4 @@ systemctl daemon-reload
 systemctl restart awslogs
 systemctl enable awslogs
 # systemctl status awslogs
+# systemctl is-enabled awslogs

@@ -8,3 +8,4 @@ systemctl daemon-reload
 systemctl restart awslogsd
 systemctl enable awslogsd
 # systemctl status awslogsd
+# systemctl is-enabled awslogsd
