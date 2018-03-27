@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.4.6]
+- enable awslogs on reboot
+- improve message when auto-terminate gets called from a previous ami
+
 ## [1.4.5]
 - fix cloudwatch python install for ubuntu
 
