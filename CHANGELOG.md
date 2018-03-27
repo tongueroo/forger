@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.4.5]
+- fix cloudwatch python install for ubuntu
+
 ## [1.4.4]
 - add AWS_EC2_REGION env to set the region for the cloudwatch log displayed url
 
