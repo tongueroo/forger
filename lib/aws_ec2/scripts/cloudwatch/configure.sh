@@ -10,10 +10,18 @@ if [ $# -eq 0 ]; then
 fi
 LOG_GROUP_NAME=$1
 
+if [ "$OS" == "ubuntu" ]; then
+  CONFIG_FILE=/var/awslogs/etc/awslogs.conf
+  STATE_FILE=/var/awslogs/state/agent-state
+else # amazonlinux2
+  CONFIG_FILE=/etc/awslogs/awslogs.conf
+  STATE_FILE=/var/lib/awslogs/agent-state
+fi
+
 # Inject the CloudWatch Logs configuration file contents
-cat > /etc/awslogs/awslogs.conf <<- EOF
+cat > $CONFIG_FILE <<- EOF
 [general]
-state_file = /var/lib/awslogs/agent-state
+state_file = $STATE_FILE
 
 [/var/log/dmesg]
 file = /var/log/dmesg
@@ -70,5 +78,7 @@ datetime_format =
 
 EOF
 
-region=$(curl 169.254.169.254/latest/meta-data/placement/availability-zone | sed s'/.$//')
-sed -i -e "s/region = us-east-1/region = $region/g" /etc/awslogs/awscli.conf
+if [ -f /etc/awslogs/awscli.conf ]; then
+  region=$(curl 169.254.169.254/latest/meta-data/placement/availability-zone | sed s'/.$//')
+  sed -i -e "s/region = us-east-1/region = $region/g" /etc/awslogs/awscli.conf
+fi

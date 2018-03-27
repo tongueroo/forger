@@ -17,13 +17,4 @@ state_file = /var/awslogs/state/agent-state
 ## filler config file, will get replaced by configure.sh script
 EOL
 
-# yum install -y awslogs jq also creates this file. We're creating it so that
-# configure.sh is consistent.
-cat > /etc/awslogs/awscli.conf <<- EOL
-[plugins]
-cwlogs = cwlogs
-[default]
-region = us-west-2
-EOL
-
 python ./awslogs-agent-setup.py --region "$REGION" --non-interactive --configfile=/etc/awslogs/awslogs.conf
