@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.4.0]
+- Merge pull request #8 from tongueroo/cloudwatch
+- cloudwatch support for amazonlinux2 and ubuntu
+
 ## [1.3.2]
 - add noop mode for clean ami command
 
