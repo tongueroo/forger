@@ -98,7 +98,9 @@ module AwsEc2
       puts "  #{url}"
       puts "  #{cw_command}" if ENV['AWS_EC2_CW']
       puts "Note: It takes a little time for the instance to launch and report logs."
-      ENV['AWS_EC2_CW'] ? add_to_clipboard(cw_command) : add_to_clipboard(url)
+
+      paste_command = ENV['AWS_EC2_CW'] ? cw_command : url
+      add_to_clipboard(paste_command)
     end
 
     def add_to_clipboard(text)
