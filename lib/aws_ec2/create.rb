@@ -93,13 +93,19 @@ module AwsEc2
       region = get_region
       stream = "#{instance_id}/var/log/cloud-init-output.log"
       url = "https://#{region}.console.aws.amazon.com/cloudwatch/home?region=#{region}#logEventViewer:group=ec2;stream=#{stream}"
-      cw_command = "cw tail -f ec2 #{stream}"
+      cw_init_log = "cw tail -f ec2 #{stream}"
       puts "To view instance's cloudwatch logs visit:"
       puts "  #{url}"
-      puts "  #{cw_command}" if ENV['AWS_EC2_CW']
+
+      puts "  #{cw_init_log}" if ENV['AWS_EC2_CW']
+      if ENV['AWS_EC2_CW'] && @options[:auto_terminate]
+        cw_terminate_log = "cw tail -f ec2 #{instance_id}/var/log/cloud-init-output.log"
+        puts "  #{cw_terminate_log}"
+      end
+
       puts "Note: It takes a little time for the instance to launch and report logs."
 
-      paste_command = ENV['AWS_EC2_CW'] ? cw_command : url
+      paste_command = ENV['AWS_EC2_CW'] ? cw_init_log : url
       add_to_clipboard(paste_command)
     end
 
