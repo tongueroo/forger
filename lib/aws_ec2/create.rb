@@ -91,11 +91,14 @@ module AwsEc2
       return unless @options[:cloudwatch]
 
       region = get_region
-      url = "https://#{region}.console.aws.amazon.com/cloudwatch/home?region=#{region}#logEventViewer:group=ec2;stream=#{instance_id}/var/log/cloud-init-output.log"
+      stream = "#{instance_id}/var/log/cloud-init-output.log"
+      url = "https://#{region}.console.aws.amazon.com/cloudwatch/home?region=#{region}#logEventViewer:group=ec2;stream=#{stream}"
+      cw_command = "cw tail -f ec2 #{stream}"
       puts "To view instance's cloudwatch logs visit:"
       puts "  #{url}"
+      puts "  #{cw_command}" if ENV['AWS_EC2_CW']
       puts "Note: It takes a little time for the instance to launch and report logs."
-      add_to_clipboard(url)
+      ENV['AWS_EC2_CW'] ? add_to_clipboard(cw_command) : add_to_clipboard(url)
     end
 
     def add_to_clipboard(text)
