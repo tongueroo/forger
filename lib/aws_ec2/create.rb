@@ -99,7 +99,7 @@ module AwsEc2
 
       puts "  #{cw_init_log}" if ENV['AWS_EC2_CW']
       if ENV['AWS_EC2_CW'] && @options[:auto_terminate]
-        cw_terminate_log = "cw tail -f ec2 #{instance_id}/var/log/cloud-init-output.log"
+        cw_terminate_log = "cw tail -f ec2 #{instance_id}/var/log/auto-terminate.log"
         puts "  #{cw_terminate_log}"
       end
 
