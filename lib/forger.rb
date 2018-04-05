@@ -24,6 +24,8 @@ module Forger
   autoload :Completion, "forger/completion"
   autoload :Completer, "forger/completer"
   autoload :Setting, "forger/setting"
+  autoload :Sequence, "forger/sequence"
+  autoload :New, "forger/new"
   extend Core
 end
 

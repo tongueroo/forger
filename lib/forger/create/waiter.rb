@@ -23,7 +23,7 @@ class Forger::Create
       i = resp.reservations.first.instances.first
       puts "Instance #{@instance_id} is ready"
       dns = i.public_dns_name ? i.public_dns_name : 'nil'
-      puts "Instance public_dns_name: #{dns}"
+      puts "Instance public dns name: #{dns}"
 
       if i.public_dns_name && !@options[:ssh]
         command = build_ssh_command(i.public_dns_name)
