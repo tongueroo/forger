@@ -1,5 +1,5 @@
-describe AwsEc2::Create::Params do
-  let(:param) { AwsEc2::Create::Params.new(name: "myserver") }
+describe Forger::Create::Params do
+  let(:param) { Forger::Create::Params.new(name: "myserver") }
 
   context "completely empty" do
     it '#upsert_name_tag!' do

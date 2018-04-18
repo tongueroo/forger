@@ -1,26 +1,26 @@
-describe AwsEc2::CLI do
+describe Forger::CLI do
   before(:all) do
     @args = "--noop"
   end
 
-  describe "aws-ec2" do
+  describe "forger" do
     it "create" do
-      out = execute("exe/aws-ec2 create server #{@args}")
+      out = execute("exe/forger create server #{@args}")
       expect(out).to include("Creating EC2 instance")
     end
 
     it "ami" do
-      out = execute("exe/aws-ec2 ami myimage #{@args}")
+      out = execute("exe/forger ami myimage #{@args}")
       expect(out).to include("Creating EC2 instance")
     end
 
     it "wait ami" do
-      out = execute("exe/aws-ec2 wait ami myimage")
+      out = execute("exe/forger wait ami myimage")
       expect(out).to include("Waiting for")
     end
 
     it "clean ami" do
-      out = execute("exe/aws-ec2 clean ami imagebasename")
+      out = execute("exe/forger clean ami imagebasename")
       expect(out).to include("Cleaning out old AMIs")
     end
 
@@ -33,7 +33,7 @@ describe AwsEc2::CLI do
     }
     commands.each do |command, expected_word|
       it "completion #{command}" do
-        out = execute("exe/aws-ec2 completion #{command}")
+        out = execute("exe/forger completion #{command}")
         expect(out).to include(expected_word) # only checking for one word for simplicity
       end
     end

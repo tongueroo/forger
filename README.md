@@ -1,6 +1,6 @@
 # AWS EC2 Tool
 
-[![CircleCI](https://circleci.com/gh/tongueroo/aws-ec2.svg?style=svg)](https://circleci.com/gh/tongueroo/aws-ec2)
+[![CircleCI](https://circleci.com/gh/tongueroo/forger.svg?style=svg)](https://circleci.com/gh/tongueroo/forger)
 
 Tool to create AWS ec2 instances consistently with pre-configured settings.  The pre-configured settings are stored in the profiles folder of the current project directory.
 Example:
@@ -11,8 +11,8 @@ Example:
 ## Usage
 
 ```sh
-aws-ec2 create NAME --profile PROFILE
-aws-ec2 create myserver --profile myserver
+forger create NAME --profile PROFILE
+forger create myserver --profile myserver
 ```
 
 In a nutshell, the profile parameters are passed to the ruby aws-sdk [AWS::EC2::Client#run_instances](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Client.html#run_instances-instance_method) method.  This allows you to specify any parameter you wish that is available in the aws-sdk. To check out what a profile looks like check out [example default](docs/example/profiles/default.yml)
@@ -22,7 +22,7 @@ In a nutshell, the profile parameters are passed to the ruby aws-sdk [AWS::EC2::
 You can do a test run with the `--noop` flag.  This will print out what settings will be used to launch the instance.  This is one good way to inspect the generated user-data script.
 
 ```sh
-aws-ec2 create myserver --profile myserver --noop
+forger create myserver --profile myserver --noop
 cat tmp/user-data.txt # to view generated user-data script
 ```
 
@@ -31,21 +31,21 @@ cat tmp/user-data.txt # to view generated user-data script
 If there is a profile name that matches the ec2 specified instance name, you can omit the `--profile` flag. Example
 
 ```sh
-aws-ec2 create webserver --profile webserver
-aws-ec2 create webserver # same thing as --profile whatever
+forger create webserver --profile webserver
+forger create webserver # same thing as --profile whatever
 ```
 
 It is useful to add a random string to the end of your server name, but not use it for the `--profile` flag.  Example:
 
 ```
-aws-ec2 create myserver-abc --profile myserver
-aws-ec2 create myserver-123 --profile myserver
+forger create myserver-abc --profile myserver
+forger create myserver-123 --profile myserver
 ```
 
 You can use the `--randomize` option to do this automatically:
 
 ```
-aws-ec2 create myserver --randomize
+forger create myserver --randomize
 ```
 
 ## Project Structure
@@ -59,7 +59,7 @@ app/user-data  | Your user-data scripts that are used to bootstrap EC2 instance.
 app/user-data/layouts  | user-data scripts support layouts. You user-data layouts go in here.
 config/[AWS_EC2_ENV].yml  | The config file where you set configs that you want available in your templating logic.  Examples are: `config/development.yml` and `config/production.yml`. You access the config variables with the `<%= config["var"] %>` helper.
 profiles  | Your profile files.  These files mainly contain parameters that are passed to the aws-sdk run_instances API method.
-tmp  | Where the generated scripts get compiled to. You can manually invoke the compilation via `aws-ec2 compile` to inspect what is generated.  This is automatically done as part of the `aws-ec2` create command.
+tmp  | Where the generated scripts get compiled to. You can manually invoke the compilation via `forger compile` to inspect what is generated.  This is automatically done as part of the `forger` create command.
 
 ## Helpers
 
@@ -73,7 +73,7 @@ latest_ami | Returns an AMI id by searching the AMI name pattern and sorting in 
 search_ami | Returns a collection of AMI image objects based on a search pattern. The query searches on the AMI name.
 extract_scripts | Use this in your bash script to extract the `app/scripts` files that get uploaded to s3.
 
-For a full list of all the template helpers check out: [lib/aws_ec2/template/helper](lib/aws_ec2/template/helper).
+For a full list of all the template helpers check out: [lib/forger/template/helper](lib/forger/template/helper).
 
 You can also define custom helpers in the `app/helpers` folder as ruby modules with the naming convention `*_helper.rb`.  For example, you would define a `module FooHelper` in `app/helpers/foo_helper.rb`.  Custom helpers are first-class citizens and have access to the same variables, methods, and scope as built-in helpers.
 
@@ -83,17 +83,17 @@ You can provide a user-data script to customize the server upon launch.  The use
 
 * app/user-data/myserver.yml
 
-The user-data script is generated on the machine that is running the aws-ec2 command. If this is your local macosx machine, then the context of your local macosx machine is available. To see the generated user-data script, you can run the create command in `--noop` mode and then inspect the generated script.  Example:
+The user-data script is generated on the machine that is running the forger command. If this is your local macosx machine, then the context of your local macosx machine is available. To see the generated user-data script, you can run the create command in `--noop` mode and then inspect the generated script.  Example:
 
 ```sh
-aws-ec2 create myserver --noop
+forger create myserver --noop
 cat tmp/user-data.txt
 ```
 
-Another way to view the generated user-data scripts is the `aws-ec2 compile` command.  It generates the files in the `tmp` folder.  Example:
+Another way to view the generated user-data scripts is the `forger compile` command.  It generates the files in the `tmp` folder.  Example:
 
 ```
-aws-ec2 compile # generates files in tmp folder
+forger compile # generates files in tmp folder
 ```
 
 To use the user-data script when creating an EC2 instance, use the `user_data` helper method in the profile file.  Here's a grep of an example profile that uses the helper to show you want it looks like. Be sure to surround the ERB call with quotes because the user-data script context is base64 encoded.
@@ -167,11 +167,11 @@ subnet_id: <%= config["subnets"].shuffle %>
 
 ### Settings
 
-A `config/settings.yml` file controls the internal behavior of aws-ec2. It is different from config files which are meant for user defined varibles.  Settings variables are for internal use.  Example:
+A `config/settings.yml` file controls the internal behavior of forger. It is different from config files which are meant for user defined varibles.  Settings variables are for internal use.  Example:
 
 ```yaml
 development:
-  # By setting s3_folder, aws-ec2 will automatically tarball and upload your scripts
+  # By setting s3_folder, forger will automatically tarball and upload your scripts
   # to set. You then can then use the extract_scripts helper method to download
   # the scripts onto the server.
   s3_folder: boltops-infra-stag/ec2
@@ -200,9 +200,9 @@ You can set and configure environment variables in `.env*` files.  Examples of t
 
 ## AMI Creation
 
-To create AMIs you can use the `aws-ec2 ami` command.  This command launches an EC2 instance with the specified profile and creates an AMI after the user-data script successfully completes. It does this by appending an AMI creation script at the end of the user-data script.  It is recommended to use the `set -e` option in your user-data script so that any error halts the script and the AMI does not get created.
+To create AMIs you can use the `forger ami` command.  This command launches an EC2 instance with the specified profile and creates an AMI after the user-data script successfully completes. It does this by appending an AMI creation script at the end of the user-data script.  It is recommended to use the `set -e` option in your user-data script so that any error halts the script and the AMI does not get created.
 
-After the AMI is successfully created, the instance will also terminate itself automatically so you do not have to worry about cleanup.  This is also done with an appended script. For more help run `aws-ec2 ami help`.
+After the AMI is successfully created, the instance will also terminate itself automatically so you do not have to worry about cleanup.  This is also done with an appended script. For more help run `forger ami help`.
 
 For the instance to image and terminate itself, the EC2 IAM role for the instance requires IAM permissions for:
 
@@ -222,10 +222,10 @@ An example of a spot instance profile is provided in [example/profiles/spot.yml]
 ## More Help
 
 ```sh
-aws-ec2 create help
-aws-ec2 ami help
-aws-ec2 compile help
-aws-ec2 help # general help
+forger create help
+forger ami help
+forger compile help
+forger help # general help
 ```
 
 Examples are in the [example](docs/example) folder.  You will have to update settings like your subnet and security group ids.
@@ -233,7 +233,7 @@ Examples are in the [example](docs/example) folder.  You will have to update set
 ## Installation
 
 ```sh
-gem install aws-ec2
+gem install forger
 ```
 
 ### Dependencies

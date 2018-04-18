@@ -11,7 +11,7 @@ ENV['HOME'] = "spec/fixtures/home"
 require "pp"
 require "byebug"
 root = File.expand_path("../", File.dirname(__FILE__))
-require "#{root}/lib/aws-ec2"
+require "#{root}/lib/forger"
 
 module Helper
   def execute(cmd)
