@@ -1,4 +1,4 @@
-# AWS EC2 Tool
+# Forger
 
 [![CircleCI](https://circleci.com/gh/tongueroo/forger.svg?style=svg)](https://circleci.com/gh/tongueroo/forger)
 
@@ -32,7 +32,7 @@ If there is a profile name that matches the ec2 specified instance name, you can
 
 ```sh
 forger create webserver --profile webserver
-forger create webserver # same thing as --profile whatever
+forger create webserver # same as above
 ```
 
 It is useful to add a random string to the end of your server name, but not use it for the `--profile` flag.  Example:
@@ -68,7 +68,7 @@ You can use ERB in the profile files. Some useful helper methods are documented 
 Helper  | Description
 ------------- | -------------
 user_data | Allows you to embed a generated user_data script.  More details on the user-data are provided in the user data section below.
-config | Access to the variables set in config/[AWS_EC2_ENV].yml.  Examples are `config/development.yml` and `config/production.yml`.
+config | Access to the variables set in config/[AWS\_EC2\_ENV].yml.  Examples are `config/development.yml` and `config/production.yml`.
 latest_ami | Returns an AMI id by searching the AMI name pattern and sorting in reverse order.  Example: `latest_ami("ruby-2.5.0_*")` would return the latest ruby AMIs are named with timestamps at the end like so: `ruby-2.5.0_2018-01-30-05-36-02` and `ruby-2.5.0_2018-01-29-05-36-02`.
 search_ami | Returns a collection of AMI image objects based on a search pattern. The query searches on the AMI name.
 extract_scripts | Use this in your bash script to extract the `app/scripts` files that get uploaded to s3.
@@ -212,7 +212,7 @@ For the instance to image and terminate itself, the EC2 IAM role for the instanc
 
 ## Spot Instance Support
 
-Spot instance is natively supported by the AWS run_instances command.  So, simply add `instance_market_options` to the parameters to request for a spot instance.  The available spot market options are available here:
+Spot instance is natively supported by the AWS `run_instances` command by adding the `instance_market_options` to the parameters in the profile file.  The available spot market options are available here:
 
 * [https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_LaunchTemplateSpotMarketOptionsRequest.html](https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_LaunchTemplateSpotMarketOptionsRequest.html)
 * [https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Types/SpotMarketOptions.html](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Types/SpotMarketOptions.html)
