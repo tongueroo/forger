@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.5.0]
+- rename to forger
+
 ## [1.4.9]
 - fix /var/log/auto-terminate.log puts
 
