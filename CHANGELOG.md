@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.5.2]
+- add back user-data.txt script to cloudwatch
+
 ## [1.5.1]
 - allow setting s3 endpoint to allow different s3 bucket region from instance
 - remove user-data.txt log from cloudwatch
