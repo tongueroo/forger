@@ -58,6 +58,12 @@ log_group_name = ${LOG_GROUP_NAME}
 log_stream_name = {instance_id}/var/log/audit/audit.log
 datetime_format =
 
+[/var/lib/cloud/instance/user-data.txt]
+file = /var/lib/cloud/instance/user-data.txt
+log_group_name = ${LOG_GROUP_NAME}
+log_stream_name = {instance_id}/var/lib/cloud/instance/user-data.txt
+datetime_format =
+
 [/var/log/messages]
 file = /var/log/messages
 log_group_name = ${LOG_GROUP_NAME}
