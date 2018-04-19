@@ -57,7 +57,7 @@ app/partials  | Your partials that can to be included in other scripts.  This is
 app/scripts  | Where you define common scripts that can be used to configure the server. These scripts can be automatically uploaded to an s3 bucket for later downloading in your user-data script by setting the `s3_folder` settings option.
 app/user-data  | Your user-data scripts that are used to bootstrap EC2 instance.
 app/user-data/layouts  | user-data scripts support layouts. You user-data layouts go in here.
-config/[AWS_EC2_ENV].yml  | The config file where you set configs that you want available in your templating logic.  Examples are: `config/development.yml` and `config/production.yml`. You access the config variables with the `<%= config["var"] %>` helper.
+config/[FORGER_ENV].yml  | The config file where you set configs that you want available in your templating logic.  Examples are: `config/development.yml` and `config/production.yml`. You access the config variables with the `<%= config["var"] %>` helper.
 profiles  | Your profile files.  These files mainly contain parameters that are passed to the aws-sdk run_instances API method.
 tmp  | Where the generated scripts get compiled to. You can manually invoke the compilation via `forger compile` to inspect what is generated.  This is automatically done as part of the `forger` create command.
 

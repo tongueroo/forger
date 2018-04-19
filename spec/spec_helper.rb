@@ -1,6 +1,6 @@
 ENV["TEST"] = "1"
-ENV["AWS_EC2_ENV"] = "test"
-ENV["AWS_EC2_ROOT"] = "spec/fixtures/demo_project"
+ENV["FORGER_ENV"] = "test"
+ENV["FORGER_ROOT"] = "spec/fixtures/demo_project"
 # Ensures aws api never called. Fixture home folder does not contain ~/.aws/credentails
 ENV['HOME'] = "spec/fixtures/home"
 
