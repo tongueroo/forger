@@ -8,8 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Forger::VERSION
   spec.authors       = ["Tung Nguyen"]
   spec.email         = ["tongueroo@gmail.com"]
-  spec.description   = %q{Simple tool to create AWS ec2 instances consistently with pre-configured settings}
-  spec.summary       = %q{Simple tool to create AWS ec2 instances}
+  spec.summary       = "Tool to create AWS ec2 instances"
   spec.homepage      = "https://github.com/tongueroo/forger"
   spec.license       = "MIT"
 
