@@ -195,7 +195,19 @@ This will run `/path/to/my/script.sh` as a shelled out command before the `run_i
 
 ## Dotenv File Support
 
-You can set and configure environment variables in `.env*` files.  Examples of this are in the [example](docs/example) project.
+You can set and configure environment variables in `.env*` files.  Examples of this are in the [example](docs/example) project.  The env files are loaded in this order of precedence.
+
+1. .env.[FORGER_ENV].local
+2. .env.local
+3. .env.[FORGER_ENV]
+4. .env
+
+An concrete example, `FORGER_ENV=development` (development is the default)
+
+1. .env.development.local
+2. .env.local
+3. .env.development
+4. .env
 
 ## AMI Creation
 
