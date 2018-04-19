@@ -90,7 +90,7 @@ module Forger
     def display_cloudwatch_info(instance_id)
       return unless @options[:cloudwatch]
 
-      region = get_region
+      region = cloudwatch_log_region
       stream = "#{instance_id}/var/log/cloud-init-output.log"
       url = "https://#{region}.console.aws.amazon.com/cloudwatch/home?region=#{region}#logEventViewer:group=ec2;stream=#{stream}"
       cw_init_log = "cw tail -f ec2 #{stream}"
@@ -117,8 +117,13 @@ module Forger
       puts "Pro tip: The CloudWatch Console Link has been added to your copy-and-paste clipboard."
     end
 
-    def get_region
+    def cloudwatch_log_region
       # Highest precedence: FORGER_REGION env variable. Only really used here.
+      # This is useful to be able to override when running tool in codebuild.
+      # Codebuild can be running in different region then the region which the
+      # instance is launched in.
+      # Getting the region from the the profile and metadata doesnt work in
+      # this case.
       if ENV['FORGER_REGION']
         return ENV['FORGER_REGION']
       end
