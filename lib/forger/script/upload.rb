@@ -69,7 +69,17 @@ class Forger::Script
     end
 
     def s3_resource
-      @s3_resource ||= Aws::S3::Resource.new
+      return @s3_resource if @s3_resource
+
+      options = {}
+      # allow override of region for s3 client to avoid warning:
+      # S3 client configured for "us-east-1" but the bucket "xxx" is in "us-west-2"; Please configure the proper region to avoid multiple unnecessary redirects and signing attempts
+      # Example: endpoint: 'https://s3.us-west-2.amazonaws.com'
+      options[:endpoint] = ENV['S3_ENDPOINT'] if ENV['S3_ENDPOINT']
+      if options[:endpoint]
+        options[:region] = options[:endpoint].split('.')[1]
+      end
+      @s3_resource = Aws::S3::Resource.new(options)
     end
 
     # http://stackoverflow.com/questions/4175733/convert-duration-to-hoursminutesseconds-or-similar-in-rails-3-or-ruby
