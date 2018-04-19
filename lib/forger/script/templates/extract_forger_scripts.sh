@@ -21,13 +21,13 @@ function extract_forger_scripts() {
 
   <%
     # Examples:
-    #   AWS_EC2_CODE=v1.0.0
-    #   AWS_EC2_CODE=master
-    #   AWS_EC2_CODE=branch-name
+    #   FORGER_CODE=v1.0.0
+    #   FORGER_CODE=master
+    #   FORGER_CODE=branch-name
     #
     #   https://github.com/tongueroo/forger/archive/v1.0.0.tar.gz
     #   https://github.com/tongueroo/forger/archive/master.tar.gz
-    code_version = ENV['AWS_EC2_CODE']
+    code_version = ENV['FORGER_CODE']
     code_version ||= "v#{Forger::VERSION}"
   %>
     url="https://github.com/tongueroo/forger/archive/<%= code_version %>.tar.gz"

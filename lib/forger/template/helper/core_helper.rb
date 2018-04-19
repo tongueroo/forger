@@ -58,8 +58,8 @@ module Forger::Template::Helper::CoreHelper
   end
 
   # provides access to config/* settings as variables
-  #   AWS_EC2_ENV=development => config/development.yml
-  #   AWS_EC2_ENV=production => config/production.yml
+  #   FORGER_ENV=development => config/development.yml
+  #   FORGER_ENV=production => config/production.yml
   def config
     Forger.config
   end

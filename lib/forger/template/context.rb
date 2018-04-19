@@ -18,10 +18,10 @@ module Forger::Template
         filename = path.sub(%r{.*/},'').sub('.rb','')
         module_name = filename.classify
 
-        # Prepend a period so require works AWS_EC2_ROOT is set to a relative path
+        # Prepend a period so require works FORGER_ROOT is set to a relative path
         # without a period.
         #
-        # Example: AWS_EC2_ROOT=tmp/project
+        # Example: FORGER_ROOT=tmp/project
         first_char = path[0..0]
         path = "./#{path}" unless %w[. /].include?(first_char)
         require path

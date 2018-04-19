@@ -97,15 +97,15 @@ module Forger
       puts "To view instance's cloudwatch logs visit:"
       puts "  #{url}"
 
-      puts "  #{cw_init_log}" if ENV['AWS_EC2_CW']
-      if ENV['AWS_EC2_CW'] && @options[:auto_terminate]
+      puts "  #{cw_init_log}" if ENV['FORGER_CW']
+      if ENV['FORGER_CW'] && @options[:auto_terminate]
         cw_terminate_log = "cw tail -f ec2 #{instance_id}/var/log/auto-terminate.log"
         puts "  #{cw_terminate_log}"
       end
 
       puts "Note: It takes a little time for the instance to launch and report logs."
 
-      paste_command = ENV['AWS_EC2_CW'] ? cw_init_log : url
+      paste_command = ENV['FORGER_CW'] ? cw_init_log : url
       add_to_clipboard(paste_command)
     end
 
@@ -118,9 +118,9 @@ module Forger
     end
 
     def get_region
-      # Highest precedence: AWS_EC2_REGION env variable. Only really used here.
-      if ENV['AWS_EC2_REGION']
-        return ENV['AWS_EC2_REGION']
+      # Highest precedence: FORGER_REGION env variable. Only really used here.
+      if ENV['FORGER_REGION']
+        return ENV['FORGER_REGION']
       end
 
       # Pretty high in precedence: AWS_PROFILE and ~/.aws/config and
