@@ -90,22 +90,22 @@ module Forger
     def display_cloudwatch_info(instance_id)
       return unless @options[:cloudwatch]
 
-      region = get_region
+      region = cloudwatch_log_region
       stream = "#{instance_id}/var/log/cloud-init-output.log"
       url = "https://#{region}.console.aws.amazon.com/cloudwatch/home?region=#{region}#logEventViewer:group=ec2;stream=#{stream}"
       cw_init_log = "cw tail -f ec2 #{stream}"
       puts "To view instance's cloudwatch logs visit:"
       puts "  #{url}"
 
-      puts "  #{cw_init_log}" if ENV['AWS_EC2_CW']
-      if ENV['AWS_EC2_CW'] && @options[:auto_terminate]
+      puts "  #{cw_init_log}" if ENV['FORGER_CW']
+      if ENV['FORGER_CW'] && @options[:auto_terminate]
         cw_terminate_log = "cw tail -f ec2 #{instance_id}/var/log/auto-terminate.log"
         puts "  #{cw_terminate_log}"
       end
 
       puts "Note: It takes a little time for the instance to launch and report logs."
 
-      paste_command = ENV['AWS_EC2_CW'] ? cw_init_log : url
+      paste_command = ENV['FORGER_CW'] ? cw_init_log : url
       add_to_clipboard(paste_command)
     end
 
@@ -117,10 +117,15 @@ module Forger
       puts "Pro tip: The CloudWatch Console Link has been added to your copy-and-paste clipboard."
     end
 
-    def get_region
-      # Highest precedence: AWS_EC2_REGION env variable. Only really used here.
-      if ENV['AWS_EC2_REGION']
-        return ENV['AWS_EC2_REGION']
+    def cloudwatch_log_region
+      # Highest precedence: FORGER_REGION env variable. Only really used here.
+      # This is useful to be able to override when running tool in codebuild.
+      # Codebuild can be running in different region then the region which the
+      # instance is launched in.
+      # Getting the region from the the profile and metadata doesnt work in
+      # this case.
+      if ENV['FORGER_REGION']
+        return ENV['FORGER_REGION']
       end
 
       # Pretty high in precedence: AWS_PROFILE and ~/.aws/config and

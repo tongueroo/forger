@@ -24,7 +24,7 @@ class Forger::Dotenv
     end
 
     def root
-      Forger.root || Pathname.new(ENV["AWS_EC2_ROOT"] || Dir.pwd)
+      Forger.root || Pathname.new(ENV["FORGER_ROOT"] || Dir.pwd)
     end
   end
 end

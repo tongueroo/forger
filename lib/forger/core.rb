@@ -13,7 +13,7 @@ module Forger
     end
 
     def root
-      path = ENV['AWS_EC2_ROOT'] || '.'
+      path = ENV['FORGER_ROOT'] || '.'
       Pathname.new(path)
     end
 
@@ -28,7 +28,7 @@ module Forger
     def env
       return @@env if @@env
       env = env_from_profile(ENV['AWS_PROFILE']) || 'development'
-      env = ENV['AWS_EC2_ENV'] if ENV['AWS_EC2_ENV'] # highest precedence
+      env = ENV['FORGER_ENV'] if ENV['FORGER_ENV'] # highest precedence
       @@env = env
     end
 

@@ -5,3 +5,4 @@ subnets:
 security_group_ids:
   - sg-123 # test-single-instance
 s3_bucket: my-bucket # for the user-data shared scripts
+test_key: <%= ENV['TEST_KEY'] %>

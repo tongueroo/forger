@@ -9,6 +9,13 @@ describe Forger::CLI do
       expect(out).to include("Creating EC2 instance")
     end
 
+    it "ERB evaluates dotenv files" do
+      out = execute("exe/forger create server #{@args}")
+      user_data = IO.readlines("spec/fixtures/demo_project/tmp/user-data.txt")
+      found = !user_data.select { |l| l =~ /test_key: test-key-value/ }.empty?
+      expect(found).to be true
+    end
+
     it "ami" do
       out = execute("exe/forger ami myimage #{@args}")
       expect(out).to include("Creating EC2 instance")
