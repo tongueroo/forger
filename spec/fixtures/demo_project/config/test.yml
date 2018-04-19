@@ -1,6 +1,4 @@
 ---
-vpc_id: vpc-123
-db_subnet_group_name: default # default db subnet group associated with default vpc
 subnets:
   - subnet-123
   - subnet-456

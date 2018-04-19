@@ -146,7 +146,6 @@ You can set variables in a config file and they are available when ERB is availa
 
 ```yaml
 ---
-vpc_id: vpc-123
 subnets:
   - subnet-123
   - subnet-456

@@ -1,5 +1,4 @@
 ---
-vpc_id: vpc-111
 subnets:
   - subnet-111
   - subnet-222
