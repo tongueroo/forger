@@ -29,7 +29,8 @@ module Forger
     def create_ami
       # set variables for the template
       @ami_name = @options[:ami_name]
-      @region = `aws configure get region`.strip rescue 'us-east-1'
+      @region = 'us-east-1' if ENV['TEST']
+      @region ||= `aws configure get region`.strip rescue 'us-east-1'
       load_template("ami_creation.sh")
     end
 

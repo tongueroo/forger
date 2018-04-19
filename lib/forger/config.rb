@@ -14,9 +14,8 @@ module Forger
     def data
       return @@data if @@data
 
-      # text = RenderMePretty.result(@path, context: context)
-      # @@data = YAML.load(text)
-      @@data = YAML.load_file(@path)
+      text = RenderMePretty.result(@path, context: context)
+      @@data = YAML.load(text)
     rescue Errno::ENOENT => e
       puts e.message
       puts "The #{@path} does not exist. Please double check that it exists."
