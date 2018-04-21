@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.5.4]
+- rename FORGER_S3_ENDPOINT env variable setting
+
 ## [1.5.3]
 - Merge pull request #9 from tongueroo/erb-support-for-config-env-files
 - ERB support for config env files
