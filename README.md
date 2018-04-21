@@ -209,6 +209,8 @@ An concrete example, `FORGER_ENV=development` (development is the default)
 3. .env.development
 4. .env
 
+You are able to reference these values in the `config/[FORGER_ENV].yml` files with ERB.
+
 ## AMI Creation
 
 To create AMIs you can use the `forger ami` command.  This command launches an EC2 instance with the specified profile and creates an AMI after the user-data script successfully completes. It does this by appending an AMI creation script at the end of the user-data script.  It is recommended to use the `set -e` option in your user-data script so that any error halts the script and the AMI does not get created.
