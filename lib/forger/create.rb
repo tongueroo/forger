@@ -52,7 +52,14 @@ module Forger
     end
 
     def display_spot_info(instance_id)
-      resp = ec2.describe_instances(instance_ids: [instance_id])
+      retries = 0
+      begin
+        resp = ec2.describe_instances(instance_ids: [instance_id])
+      rescue Aws::EC2::Errors::InvalidInstanceIDNotFound
+        retries += 1
+        retry unless retries >= 3
+        sleep 2
+      end
       spot_id = resp.reservations.first.instances.first.spot_instance_request_id
       return unless spot_id
 
