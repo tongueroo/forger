@@ -11,7 +11,9 @@ module Forger::Template::Helper::CoreHelper
     name = File.basename(name, '.sh')
 
     layout_path = layout_path(layout)
-    path = "#{Forger.root}/app/user-data/#{name}.sh"
+    ext = File.extname(name)
+    name += ".sh" if ext.empty?
+    path = "#{Forger.root}/app/user-data/#{name}"
     result = RenderMePretty.result(path, context: self, layout: layout_path)
     # Must prepend and append scripts in user_data here because we need to
     # encode the user_data script for valid yaml to load in the profile.
