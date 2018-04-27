@@ -6,5 +6,12 @@ Compiles the app/scripts and app/user-data files to the tmp folder. Then uploads
 
 ```yaml
 development:
+  # Format 1: Simple String
   s3_folder: my-bucket/folder # enables auto sync to s3
+
+  # Format 2: Hash
+  # s3_folder:
+  #   default: mybucket/path/to/folder
+  #   dev_profile1: mybucket/path/to/folder
+  #   dev_profile1: another-bucket/storage/path
 ```

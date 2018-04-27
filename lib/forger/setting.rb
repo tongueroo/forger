@@ -20,6 +20,39 @@ module Forger
       all_envs = load_file(project_settings_path)
       all_envs = merge_base(all_envs)
       @@data = all_envs[Forger.env] || all_envs["base"] || {}
+      @@data = flatten_s3_folder(@@data)
+      @@data
+    end
+
+    # So we can access settings['s3_folder'] transparently
+    def flatten_s3_folder(data)
+      # data = data.clone
+      if data['s3_folder'].is_a?(Hash)
+        data['s3_folder'] = s3_folder
+      end
+      data
+    end
+
+    # Special helper method to support multiple formats for s3_folder setting.
+    # Format 1: Simple String
+    #
+    #   development:
+    #     s3_folder: mybucket/path/to/folder
+    #
+    # Format 2: Hash
+    #
+    #   development:
+    #     s3_folder:
+    #       default: mybucket/path/to/folder
+    #       dev_profile1: mybucket/path/to/folder
+    #       dev_profile1: another-bucket/storage/path
+    #
+    def s3_folder
+      s3_folder = data['s3_folder']
+      return s3_folder if s3_folder.nil? or s3_folder.is_a?(String)
+
+      # If reach here then the s3_folder is a Hash
+      s3_folder[ENV['AWS_PROFILE']] || s3_folder["default"]
     end
 
   private
