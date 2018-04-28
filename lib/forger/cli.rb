@@ -21,6 +21,9 @@ module Forger
     option :ami_name, desc: "when specified, an ami creation script is appended to the user-data script"
     option :randomize, type: :boolean, desc: "append random characters to end of name"
     option :source_ami, desc: "override the source image_id in profile"
+    option :wait, desc: "Wait until the instance is ready and report dns name"
+    option :ssh, desc: "Wait until the instance is ready and ssh into instance"
+    option :ssh_user, default: "ec2-user", desc: "User to use to with the ssh option to log into instance"
     common_options.call
     def create(name)
       Create.new(options.merge(name: name)).run

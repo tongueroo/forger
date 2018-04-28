@@ -5,6 +5,7 @@ module Forger
   class Create < Base
     autoload :Params, "forger/create/params"
     autoload :ErrorMessages, "forger/create/error_messages"
+    autoload :Waiter, "forger/create/waiter"
 
     include AwsService
     include ErrorMessages
@@ -22,11 +23,18 @@ module Forger
         return
       end
       resp = run_instances(params)
+
       instance_id = resp.instances.first.instance_id
       display_spot_info(instance_id)
       puts "EC2 instance #{@name} created: #{instance_id} 🎉"
       puts "Visit https://console.aws.amazon.com/ec2/home to check on the status"
       display_cloudwatch_info(instance_id)
+
+      handle_wait_options(instance_id)
+    end
+
+    def handle_wait_options(instance_id)
+      Waiter.new(@options.merge(instance_id: instance_id)).wait
     end
 
     def run_instances(params)
