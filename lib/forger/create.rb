@@ -123,16 +123,20 @@ module Forger
       puts "To view instance's cloudwatch logs visit:"
       puts "  #{url}"
 
-      puts "  #{cw_init_log}" if ENV['FORGER_CW']
-      if ENV['FORGER_CW'] && @options[:auto_terminate]
+      puts "  #{cw_init_log}" if show_cw
+      if show_cw && @options[:auto_terminate]
         cw_terminate_log = "cw tail -f ec2 #{instance_id}/var/log/auto-terminate.log"
         puts "  #{cw_terminate_log}"
       end
 
       puts "Note: It takes a little time for the instance to launch and report logs."
 
-      paste_command = ENV['FORGER_CW'] ? cw_init_log : url
+      paste_command = show_cw ? cw_init_log : url
       add_to_clipboard(paste_command)
+    end
+
+    def show_cw
+      ENV['FORGER_CW'] || sytem("type cw > /dev/null 2>&1")
     end
 
     def add_to_clipboard(text)
