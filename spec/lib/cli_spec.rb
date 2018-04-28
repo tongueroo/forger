@@ -31,6 +31,11 @@ describe Forger::CLI do
       expect(out).to include("Cleaning out old AMIs")
     end
 
+    it "destroy" do
+      out = execute("exe/forger destroy i-123")
+      expect(out).to include("Destroying i-123")
+    end
+
     commands = {
       "am" => "ami",
       "compile" => "--profile",

@@ -47,6 +47,12 @@ module Forger
       Script::Upload.new(options).upload
     end
 
+    desc "destroy", "Destroys instance accounting for spot request"
+    long_desc Help.text("destroy")
+    def destroy(instance_id)
+      Destroy.new(options).run(instance_id)
+    end
+
     desc "completion *PARAMS", "Prints words for auto-completion."
     long_desc Help.text("completion")
     def completion(*params)

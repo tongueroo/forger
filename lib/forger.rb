@@ -11,6 +11,7 @@ module Forger
   autoload :Profile, "forger/profile"
   autoload :Base, "forger/base"
   autoload :Create, "forger/create"
+  autoload :Destroy, "forger/destroy"
   autoload :Ami, "forger/ami"
   autoload :Wait, "forger/wait"
   autoload :Clean, "forger/clean"
