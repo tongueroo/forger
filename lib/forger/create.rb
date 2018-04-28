@@ -5,6 +5,8 @@ module Forger
   class Create < Base
     autoload :Params, "forger/create/params"
     autoload :ErrorMessages, "forger/create/error_messages"
+    autoload :Waiter, "forger/create/waiter"
+    autoload :Info, "forger/create/info"
 
     include AwsService
     include ErrorMessages
@@ -16,17 +18,21 @@ module Forger
       sync_scripts_to_s3
 
       puts "Creating EC2 instance #{@name.colorize(:green)}"
-      display_ec2_info
+      info = Info.new(@options, params)
+      info.ec2_params
       if @options[:noop]
         puts "NOOP mode enabled. EC2 instance not created."
         return
       end
       resp = run_instances(params)
+
       instance_id = resp.instances.first.instance_id
-      display_spot_info(instance_id)
+      info.spot(instance_id)
       puts "EC2 instance #{@name} created: #{instance_id} 🎉"
       puts "Visit https://console.aws.amazon.com/ec2/home to check on the status"
-      display_cloudwatch_info(instance_id)
+      info.cloudwatch(instance_id)
+
+      Waiter.new(@options.merge(instance_id: instance_id)).wait
     end
 
     def run_instances(params)
@@ -51,128 +57,13 @@ module Forger
     #       dev_profile1: mybucket/path/to/folder
     #       dev_profile1: another-bucket/storage/path
     def sync_scripts_to_s3
-      if Forger.settings["s3_folder"]
-        Script::Upload.new(@options).run
-      end
+      return unless Forger.settings["s3_folder"]
+      Script::Upload.new(@options).run
     end
 
     # params are main derived from profile files
     def params
       @params ||= Params.new(@options).generate
-    end
-
-    def display_spot_info(instance_id)
-      retries = 0
-      begin
-        resp = ec2.describe_instances(instance_ids: [instance_id])
-      rescue Aws::EC2::Errors::InvalidInstanceIDNotFound
-        retries += 1
-        puts "Aws::EC2::Errors::InvalidInstanceIDNotFound error. Retry: #{retries}"
-        sleep 2**retries
-        retry if retries <= 3
-      end
-      spot_id = resp.reservations.first.instances.first.spot_instance_request_id
-      return unless spot_id
-
-      puts "Spot instance request id: #{spot_id}"
-    end
-
-    def display_ec2_info
-      puts "Using the following parameters:"
-      pretty_display(params)
-
-      display_launch_template
-    end
-
-    def display_launch_template
-      launch_template = params[:launch_template]
-      return unless launch_template
-
-      resp = ec2.describe_launch_template_versions(
-        launch_template_id: launch_template[:launch_template_id],
-        launch_template_name: launch_template[:launch_template_name],
-      )
-      versions = resp.launch_template_versions
-      launch_template_data = {} # combined launch_template_data
-      versions.sort_by { |v| v[:version_number] }.each do |v|
-        launch_template_data.merge!(v[:launch_template_data])
-      end
-      puts "launch template data (versions combined):"
-      pretty_display(launch_template_data)
-    rescue Aws::EC2::Errors::InvalidLaunchTemplateNameNotFoundException => e
-      puts "ERROR: The specified launched template #{launch_template.inspect} was not found."
-      puts "Please double check that it exists."
-      exit
-    end
-
-    def display_cloudwatch_info(instance_id)
-      return unless @options[:cloudwatch]
-
-      region = cloudwatch_log_region
-      stream = "#{instance_id}/var/log/cloud-init-output.log"
-      url = "https://#{region}.console.aws.amazon.com/cloudwatch/home?region=#{region}#logEventViewer:group=ec2;stream=#{stream}"
-      cw_init_log = "cw tail -f ec2 #{stream}"
-      puts "To view instance's cloudwatch logs visit:"
-      puts "  #{url}"
-
-      puts "  #{cw_init_log}" if ENV['FORGER_CW']
-      if ENV['FORGER_CW'] && @options[:auto_terminate]
-        cw_terminate_log = "cw tail -f ec2 #{instance_id}/var/log/auto-terminate.log"
-        puts "  #{cw_terminate_log}"
-      end
-
-      puts "Note: It takes a little time for the instance to launch and report logs."
-
-      paste_command = ENV['FORGER_CW'] ? cw_init_log : url
-      add_to_clipboard(paste_command)
-    end
-
-    def add_to_clipboard(text)
-      return unless RUBY_PLATFORM =~ /darwin/
-      return unless system("type pbcopy > /dev/null")
-
-      system(%[echo "#{text}" | pbcopy])
-      puts "Pro tip: The CloudWatch Console Link has been added to your copy-and-paste clipboard."
-    end
-
-    def cloudwatch_log_region
-      # Highest precedence: FORGER_REGION env variable. Only really used here.
-      # This is useful to be able to override when running tool in codebuild.
-      # Codebuild can be running in different region then the region which the
-      # instance is launched in.
-      # Getting the region from the the profile and metadata doesnt work in
-      # this case.
-      if ENV['FORGER_REGION']
-        return ENV['FORGER_REGION']
-      end
-
-      # Pretty high in precedence: AWS_PROFILE and ~/.aws/config and
-      aws_found = system("type aws > /dev/null")
-      if aws_found
-        region = `aws configure get region`.strip
-        return region
-      end
-
-      # Assumes instance same region as the calling ec2 instance.
-      # It is possible for curl not to be installed.
-      curl_found = system("type curl > /dev/null")
-      if curl_found
-        region = `curl --connect-timeout 3  -s 169.254.169.254/latest/meta-data/placement/availability-zone | sed s'/.$//'`
-        return region unless region == ''
-      end
-
-      return 'us-east-1' # fallback default
-    end
-
-    def pretty_display(data)
-      data = data.deep_stringify_keys
-
-      if data["user_data"]
-        message = "base64-encoded: cat tmp/user-data.txt to view"
-        data["user_data"] = message
-      end
-
-      puts YAML.dump(data)
     end
   end
 end
