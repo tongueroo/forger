@@ -1,10 +1,13 @@
 require 'filesize'
 require 'aws-sdk-s3'
 require 'fileutils'
+require 'memoist'
 
 # Class for forger upload command
 class Forger::Script
   class Upload < Forger::Base
+    extend Memoist
+
     def initialize(options={})
       @options = options
       @compile = @options[:compile] ? @options[:compile] : true
@@ -25,10 +28,21 @@ class Forger::Script
       if @options[:noop]
         puts "NOOP: Not uploading file to s3"
       else
-        obj.upload_file(tarball_path)
+        upload_to_s3(obj, tarball_path)
       end
       time_took = pretty_time(Time.now-start_time).colorize(:green)
       puts "Time to upload code to s3: #{time_took}"
+    end
+
+    def upload_to_s3(obj, tarball_path)
+      obj.upload_file(tarball_path)
+    rescue Aws::S3::Errors::PermanentRedirect => e
+      puts "ERROR: #{e.class} #{e.message}".colorize(:red)
+      puts "The bucket you are trying to upload to is in a different region than the region the instance is being launched in."
+      puts "You must configured FORGER_S3_ENDPOINT env variable to prevent this error. Example:"
+      puts "  FORGER_S3_ENDPOINT=https://s3.us-west-2.amazonaws.com"
+      puts "Check your ~/.aws/config for the region being used for the ec2 instance."
+      exit 1
     end
 
     def tarball_path
@@ -69,8 +83,6 @@ class Forger::Script
     end
 
     def s3_resource
-      return @s3_resource if @s3_resource
-
       options = {}
       # allow override of region for s3 client to avoid warning:
       # S3 client configured for "us-east-1" but the bucket "xxx" is in "us-west-2"; Please configure the proper region to avoid multiple unnecessary redirects and signing attempts
@@ -79,8 +91,9 @@ class Forger::Script
       if options[:endpoint]
         options[:region] = options[:endpoint].split('.')[1]
       end
-      @s3_resource = Aws::S3::Resource.new(options)
+      Aws::S3::Resource.new(options)
     end
+    memoize :s3_resource
 
     # http://stackoverflow.com/questions/4175733/convert-duration-to-hoursminutesseconds-or-similar-in-rails-3-or-ruby
     def pretty_time(total_seconds)
