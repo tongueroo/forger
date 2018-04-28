@@ -24,7 +24,6 @@ module Forger
     option :wait, desc: "Wait until the instance is ready and report dns name"
     option :ssh, desc: "Wait until the instance is ready and ssh into instance"
     option :ssh_user, default: "ec2-user", desc: "User to use to with the ssh option to log into instance"
-    option :ssh_options, desc: "Options to use as part of the ssh command"
     common_options.call
     def create(name)
       Create.new(options.merge(name: name)).run
