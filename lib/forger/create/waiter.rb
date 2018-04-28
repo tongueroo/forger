@@ -58,6 +58,9 @@ class Forger::Create
         puts "Can't ssh into the server yet.  Retrying until success." if retries == 0
         print '.'
         retries += 1
+        if retries > 600 # Timeout after 10 minutes
+          raise "ERROR: Timeout after 600 seconds, cannot connect to the server."
+        end
         sleep 1
         out = `#{uptime}`
       end
