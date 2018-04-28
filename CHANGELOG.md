@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.6.0]
+- Merge pull request #10 from tongueroo/waiter
+- forger destroy command
+- forger create --ssh
+- forger create --wait
+- refactor display logic to create/info
+- add aws_profile support for s3_folder setting
+
 ## [1.5.4]
 - rename FORGER_S3_ENDPOINT env variable setting
 
