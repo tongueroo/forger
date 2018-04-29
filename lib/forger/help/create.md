@@ -15,3 +15,9 @@ You can also tell forger to ssh into the instance immediately after it's ready w
     forger create my-instance --ssh # default is to login as ec2-user
     forger create my-instance --ssh --ssh-user ubuntu
     SSH_OPTIONS "-A" forger create my-instance --ssh --ssh-user ubuntu
+
+## CloudWatch support
+
+There is experimental support for CloudWatch logs.  When using the `--cloudwatch` flag, code is added to the very beginning of the user-data script so that logs of the instance are sent to cloudwatch.  Example:
+
+    forger create my-instance --cloudwatch

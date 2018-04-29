@@ -78,9 +78,13 @@ module Forger::Template::Helper::CoreHelper
   end
 
 private
+  def cloudwatch_enabled?
+    Forger.cloudwatch_enabled?(@options)
+  end
+
   # TODO: move script combining logic into class
   def prepend_scripts(scripts)
-    scripts.unshift(script.cloudwatch) if @options[:cloudwatch]
+    scripts.unshift(script.cloudwatch) if cloudwatch_enabled?
     scripts.unshift(script.auto_terminate_after_timeout) if @options[:auto_terminate]
     add_setup_script(scripts, :prepend)
     scripts
@@ -97,7 +101,7 @@ private
     return if @already_setup
     @already_setup = true
 
-    requires_setup = @options[:cloudwatch] ||
+    requires_setup = cloudwatch_enabled? ||
                      @options[:auto_terminate] ||
                      @options[:ami_name]
 

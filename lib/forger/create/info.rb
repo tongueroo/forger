@@ -53,7 +53,7 @@ class Forger::Create
     end
 
     def cloudwatch(instance_id)
-      return unless @options[:cloudwatch]
+      return unless Forger.cloudwatch_enabled?(@options)
 
       region = cloudwatch_log_region
       stream = "#{instance_id}/var/log/cloud-init-output.log"

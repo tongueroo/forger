@@ -12,6 +12,12 @@ module Forger
       Setting.new.data
     end
 
+    def cloudwatch_enabled?(options)
+      !options[:cloudwatch].nil? ?
+        options[:cloudwatch] : # options can use symbols because this the options hash from Thor
+        settings["cloudwatch"] # settings uses strings as keys
+    end
+
     def root
       path = ENV['FORGER_ROOT'] || '.'
       Pathname.new(path)

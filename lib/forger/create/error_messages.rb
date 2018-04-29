@@ -16,8 +16,8 @@ EOL
     end
 
     # Examples:
-    #   Aws::EC2::Errors::InvalidGroupNotFound => invalid_group_not_found!
-    #   Aws::EC2::Errors::InvalidParameterCombination => invalid_parameter_combination!
+    #   Aws::EC2::Errors::InvalidGroupNotFound => invalid_group_not_found
+    #   Aws::EC2::Errors::InvalidParameterCombination => invalid_parameter_combination
     def map_exception_to_method(exception)
       class_name = File.basename(exception.class.to_s).sub(/.*::/,'')
       class_name.underscore # method_name
