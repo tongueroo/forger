@@ -36,6 +36,25 @@ function extract_forger_scripts() {
     folder="${folder#v}" # remove leading v character
     folder="forger-$folder" # IE: forger-1.0.0
 
+    # if wget is not installed, install it
+    if ! type wget > /dev/null 2>&1 ; then
+      if type yum > /dev/null 2>&1 ; then
+        yum install -y wget
+      elif type apt-get > /dev/null 2>&1 ; then
+        apt-get update
+        apt-get install -y wget
+      fi
+    fi
+
+    if ! type tar > /dev/null 2>&1 ; then
+      if type yum > /dev/null 2>&1 ; then
+        yum install -y tar
+      elif type apt-get > /dev/null 2>&1 ; then
+        apt-get update
+        apt-get install -y tar
+      fi
+    fi
+
     wget "$url"
     tar zxf "$filename"
 
