@@ -21,7 +21,7 @@ module Forger
     end
 
     def sh(command)
-      puts "=> #{command}".colorize(:cyan)
+      puts "=> #{command}".colorize(:green)
       success = system(command)
       abort("Command failed") unless success
     end
