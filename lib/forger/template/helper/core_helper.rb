@@ -4,16 +4,11 @@ require "erb"
 module Forger::Template::Helper::CoreHelper
   # assuming user-data script is a bash script for simplicity for now
   def user_data(name, base64:true, layout:"default")
-    # allow user to specify the path also
-    if File.exist?(name)
-      name = File.basename(name) # normalize name, change path to name
-    end
-    name = File.basename(name, '.sh')
-
+    name = normalize_user_data_name_input(name)
     layout_path = layout_path(layout)
-    ext = File.extname(name)
-    name += ".sh" if ext.empty?
+
     path = "#{Forger.root}/app/user-data/#{name}"
+    puts "path #{path}".colorize(:cyan)
     result = RenderMePretty.result(path, context: self, layout: layout_path)
     # Must prepend and append scripts in user_data here because we need to
     # encode the user_data script for valid yaml to load in the profile.
@@ -129,5 +124,12 @@ private
       require path
       self.class.send :include, module_name.constantize
     end
+  end
+
+private
+  def normalize_user_data_name_input(name)
+    ext = File.extname(name)
+    name += ".sh" if ext.empty?
+    name
   end
 end

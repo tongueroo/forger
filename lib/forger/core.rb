@@ -12,6 +12,8 @@ module Forger
       Setting.new.data
     end
 
+    # cloudwatch cli option takes higher precedence than when its set in the
+    # config/settings.yml file.
     def cloudwatch_enabled?(options)
       !options[:cloudwatch].nil? ?
         options[:cloudwatch] : # options can use symbols because this the options hash from Thor
