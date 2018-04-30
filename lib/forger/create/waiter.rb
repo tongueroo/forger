@@ -4,7 +4,7 @@ class Forger::Create
 
     def wait
       @instance_id = @options[:instance_id]
-      handle_wait if @options[:wait]
+      handle_wait if @options[:wait] && !@options[:ssh]
       handle_ssh if @options[:ssh]
     end
 
@@ -24,6 +24,13 @@ class Forger::Create
       puts "Instance #{@instance_id} is ready"
       dns = i.public_dns_name ? i.public_dns_name : 'nil'
       puts "Instance public_dns_name: #{dns}"
+
+      if i.public_dns_name && !@options[:ssh]
+        command = build_ssh_command(i.public_dns_name)
+        puts "Ssh command below. Note the user might be different. You can specific --ssh-user.  You can also ssh automatically into the instance with --ssh."
+        display_ssh(command)
+      end
+
       i
     end
 
@@ -35,7 +42,7 @@ class Forger::Create
       end
 
       command = build_ssh_command(instance.public_dns_name)
-      puts "=> #{command.join(' ')}".colorize(:green)
+      display_ssh(command)
       retry_until_success(command)
       Kernel.exec(*command) unless @options[:noop]
     end
@@ -47,6 +54,10 @@ class Forger::Create
         ENV['SSH_OPTIONS'],
         "#{user}@#{host}"
       ].compact
+    end
+
+    def display_ssh(command)
+      puts "=> #{command.join(' ')}".colorize(:green)
     end
 
     def retry_until_success(*command)

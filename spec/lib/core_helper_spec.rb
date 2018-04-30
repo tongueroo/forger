@@ -1,6 +1,7 @@
 describe Forger::Template::Helper::CoreHelper do
   let(:thing) do
     thing = Class.new
+    Forger::Template::Helper::CoreHelper.send :public, :normalize_user_data_name_input
     thing.extend(Forger::Template::Helper::CoreHelper)
     thing
   end

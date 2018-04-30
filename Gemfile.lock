@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    forger (1.5.4)
+    forger (1.6.0)
       activesupport
       aws-sdk-ec2
       aws-sdk-s3
