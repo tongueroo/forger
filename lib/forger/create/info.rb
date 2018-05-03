@@ -16,6 +16,8 @@ class Forger::Create
     end
 
     def spot(instance_id)
+      puts "Max monthly price: $#{monthly_spot_price}/mo"
+
       retries = 0
       begin
         resp = ec2.describe_instances(instance_ids: [instance_id])
@@ -23,12 +25,24 @@ class Forger::Create
         retries += 1
         puts "Aws::EC2::Errors::InvalidInstanceIDNotFound error. Retry: #{retries}"
         sleep 2**retries
-        retry if retries <= 3
+        if retries <= 3
+          retry
+        else
+          puts "Unable to find lauched spot instance"
+          return
+        end
       end
+
       spot_id = resp.reservations.first.instances.first.spot_instance_request_id
       return unless spot_id
 
       puts "Spot instance request id: #{spot_id}"
+    end
+
+    def monthly_spot_price
+      max_price = @params[:instance_market_options][:spot_options][:max_price].to_f
+      monthly_price = max_price * 24 * 30
+      "%.2f" % monthly_price
     end
 
     def launch_template
@@ -68,7 +82,7 @@ class Forger::Create
         puts "  #{cw_terminate_log}"
       end
 
-      puts "Note: It takes a little time for the instance to launch and report logs."
+      puts "Note: It at least a few minutes for the instance to launch and report logs."
 
       paste_command = show_cw ? cw_init_log : url
       add_to_clipboard(paste_command)

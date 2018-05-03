@@ -4,7 +4,7 @@ class Forger::Create
 
     def wait
       @instance_id = @options[:instance_id]
-      handle_wait if @options[:wait] && !@options[:ssh]
+      handle_wait if wait?
       handle_ssh if @options[:ssh]
     end
 
@@ -47,6 +47,11 @@ class Forger::Create
       Kernel.exec(*command) unless @options[:noop]
     end
 
+    def wait?
+      return false if @options[:ssh]
+      @options[:wait]
+    end
+
     def build_ssh_command(host)
       user = @options[:ssh_user] || "ec2-user"
       [
@@ -66,7 +71,7 @@ class Forger::Create
       uptime = uptime.join(' ')
       out = `#{uptime}`
       while out !~ /load average/ do
-        puts "Can't ssh into the server yet.  Retrying until success." if retries == 0
+        puts "Can't ssh into the server yet.  Retrying until success. (Timeout 10m)" if retries == 0
         print '.'
         retries += 1
         if retries > 600 # Timeout after 10 minutes
