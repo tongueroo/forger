@@ -8,6 +8,10 @@ module Forger::Template::Helper::CoreHelper
     layout_path = layout_path(layout)
 
     path = "#{Forger.root}/app/user-data/#{name}"
+    unless File.exist?(path)
+      puts "ERROR: user-data script #{path.colorize(:red)} does not exist"
+      exit
+    end
     result = RenderMePretty.result(path, context: self, layout: layout_path)
     # Must prepend and append scripts in user_data here because we need to
     # encode the user_data script for valid yaml to load in the profile.
