@@ -82,7 +82,7 @@ class Forger::Create
         puts "  #{cw_terminate_log}"
       end
 
-      puts "Note: It at least a few minutes for the instance to launch and report logs."
+      puts "Note: It takes at least a few minutes for the instance to launch and report logs."
 
       paste_command = show_cw ? cw_init_log : url
       add_to_clipboard(paste_command)

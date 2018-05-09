@@ -27,7 +27,7 @@ class Forger::Create
 
       if i.public_dns_name && !@options[:ssh]
         command = build_ssh_command(i.public_dns_name)
-        puts "Ssh command below. Note the user might be different. You can specific --ssh-user.  You can also ssh automatically into the instance with --ssh."
+        puts "Ssh command below. Note the user might be different. You can specify --ssh-user=USER.  You can also ssh automatically into the instance with the --ssh flag."
         display_ssh(command)
       end
 
