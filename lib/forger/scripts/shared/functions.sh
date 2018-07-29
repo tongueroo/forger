@@ -56,7 +56,7 @@ function os_name() {
     # https://askubuntu.com/questions/459402/how-to-know-if-the-running-platform-is-ubuntu-or-centos-with-help-of-a-bash-scri
     # Method 1 works for amazonlinux and ubuntu
     # Method 3 the complex script, did not work for amazonlinux
-    OS=$(gawk -F= '/^NAME/{print $2}' /etc/os-release)
+    OS=$(gawk -F= '/^ID=/{print $2}' /etc/os-release)
   fi
 
   OS="${OS// /}" # remove spaces
