@@ -1,0 +1,33 @@
+---
+image_id: ami-a9d09ed1 # Amazon Linux 2 AMI (HVM), SSD Volume Type - us-west-2 Oregon
+instance_type: t2.medium
+key_name: default # make sure that the "default" keypair exist in the region
+max_count: 1
+min_count: 1
+user_data: "<%= user_data("bootstrap") %>"
+# iam_instance_profile:
+#   name: IamProfileExample
+# public network settings
+security_group_ids: <%= config["security_group_ids"] %>
+subnet_id: <%= config["subnets"].shuffle.first %>
+# block_device_mappings:
+#   - device_name: /dev/xvda
+#     ebs:
+#       volume_size: 100 # in GB
+<% if ENV['SPOT'] %>
+instance_market_options:
+  market_type: spot
+  # https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_LaunchTemplateSpotMarketOptionsRequest.html
+  # https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Types/SpotMarketOptions.html
+  spot_options:
+    max_price: "0.018" # $0.020/hr = $14.40/mo
+                       # $0.018/hr = $12.96/mo
+    # valid combinations:
+    #   spot_instance_type: persistent
+    #   instance_interruption_behavior: hibernate
+    # or
+    #   spot_instance_type: one-time
+    # More info: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-interruptions.html
+    spot_instance_type: persistent
+    instance_interruption_behavior: hibernate
+<% end %>

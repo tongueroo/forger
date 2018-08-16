@@ -16,6 +16,12 @@ module Forger
       option :cloudwatch, type: :boolean, desc: "enable cloudwatch logging, supported for amazonlinux2 and ubuntu"
     end
 
+    long_desc Help.text(:new)
+    New.cli_options.each do |args|
+      option *args
+    end
+    register(New, "new", "new NAME", "Generates new forger project")
+
     desc "create NAME", "create ec2 instance"
     long_desc Help.text(:create)
     option :ami_name, desc: "when specified, an ami creation script is appended to the user-data script"

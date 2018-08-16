@@ -1,0 +1,6 @@
+---
+subnets:
+  - subnet-123
+security_group_ids:
+  - sg-123
+key1: <%= ENV['KEY1'] %>

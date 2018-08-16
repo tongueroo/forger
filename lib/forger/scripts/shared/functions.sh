@@ -56,7 +56,7 @@ function os_name() {
     # https://askubuntu.com/questions/459402/how-to-know-if-the-running-platform-is-ubuntu-or-centos-with-help-of-a-bash-scri
     # Method 1 works for amazonlinux and ubuntu
     # Method 3 the complex script, did not work for amazonlinux
-    OS=$(gawk -F= '/^NAME/{print $2}' /etc/os-release)
+    OS=$(gawk -F= '/^ID=/{print $2}' /etc/os-release)
   fi
 
   OS="${OS// /}" # remove spaces
@@ -64,14 +64,6 @@ function os_name() {
   # https://stackoverflow.com/questions/9733338/shell-script-remove-first-and-last-quote-from-a-variable
   OS="${OS#\"}" # remove leading "
   OS="${OS%\"}" # remove trailing "
-
-  if [ "$OS" == "amazonlinux" ]; then
-    VERSION=$(gawk -F= '/^VERSION/{print $2}' /etc/os-release)
-    VERSION="${VERSION#\"}" # remove leading "
-    if [[ "$VERSION" =~ ^2 ]] ; then
-      OS="${OS}2"
-    fi
-  fi
 
   echo "$OS"
 }

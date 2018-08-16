@@ -43,7 +43,8 @@ class Forger::Script
       puts "  FORGER_S3_ENDPOINT=https://s3.us-west-2.amazonaws.com"
       puts "Check your ~/.aws/config for the region being used for the ec2 instance."
       exit 1
-    rescue Aws::S3::Errors::AccessDenied => e
+    rescue Aws::S3::Errors::AccessDenied, Aws::S3::Errors::AllAccessDisabled
+      e = $!
       puts "ERROR: #{e.class} #{e.message}".colorize(:red)
       puts "You do not have permission to upload scripts to this bucket: #{bucket_name}.  Are you sure the right bucket is configured?"
       if ENV['AWS_PROFILE']
@@ -81,7 +82,11 @@ class Forger::Script
     #   bucket_name: ec2/development/scripts
     def dest_folder
       folder = s3_folder.sub('s3://','').split('/')[1..-1].join('/')
-      "#{folder}/#{Forger.env}/scripts"
+      if folder.empty? # ""
+        "#{Forger.env}/scripts"
+      else
+        "#{folder}/#{Forger.env}/scripts"
+      end
     end
 
     # s3_folder example:

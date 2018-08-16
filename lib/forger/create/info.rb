@@ -16,7 +16,7 @@ class Forger::Create
     end
 
     def spot(instance_id)
-      puts "Max monthly price: $#{monthly_spot_price}/mo"
+      puts "Max monthly price: $#{monthly_spot_price}/mo" if monthly_spot_price
 
       retries = 0
       begin
@@ -43,6 +43,7 @@ class Forger::Create
       max_price = @params[:instance_market_options][:spot_options][:max_price].to_f
       monthly_price = max_price * 24 * 30
       "%.2f" % monthly_price
+    rescue
     end
 
     def launch_template

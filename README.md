@@ -8,45 +8,59 @@ Example:
 * profiles/default.yml: Default settings. Used when no profile is specified.
 * profiles/myserver.yml: myserver profile.  Used when `--profile myserver` is specified.
 
-## Usage
-
-```sh
-forger create NAME --profile PROFILE
-forger create myserver --profile myserver
-```
+## How Forger Works
 
 In a nutshell, the profile parameters are passed to the ruby aws-sdk [AWS::EC2::Client#run_instances](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Client.html#run_instances-instance_method) method.  This allows you to specify any parameter you wish that is available in the aws-sdk. To check out what a profile looks like check out [example default](docs/example/profiles/default.yml)
+
+## Usage
+
+    forger new demo # the project name can be whatever you want, it's demo in this case
+    cd demo
+
+After the initial forger project has been generated, there are a few starter files you should inspect and adjust to your needs.
+
+File | Description
+--- | ---
+config/settings.yml | You probably want to add your AWS_PROFILE value to `aws_profiles` and set the `s3_folder` to a s3 bucket to be used to upload the scripts in `app/scripts`:
+config/development.yml | This is where you can set your custom variables to be used throughout your forger files. For example, `security_group_ids` is set here and is used in the `profiles/default.yml`.
+profiles/default.yml | Change to your hearts content. This is where you can control what parameters get sent to the aws-sdk run_instances call.
+
+Run a dry run to see to locally inspect and see if the scripts will do want you want:
+
+    forger create my-box --noop # uses the default profile: profiles/default.yml
+
+It is useful to check:
+
+* The s3 upload is uploading to your desired bucket.
+* The generated user_data script makes sense. It is in `tmp/user-data.txt`.
+
+More examples:
+
+    forger create NAME --profile PROFILE
+    forger create myserver --profile myserver
 
 ## Noop mode
 
 You can do a test run with the `--noop` flag.  This will print out what settings will be used to launch the instance.  This is one good way to inspect the generated user-data script.
 
-```sh
-forger create myserver --profile myserver --noop
-cat tmp/user-data.txt # to view generated user-data script
-```
+    forger create myserver --profile myserver --noop
+    cat tmp/user-data.txt # to view generated user-data script
 
 ## Conventional Profile Name
 
 If there is a profile name that matches the ec2 specified instance name, you can omit the `--profile` flag. Example
 
-```sh
-forger create webserver --profile webserver
-forger create webserver # same as above
-```
+    forger create webserver --profile webserver
+    forger create webserver # same as above
 
 It is useful to add a random string to the end of your server name, but not use it for the `--profile` flag.  Example:
 
-```
-forger create myserver-abc --profile myserver
-forger create myserver-123 --profile myserver
-```
+    forger create myserver-abc --profile myserver
+    forger create myserver-123 --profile myserver
 
 You can use the `--randomize` option to do this automatically:
 
-```
-forger create myserver --randomize
-```
+    forger create myserver --randomize
 
 ## Project Structure
 
@@ -85,49 +99,37 @@ You can provide a user-data script to customize the server upon launch.  The use
 
 The user-data script is generated on the machine that is running the forger command. If this is your local macosx machine, then the context of your local macosx machine is available. To see the generated user-data script, you can run the create command in `--noop` mode and then inspect the generated script.  Example:
 
-```sh
-forger create myserver --noop
-cat tmp/user-data.txt
-```
+    forger create myserver --noop
+    cat tmp/user-data.txt
 
 Another way to view the generated user-data scripts is the `forger compile` command.  It generates the files in the `tmp` folder.  Example:
 
-```
-forger compile # generates files in tmp folder
-```
+    forger compile # generates files in tmp folder
 
 To use the user-data script when creating an EC2 instance, use the `user_data` helper method in the profile file.  Here's a grep of an example profile that uses the helper to show you want it looks like. Be sure to surround the ERB call with quotes because the user-data script context is base64 encoded.
 
-```
-$ grep user_data profiles/default.yml
-user_data: "<%= user_data("bootstrap") %>"
-```
+    $ grep user_data profiles/default.yml
+    user_data: "<%= user_data("bootstrap") %>"
 
 ### User-Data Layouts
 
 User-data scripts support layouts.  This is useful if you have common setup and finish code with your user-data scripts. Here's an example: `app/user-data/layouts/default.sh`:
 
-```bash
-#!/bin/bash
-# do some setup
-<%= yield %>
-# finish work
-```
+    #!/bin/bash
+    # do some setup
+    <%= yield %>
+    # finish work
 
 And `app/user-data/box.sh`:
 
-```
-yum install -y vim
-```
+    yum install -y vim
 
 The resulting generated user-data script will be:
 
-```bash
-#!/bin/bash
-# do some setup
-yum install -y vim
-# finish work
-```
+    #!/bin/bash
+    # do some setup
+    yum install -y vim
+    # finish work
 
 You can specify the layout to use when you call the `user_data` helper method in your profile. Example: `profiles/box.yml`:
 
@@ -170,14 +172,20 @@ A `config/settings.yml` file controls the internal behavior of forger. It is dif
 
 ```yaml
 development:
+  # maps your AWS_PROFILE back to FORGER_ENV=development
+  # aws_profiles:
+  #   my-profile
+
   # By setting s3_folder, forger will automatically tarball and upload your scripts
   # to set. You then can then use the extract_scripts helper method to download
   # the scripts onto the server.
   s3_folder: boltops-infra-stag/ec2
+
   # compile_clean: true # uncomment to clean at the end of a compile
   # extract_scripts:
   #   to: "/opt"
   #   as: "ec2-user"
+  # cloudwatch: true # forger create --cloudwatch
 
 production:
 ```
@@ -234,24 +242,20 @@ An example of a spot instance profile is provided in [example/profiles/spot.yml]
 
 ## More Help
 
-```sh
-forger create help
-forger ami help
-forger compile help
-forger help # general help
-```
+    forger create help
+    forger ami help
+    forger compile help
+    forger help # general help
 
 Examples are in the [example](docs/example) folder.  You will have to update settings like your subnet and security group ids.
 
 ## Installation
 
-```sh
-gem install forger
-```
+    gem install forger
 
 ### Dependencies
 
-This tool mainly uses the ruby aws-sdk. Though it does use the aws cli to check your region: `aws configure get region`. It also the uses `aws s3 sync` to perform the scripts upload. So it is dependent on the the `aws cli`.
+This tool mainly uses the ruby aws-sdk. Though it does use the aws cli to check your region: `aws configure get region`. So it is dependent on the `aws cli`.
 
 ## Contributing
 
