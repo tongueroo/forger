@@ -49,28 +49,10 @@ module Forger
 #{"="*64}
 Congrats 🎉 You have successfully generated a starter forger project.
 
-Change into the project directory:
+Test the CLI:
 
-    cd #{project_name}
-
-Inspect and edit these files for your needs:
-
-* config/settings.yml - you probably want to edit aws_profiles and s3_folder.
-* config/development.yml - your custom variables available for use in other forger files.
-* profiles/default.yml - the parameters that get sent to the aws-sdk run_instances call.
-
-Preview what forger creates:
-
-    forger create my-box --noop # dry-run
-    
-It is useful to check:
-
-* The s3 upload is uploading to your desired bucket.
-* The generated user_data script makes sense. It is in `tmp/user-data.txt`.
-
-Once you're ready, launch the instance:
-
-    forger create my-box --noop # dry-run
+  cd #{project_name}
+  forger create my-box --noop # dry-run
 EOL
     end
   end

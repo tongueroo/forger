@@ -2,26 +2,30 @@
 
 This folder contains EC2 profile files that can be used with the [forger](https://github.com/tongueroo/forger) tool to quickly launch EC2 instances consistently with some pre-configured settings.
 
-## Create Test Instance
+## Docker Box
 
 To create your own AWS EC2 instance for testing you can run:
 
-	  forger create my-box --cloudwatch
+	forger create box
 
-This launches an instance and associates it with an route53 DNS record.
+This launches an instance.
 
 Note, you can run forger with `--noop` mode to preview the user-data script that the instance will launch with:
 
-    forger create my-box --noop
+	forger create box --noop
 
-### Verifying Bootstrap Process is Successful
+### CloudWatch Support
 
-You can verfiy that the instance has launched and completed its bootstraping scripting successfully with cloudwatch.  The command above should show you a cloudwatch log url to visit.  Here's an example with the output filtered to put the focus on the cloudwatch log message:
+You can also have forger insert a script to the generated user-data script that sends logs to CloudWatch with the `--cloudwatch` option.
 
-    $ forger create my-box --cloudwatch
+	forger create box 
+
+It is useful to verfiy that the instance has launched and completed its bootstraping scripting successfully with cloudwatch.  The command above should show you a cloudwatch log url to visit.  Here's an example with the output filtered to put the focus on the cloudwatch log message:
+
+    $ forger create box --cloudwatch
     ...
     Spot instance request id: sir-sb5r4e1j
-    EC2 instance my-box created: i-03f3c96eaec8ea359 🎉
+    EC2 instance box created: i-03f3c96eaec8ea359 🎉
     Visit https://console.aws.amazon.com/ec2/home to check on the status
     To view instance's cloudwatch logs visit:
       https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#logEventViewer:group=ec2;stream=i-03f3c96eaec8ea359/var/log/cloud-init-output.log
@@ -30,7 +34,7 @@ You can verfiy that the instance has launched and completed its bootstraping scr
     Pro tip: The CloudWatch Console Link has been added to your copy-and-paste clipboard.
     $
 
-Note, it is detected that the [cw](https://github.com/lucagrulla/cw) tool intalled on your machine it will also add that message.  The cw is a command line tool that allows you to tail the cloudwatch log from the terminal instead of the AWS console website.
+Note, it is is detected that the [cw](https://github.com/lucagrulla/cw) tool intalled on your machine it will also add that message.  The cw is a command line tool that allows you to tail the cloudwatch log from the terminal instead of the AWS console website.
 
 ## Setup .env File
 

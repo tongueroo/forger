@@ -65,6 +65,14 @@ function os_name() {
   OS="${OS#\"}" # remove leading "
   OS="${OS%\"}" # remove trailing "
 
+  if [ "$OS" == "amazonlinux" ]; then
+    VERSION=$(gawk -F= '/^VERSION/{print $2}' /etc/os-release)
+    VERSION="${VERSION#\"}" # remove leading "
+    if [[ "$VERSION" =~ ^2 ]] ; then
+      OS="${OS}2"
+    fi
+  fi
+
   echo "$OS"
 }
 

@@ -1,12 +1,12 @@
 ---
-image_id: ami-a9d09ed1 # Amazon Linux 2 AMI (HVM), SSD Volume Type - us-west-2 Oregon
+image_id: ami-f973ab84 # Amazon Linux 2 LTS Candidate AMI 2017.12.0.20180115 x86_64 HVM GP2
 instance_type: t2.medium
 key_name: default # make sure that the "default" keypair exist in the region
 max_count: 1
 min_count: 1
 user_data: "<%= user_data("bootstrap") %>"
-# iam_instance_profile:
-#   name: IamProfileExample
+iam_instance_profile:
+  name: DevLinux
 # public network settings
 security_group_ids: <%= config["security_group_ids"] %>
 subnet_id: <%= config["subnets"].shuffle.first %>

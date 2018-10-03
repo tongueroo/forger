@@ -1,6 +1,6 @@
 ---
 base:
-  # cloudwatch: true # forger create --cloudwatch
+  # cloudwatch: true # forger create --cloudwatch # TODO: add to docs
 
 # Settings control internal forger behavior.
 # Settings are different from the config files.  The config files are meant to
@@ -8,16 +8,16 @@ base:
 # There are separate files to separate user defined variables and internal
 # setting configs.
 development:
-  # Map AWS_PROFILE in back to the development environment
-  # aws_profiles:
-  #   - my-aws-profile
-
-  # s3_folder: mybucket/path/to/folder # simple string
   # By setting s3_folder, forger will automatically tarball and upload your scripts
   # to set. You then can then use the extract_scripts helper method to download
   # the scripts onto the server.
-
-  # compile_clean: true # uncomment to clean tmp/app each time
+  # s3_folder: mybucket/path/to/folder # simple string
+  # TODO: figure out how to make s3_folder only specific to AWS_PROFILES
+  # s3_folder: boltops-infra-stag/ec2
+  # compile_clean: true # uncomment to clean
   # extract_scripts:
   #   to: "/opt"
   #   as: "ec2-user"
+  aws_profiles:
+    - my-aws-profile
+  s3_folder: my-s3-bucket/ec2
