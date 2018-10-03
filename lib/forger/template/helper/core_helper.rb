@@ -7,7 +7,7 @@ module Forger::Template::Helper::CoreHelper
     name = normalize_user_data_name_input(name)
     layout_path = layout_path(layout)
 
-    path = "#{Forger.root}/app/user-data/#{name}"
+    path = "#{Forger.root}/app/user_data/#{name}"
     unless File.exist?(path)
       puts "ERROR: user-data script #{path.colorize(:red)} does not exist"
       exit
@@ -41,7 +41,7 @@ module Forger::Template::Helper::CoreHelper
 
     ext = File.extname(name)
     name += ".sh" if ext.empty?
-    layout_path = "#{Forger.root}/app/user-data/layouts/#{name}"
+    layout_path = "#{Forger.root}/app/user_data/layouts/#{name}"
 
     # special rule for default in case there's no default layout
     if name.include?("default") and !File.exist?(layout_path)

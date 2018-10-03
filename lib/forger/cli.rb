@@ -42,7 +42,7 @@ module Forger
       Ami.new(options.merge(name: name)).run
     end
 
-    desc "compile", "compiles app/scripts and app/user-data to tmp folder"
+    desc "compile", "compiles app/scripts and app/user_data to tmp folder"
     long_desc Help.text(:compile)
     option :layout, default: "default", desc: "layout for user_data helper"
     def compile

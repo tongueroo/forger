@@ -52,11 +52,11 @@ forger create myserver --randomize
 
 Directory  | Description
 ------------- | -------------
-app/helpers  | Custom helpers methods.  Define them as modules and their methods are made available whenever ERB is available: `profiles`, `app/scripts`, `app/user-data` files, etc. For example, you would define a `module FooHelper` in `app/helpers/foo_helper.rb`.
+app/helpers  | Custom helpers methods.  Define them as modules and their methods are made available whenever ERB is available: `profiles`, `app/scripts`, `app/user_data` files, etc. For example, you would define a `module FooHelper` in `app/helpers/foo_helper.rb`.
 app/partials  | Your partials that can to be included in other scripts.  This is used in conjunction with the `partial` helper method. With great power comes great responsibility.  It is recommended to use partials sparely to keep scripts more straightforward.
 app/scripts  | Where you define common scripts that can be used to configure the server. These scripts can be automatically uploaded to an s3 bucket for later downloading in your user-data script by setting the `s3_folder` settings option.
-app/user-data  | Your user-data scripts that are used to bootstrap EC2 instance.
-app/user-data/layouts  | user-data scripts support layouts. You user-data layouts go in here.
+app/user_data  | Your user-data scripts that are used to bootstrap EC2 instance.
+app/user_data/layouts  | user-data scripts support layouts. You user-data layouts go in here.
 config/[FORGER_ENV].yml  | The config file where you set configs that you want available in your templating logic.  Examples are: `config/development.yml` and `config/production.yml`. You access the config variables with the `<%= config["var"] %>` helper.
 profiles  | Your profile files.  These files mainly contain parameters that are passed to the aws-sdk run_instances API method.
 tmp  | Where the generated scripts get compiled to. You can manually invoke the compilation via `forger compile` to inspect what is generated.  This is automatically done as part of the `forger` create command.
@@ -79,9 +79,9 @@ You can also define custom helpers in the `app/helpers` folder as ruby modules w
 
 ## User-Data
 
-You can provide a user-data script to customize the server upon launch.  The user-data scripts are located under the `app/user-data` folder.  Example:
+You can provide a user-data script to customize the server upon launch.  The user-data scripts are located under the `app/user_data` folder.  Example:
 
-* app/user-data/myserver.yml
+* app/user_data/myserver.yml
 
 The user-data script is generated on the machine that is running the forger command. If this is your local macosx machine, then the context of your local macosx machine is available. To see the generated user-data script, you can run the create command in `--noop` mode and then inspect the generated script.  Example:
 
@@ -105,7 +105,7 @@ user_data: "<%= user_data("bootstrap") %>"
 
 ### User-Data Layouts
 
-User-data scripts support layouts.  This is useful if you have common setup and finish code with your user-data scripts. Here's an example: `app/user-data/layouts/default.sh`:
+User-data scripts support layouts.  This is useful if you have common setup and finish code with your user-data scripts. Here's an example: `app/user_data/layouts/default.sh`:
 
 ```bash
 #!/bin/bash
@@ -114,7 +114,7 @@ User-data scripts support layouts.  This is useful if you have common setup and 
 # finish work
 ```
 
-And `app/user-data/box.sh`:
+And `app/user_data/box.sh`:
 
 ```
 yum install -y vim
