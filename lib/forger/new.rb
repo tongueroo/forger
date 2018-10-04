@@ -10,7 +10,9 @@ module Forger
       [
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
         [:git, type: :boolean, default: true, desc: "Git initialize the project"],
-        [:vpc_id, desc: "Vpc id. For config/development.yml network settings."],
+        [:vpc_id, desc: "Vpc id. For config/development.yml network settings. Will use default sg and subnet"],
+        [:security_group, desc: "Security group to use. For config/development.yml network settings."],
+        [:subnet, desc: "Subnet to use. For config/development.yml network settings."],
         [:s3_folder, desc: "s3_folder setting for config/settings.yml."],
       ]
     end
@@ -22,9 +24,9 @@ module Forger
     def configure_network_settings
       return if ENV['TEST']
 
-      nework = Network.new(@options[:vpc_id])
-      @default_subnet = nework.subnet_ids.first
-      @default_security_group = nework.security_group_id
+      network = Network.new(@options[:vpc_id]) # used for default settings
+      @subnet = @options[:subnet] || network.subnet_ids.first
+      @security_group = @options[:security_group] || network.security_group_id
     end
 
     def create_project
@@ -64,6 +66,7 @@ Test the CLI:
   cd #{project_name}
   forger create box --noop # dry-run to see the tmp/user-data.txt script
   forger create box # live-run
+  forger create box --ssh
 EOL
     end
   end
