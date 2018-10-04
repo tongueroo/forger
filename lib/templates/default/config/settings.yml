@@ -12,12 +12,10 @@ development:
   # to set. You then can then use the extract_scripts helper method to download
   # the scripts onto the server.
   # s3_folder: mybucket/path/to/folder # simple string
-  # TODO: figure out how to make s3_folder only specific to AWS_PROFILES
-  # s3_folder: boltops-infra-stag/ec2
   # compile_clean: true # uncomment to clean
   # extract_scripts:
   #   to: "/opt"
   #   as: "ec2-user"
   aws_profiles:
     - my-aws-profile
-  s3_folder: my-s3-bucket/ec2
+  # s3_folder: my-s3-bucket/ec2

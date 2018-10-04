@@ -10,11 +10,20 @@ module Forger
       [
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
         [:git, type: :boolean, default: true, desc: "Git initialize the project"],
+        [:vpc_id, desc: "Vpc id. For config/development.yml network settings."],
       ]
     end
 
     cli_options.each do |args|
       class_option *args
+    end
+    
+    def configure_network_settings
+      return if ENV['TEST']
+
+      nework = Network.new(@options[:vpc_id])
+      @default_subnet = nework.subnet_ids.first
+      @default_security_group = nework.security_group_id
     end
 
     def create_project

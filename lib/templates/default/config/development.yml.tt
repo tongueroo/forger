@@ -1,0 +1,6 @@
+---
+subnets:
+  - <%= @default_subnet %>
+security_group_ids:
+  - <%= @default_security_group %>
+key1: <%%= ENV['KEY1'] %>

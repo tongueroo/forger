@@ -41,7 +41,7 @@ module Forger
   private
     def load_template(name)
       template = IO.read(File.expand_path("script/templates/#{name}", File.dirname(__FILE__)))
-      text = ERB.new(template, nil, "-").result(binding)
+      ERB.new(template, nil, "-").result(binding) # text
     end
   end
 end

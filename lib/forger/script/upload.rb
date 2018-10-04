@@ -53,6 +53,12 @@ class Forger::Script
       exit 1
     end
 
+    def empty?
+      Dir.glob("#{Forger.root}/app/scripts/**/*").select do |path|
+        File.file?(path)
+      end.empty?
+    end
+
     def tarball_path
       IO.read(SCRIPTS_INFO_PATH).strip
     end
