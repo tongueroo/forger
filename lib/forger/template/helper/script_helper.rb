@@ -34,7 +34,7 @@ private
   def check_s3_folder_settings!
     return if settings["s3_folder"]
 
-    puts "Helper method called that requires the s3_folder to be set at:"
+    puts "The extract_scripts helper method aws called.  It requires the s3_folder to be set at:"
     lines = caller.reject { |l| l =~ %r{lib/forger} } # hide internal forger trace
     puts "  #{lines[0]}"
 

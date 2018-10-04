@@ -2,9 +2,16 @@
 
 This folder contains EC2 profile files that can be used with the [forger](https://github.com/tongueroo/forger) tool to quickly launch EC2 instances consistently with some pre-configured settings.
 
-## Docker Box
+## Generate a Forger Project
 
-To create your own AWS EC2 instance for testing you can run:
+    forger new ec2 # project name is ec2
+    cd ec2
+
+## EC2 Box
+
+Edit the `config/settings.yml` with an `s3_folder` so that forger can upload scripts to s3 as part of the creation process. These scripts are then made accessible to your user-data script with the `extract_scripts` helper.  Check out the generated `app/user_data/layouts/default.sh` to see an example of it.  It just downloads the scripts in `app/scripts` to the `/opt/folder`.  To see the `extract_scripts` generated script you can run create with the `--noop` command. An example is provided below.
+
+To create an AWS EC2 instance you can run:
 
 	forger create box
 
@@ -18,7 +25,7 @@ Note, you can run forger with `--noop` mode to preview the user-data script that
 
 You can also have forger insert a script to the generated user-data script that sends logs to CloudWatch with the `--cloudwatch` option.
 
-	forger create box 
+	forger create box
 
 It is useful to verfiy that the instance has launched and completed its bootstraping scripting successfully with cloudwatch.  The command above should show you a cloudwatch log url to visit.  Here's an example with the output filtered to put the focus on the cloudwatch log message:
 
