@@ -18,4 +18,8 @@ development:
   #   as: "ec2-user"
   aws_profiles:
     - my-aws-profile
+<% if @options[:s3_folder] -%>
+  s3_folder: <%= @options[:s3_folder] %>
+<% else -%>
   # s3_folder: my-s3-bucket/ec2
+<% end -%>

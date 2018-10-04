@@ -11,6 +11,7 @@ module Forger
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
         [:git, type: :boolean, default: true, desc: "Git initialize the project"],
         [:vpc_id, desc: "Vpc id. For config/development.yml network settings."],
+        [:s3_folder, desc: "s3_folder setting for config/settings.yml."],
       ]
     end
 

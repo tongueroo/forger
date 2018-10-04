@@ -9,25 +9,31 @@ This folder contains EC2 profile files that can be used with the [forger](https:
 
 ## EC2 Box
 
-Edit the `config/settings.yml` with an `s3_folder` so that forger can upload scripts to s3 as part of the creation process. These scripts are then made accessible to your user-data script with the `extract_scripts` helper.  Check out the generated `app/user_data/layouts/default.sh` to see an example of it.  It just downloads the scripts in `app/scripts` to the `/opt/folder`.  To see the `extract_scripts` generated script you can run create with the `--noop` command. An example is provided below.
-
 To create an AWS EC2 instance you can run:
 
-	forger create box
+    forger create box
 
 This launches an instance.
 
 Note, you can run forger with `--noop` mode to preview the user-data script that the instance will launch with:
 
-	forger create box --noop
+    forger create box --noop
+
+## S3 App Scripts
+
+The generated starter project creates some example `app/scripts` files.  The `app/scripts` are disabled until you configure the `s3_folder` setting `config/settings.yml` the `s3_folder` setting. 
+
+The `app/scripts` files get uploaded to s3 as part of the `forger create` command.  You can use it in conjunction with the `extract_scripts` helper method in your user-data file. The `extract_scripts` helper generates a snippet of bash code that downloads and untars the files so user-data has access to the scripts. The scripts are extracted to `/opt/scripts` by default.
+
+You can also specify the `--s3-folder` option as part of the `forger new` command to spare you from manually editing `config/settings.yml`.
 
 ### CloudWatch Support
 
 You can also have forger insert a script to the generated user-data script that sends logs to CloudWatch with the `--cloudwatch` option.
 
-	forger create box
+    forger create box
 
-It is useful to verfiy that the instance has launched and completed its bootstraping scripting successfully with cloudwatch.  The command above should show you a cloudwatch log url to visit.  Here's an example with the output filtered to put the focus on the cloudwatch log message:
+It is useful to verify that the instance has launched and completed its bootstrapping scripting successfully with cloudwatch.  The command above should show you a cloudwatch log url to visit.  Here's an example with the output filtered to put the focus on the cloudwatch log message:
 
     $ forger create box --cloudwatch
     ...
@@ -41,13 +47,13 @@ It is useful to verfiy that the instance has launched and completed its bootstra
     Pro tip: The CloudWatch Console Link has been added to your copy-and-paste clipboard.
     $
 
-Note, it is is detected that the [cw](https://github.com/lucagrulla/cw) tool intalled on your machine it will also add that message.  The cw is a command line tool that allows you to tail the cloudwatch log from the terminal instead of the AWS console website.
+Note, it is detected that the [cw](https://github.com/lucagrulla/cw) tool installed on your machine it will also add that message.  The cw is a command line tool that allows you to tail the cloudwatch log from the terminal instead of the AWS console website.
 
 ## Setup .env File
 
 There are some settings that are environment specific.  To configure these, copy the [.env.example](.env.example) file to `.env` and update them with your specific values.
 
-You can have multiple .env files.  The load in this order of precendence.  You are able to reference these values in the `config/[FORGER_ENV].yml` files with ERB.
+You can have multiple .env files.  The load in this order of precedence.  You are able to reference these values in the `config/[FORGER_ENV].yml` files with ERB.
 
 1. .env.[FORGER_ENV].local
 2. .env.local
