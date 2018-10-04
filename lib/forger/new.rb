@@ -62,7 +62,7 @@ Congrats 🎉 You have successfully generated a starter forger project.
 Test the CLI:
 
   cd #{project_name}
-  forger create my-box --noop # dry-run
+  forger create box --noop # dry-run
 EOL
     end
   end
