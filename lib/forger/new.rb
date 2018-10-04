@@ -62,7 +62,8 @@ Congrats 🎉 You have successfully generated a starter forger project.
 Test the CLI:
 
   cd #{project_name}
-  forger create box --noop # dry-run
+  forger create box --noop # dry-run to see the tmp/user-data.txt script
+  forger create box # live-run
 EOL
     end
   end
