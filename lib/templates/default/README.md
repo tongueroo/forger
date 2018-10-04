@@ -23,9 +23,9 @@ Note, you can run forger with `--noop` mode to preview the user-data script that
 
 The generated starter project creates some example `app/scripts` files.  The `app/scripts` are disabled until you configure the `s3_folder` setting `config/settings.yml` the `s3_folder` setting. 
 
-The `app/scripts` files get uploaded to s3 as part of the `forger create` command.  You can use it in conjunction with the `extract_scripts` helper method in your user-data file. The `extract_scripts` helper generates a snippet of bash code that downloads and untars the files so user-data has access to the scripts. The scripts are extracted to `/opt/scripts` by default.
+The `app/scripts` files get uploaded to s3 as part of the `forger create` command.  You can use it in conjunction with the `extract_scripts` helper method in your user-data file. The `extract_scripts` helper generates a snippet of bash code that downloads and untars the files so user-data has access to the scripts. The scripts are extracted to `/opt/scripts` by default.  Be sure to add extract_scripts to your user-data script.
 
-You can also specify the `--s3-folder` option as part of the `forger new` command to spare you from manually editing `config/settings.yml`.
+You can also specify the `--s3-folder` option as part of the `forger new` command to spare you from manually editing all the necessary files like `config/settings.yml` and the user-data scripts.
 
 ### CloudWatch Support
 
