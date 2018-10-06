@@ -23,7 +23,7 @@ subnet_id: <%%= config["subnets"].shuffle.first %>
 #   - device_name: /dev/xvda
 #     ebs:
 #       volume_size: 100 # in GB
-<% if ENV['SPOT'] %>
+<%% if ENV['SPOT'] %>
 instance_market_options:
   market_type: spot
   # https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_LaunchTemplateSpotMarketOptionsRequest.html
@@ -38,4 +38,4 @@ instance_market_options:
     #   spot_instance_type: one-time
     # More info: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-interruptions.html
     spot_instance_type: one-time
-<% end %>
+<%% end %>
