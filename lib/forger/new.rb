@@ -11,6 +11,7 @@ module Forger
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
         [:git, type: :boolean, default: true, desc: "Git initialize the project"],
         [:iam, desc: "iam_instance_profile to use in the profiles/default.yml"],
+        [:key_name, desc: "key name to use with launched instance in profiles/default.yml"],
         [:s3_folder, desc: "s3_folder setting for config/settings.yml."],
         [:security_group, desc: "Security group to use. For config/development.yml network settings."],
         [:subnet, desc: "Subnet to use. For config/development.yml network settings."],

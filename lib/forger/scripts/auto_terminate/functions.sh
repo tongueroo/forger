@@ -19,7 +19,8 @@ function terminate_instance() {
   INSTANCE_ID=$(wget -q -O - http://169.254.169.254/latest/meta-data/instance-id)
   SPOT_INSTANCE_REQUEST_ID=$(aws ec2 describe-instances --instance-ids "$INSTANCE_ID" | jq -r '.Reservations[].Instances[].SpotInstanceRequestId')
 
-  if [ -n "$SPOT_INSTANCE_REQUEST_ID" ]; then
+  # jq returns null
+  if [ "$SPOT_INSTANCE_REQUEST_ID" != "null" ]; then
     cancel_spot_request
   fi
   aws ec2 terminate-instances --instance-ids "$INSTANCE_ID"

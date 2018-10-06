@@ -30,4 +30,4 @@ You can also set the security group and subnet id values explicitly instead:
 
 ## Useful Combo Starting Options
 
-    forger new ec2 --security-group sg-123 --s3-folder my-s3-bucket/my-folder --iam MyIamProfile
+    forger new ec2 --security-group sg-123 --s3-folder my-s3-bucket/my-folder --iam MyIamProfile --key-name default

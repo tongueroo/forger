@@ -1,7 +1,11 @@
 ---
 image_id: ami-6cd6f714 # Amazon Linux 2 AMI (HVM), SSD Volume Type
 instance_type: t3.small
+<% if @options[:key_name] -%>
+key_name: <%= @options[:key_name] %>
+<% else -%>
 # key_name: default # make sure that the "default" keypair exist in the region
+<% end -%>
 max_count: 1
 min_count: 1
 user_data: "<%%= user_data("bootstrap") %>"
