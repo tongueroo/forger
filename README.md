@@ -173,7 +173,7 @@ development:
   # By setting s3_folder, forger will automatically tarball and upload your scripts
   # to set. You then can then use the extract_scripts helper method to download
   # the scripts onto the server.
-  s3_folder: boltops-infra-stag/ec2
+  s3_folder: my-bucket/forger
   # compile_clean: true # uncomment to clean at the end of a compile
   # extract_scripts:
   #   to: "/opt"
