@@ -24,7 +24,7 @@ By default, `forger new` generates a project with some starting values for the f
 
     forger new ec2 --security-group sg-11223344 --iam MyIamRole --key-name my-keypair --s3-folder my-bucket/my-folder
 
-Notably, using the `--s3-folder` option generates a project that make use of the `app/scripts` files and insert an some bash code into your user-data script that downloads and extracts the files. For more help:
+Notably, using the `--s3-folder` option generates a project that make use of the `app/scripts` files and inserts some bash code into your user-data script that downloads and extracts the files. For more help:
 
     forger new -h
 
