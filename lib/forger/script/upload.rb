@@ -88,7 +88,8 @@ class Forger::Script
     #   bucket_name: ec2/development/scripts
     def dest_folder
       folder = s3_folder.sub('s3://','').split('/')[1..-1].join('/')
-      "#{folder}/#{Forger.env}/scripts"
+      folder = nil if folder == ''
+      [folder, "#{Forger.env}/scripts"].compact.join('/')
     end
 
     # s3_folder example:
