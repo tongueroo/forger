@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [2.0.0]
+- Merge pull request #11 and #12 from tongueroo/new:
+- forger new: creates a starter project that works right off the bat
+- Merge pull request #10 from tongueroo/waiter:
+- New abilities: forger destroy, forger create --ssh, forger create --wait
+- Bug fixes and improvements:
+- add key-name option, fix auto terminate for on-demand instances
+- add spot option in default profile
+- allow cloudwatch option to be saved in settings
+- all user-data scripts to be under subfolders
+- change cloudwatch log group name to forger
+- detect os by ID in os-release
+- fix case when s3_folder only has bucket name
+- improve ssh waiting and add spot max monthly price estimate
+- install wget and tar when needed for extract_forger_scripts helper
+- forger create: wait for instance to be ready and provide dns and ssh command by default
+
 ## [1.6.0]
 - Merge pull request #10 from tongueroo/waiter
 - forger destroy command

@@ -4,10 +4,6 @@ ENV["FORGER_ROOT"] = "spec/fixtures/demo_project"
 # Ensures aws api never called. Fixture home folder does not contain ~/.aws/credentails
 ENV['HOME'] = "spec/fixtures/home"
 
-# CodeClimate test coverage: https://docs.codeclimate.com/docs/configuring-test-coverage
-# require 'simplecov'
-# SimpleCov.start
-
 require "pp"
 require "byebug"
 root = File.expand_path("../", File.dirname(__FILE__))
