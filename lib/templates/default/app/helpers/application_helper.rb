@@ -5,7 +5,7 @@ module ApplicationHelper
       script =<<EOL
 #######################################
 # personalize script added by ApplicationHelper#personalize_script for #{ENV['USER']}
-/opt/scripts/personalize/#{ENV['USER']}.sh
+/opt/scripts/personalize/tung.sh
 EOL
     end
   end

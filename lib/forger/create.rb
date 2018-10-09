@@ -58,7 +58,9 @@ module Forger
     #       dev_profile1: another-bucket/storage/path
     def sync_scripts_to_s3
       return unless Forger.settings["s3_folder"]
-      Script::Upload.new(@options).run
+      upload = Script::Upload.new(@options)
+      return if upload.empty?
+      upload.run
     end
 
     # params are main derived from profile files

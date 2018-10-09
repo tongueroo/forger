@@ -10,11 +10,25 @@ module Forger
       [
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
         [:git, type: :boolean, default: true, desc: "Git initialize the project"],
+        [:iam, desc: "iam_instance_profile to use in the profiles/default.yml"],
+        [:key_name, desc: "key name to use with launched instance in profiles/default.yml"],
+        [:s3_folder, desc: "s3_folder setting for config/settings.yml."],
+        [:security_group, desc: "Security group to use. For config/development.yml network settings."],
+        [:subnet, desc: "Subnet to use. For config/development.yml network settings."],
+        [:vpc_id, desc: "Vpc id. For config/development.yml network settings. Will use default sg and subnet"],
       ]
     end
 
     cli_options.each do |args|
       class_option *args
+    end
+    
+    def configure_network_settings
+      return if ENV['TEST']
+
+      network = Network.new(@options[:vpc_id]) # used for default settings
+      @subnet = @options[:subnet] || network.subnet_ids.first
+      @security_group = @options[:security_group] || network.security_group_id
     end
 
     def create_project
@@ -49,28 +63,12 @@ module Forger
 #{"="*64}
 Congrats 🎉 You have successfully generated a starter forger project.
 
-Change into the project directory:
+Test the CLI:
 
-    cd #{project_name}
-
-Inspect and edit these files for your needs:
-
-* config/settings.yml - you probably want to edit aws_profiles and s3_folder.
-* config/development.yml - your custom variables available for use in other forger files.
-* profiles/default.yml - the parameters that get sent to the aws-sdk run_instances call.
-
-Preview what forger creates:
-
-    forger create my-box --noop # dry-run
-    
-It is useful to check:
-
-* The s3 upload is uploading to your desired bucket.
-* The generated user_data script makes sense. It is in `tmp/user-data.txt`.
-
-Once you're ready, launch the instance:
-
-    forger create my-box --noop # dry-run
+  cd #{project_name}
+  forger create box --noop # dry-run to see the tmp/user-data.txt script
+  forger create box # live-run
+  forger create box --ssh
 EOL
     end
   end

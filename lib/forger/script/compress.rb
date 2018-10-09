@@ -12,7 +12,7 @@ class Forger::Script
 
     def create_tarball
       # https://apple.stackexchange.com/questions/14980/why-are-dot-underscore-files-created-and-how-can-i-avoid-them
-      sh "cd #{BUILD_ROOT}/app && dot_clean ." if system("type dot_clean > /dev/null")
+      sh "cd #{BUILD_ROOT}/app && dot_clean ." if system("type dot_clean > /dev/null 2>&1")
 
       # https://serverfault.com/questions/110208/different-md5sums-for-same-tar-contents
       # Using tar czf directly results in a new m5sum each time because the gzip

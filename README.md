@@ -8,33 +8,27 @@ Example:
 * profiles/default.yml: Default settings. Used when no profile is specified.
 * profiles/myserver.yml: myserver profile.  Used when `--profile myserver` is specified.
 
-## How Forger Works
+## How It Works
 
-In a nutshell, the profile parameters are passed to the ruby aws-sdk [AWS::EC2::Client#run_instances](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Client.html#run_instances-instance_method) method.  This allows you to specify any parameter you wish that is available in the aws-sdk. To check out what a profile looks like check out [example default](docs/example/profiles/default.yml)
+In a nutshell, the profile parameters are passed to the ruby aws-sdk [AWS::EC2::Client#run_instances](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Client.html#run_instances-instance_method) method.  This allows you to specify any parameter you wish that is available in the aws-sdk. To check out what a profile looks like check out [example default profile](docs/example/profiles/default.yml).
 
-## Usage
+## Usage: Quick Start
 
-    forger new demo # the project name can be whatever you want, it's demo in this case
-    cd demo
+    forger new ec2 # generates starter skeleton project
+    cd ec2
+    forger create myserver # creates instance
 
-After the initial forger project has been generated, there are a few starter files you should inspect and adjust to your needs.
+## Useful new options
 
-File | Description
---- | ---
-config/settings.yml | You probably want to add your AWS_PROFILE value to `aws_profiles` and set the `s3_folder` to a s3 bucket to be used to upload the scripts in `app/scripts`:
-config/development.yml | This is where you can set your custom variables to be used throughout your forger files. For example, `security_group_ids` is set here and is used in the `profiles/default.yml`.
-profiles/default.yml | Change to your hearts content. This is where you can control what parameters get sent to the aws-sdk run_instances call.
+By default, `forger new` generates a project with some starting values for the files in the `config` and `profiles` folders.  You likely want to edit these values using your own values. Things like security groups, subnets, iam role, and the s3_folder option are useful settings to modify.  You can also specify a lot of these values as a part of the `new` command. Example:
 
-Run a dry run to see to locally inspect and see if the scripts will do want you want:
+    forger new ec2 --security-group sg-11223344 --iam MyIamRole --key-name my-keypair --s3-folder my-bucket/my-folder
 
-    forger create my-box --noop # uses the default profile: profiles/default.yml
+Notably, using the `--s3-folder` option generates a project that make use of the `app/scripts` files and inserts some bash code into your user-data script that downloads and extracts the files. For more help:
 
-It is useful to check:
+    forger new -h
 
-* The s3 upload is uploading to your desired bucket.
-* The generated user_data script makes sense. It is in `tmp/user-data.txt`.
-
-More examples:
+## Usage: More Details
 
     forger create NAME --profile PROFILE
     forger create myserver --profile myserver
@@ -66,11 +60,11 @@ You can use the `--randomize` option to do this automatically:
 
 Directory  | Description
 ------------- | -------------
-app/helpers  | Custom helpers methods.  Define them as modules and their methods are made available whenever ERB is available: `profiles`, `app/scripts`, `app/user-data` files, etc. For example, you would define a `module FooHelper` in `app/helpers/foo_helper.rb`.
+app/helpers  | Custom helpers methods.  Define them as modules and their methods are made available whenever ERB is available: `profiles`, `app/scripts`, `app/user_data` files, etc. For example, you would define a `module FooHelper` in `app/helpers/foo_helper.rb`.
 app/partials  | Your partials that can to be included in other scripts.  This is used in conjunction with the `partial` helper method. With great power comes great responsibility.  It is recommended to use partials sparely to keep scripts more straightforward.
 app/scripts  | Where you define common scripts that can be used to configure the server. These scripts can be automatically uploaded to an s3 bucket for later downloading in your user-data script by setting the `s3_folder` settings option.
-app/user-data  | Your user-data scripts that are used to bootstrap EC2 instance.
-app/user-data/layouts  | user-data scripts support layouts. You user-data layouts go in here.
+app/user_data  | Your user-data scripts that are used to bootstrap EC2 instance.
+app/user_data/layouts  | user-data scripts support layouts. You user-data layouts go in here.
 config/[FORGER_ENV].yml  | The config file where you set configs that you want available in your templating logic.  Examples are: `config/development.yml` and `config/production.yml`. You access the config variables with the `<%= config["var"] %>` helper.
 profiles  | Your profile files.  These files mainly contain parameters that are passed to the aws-sdk run_instances API method.
 tmp  | Where the generated scripts get compiled to. You can manually invoke the compilation via `forger compile` to inspect what is generated.  This is automatically done as part of the `forger` create command.
@@ -93,9 +87,9 @@ You can also define custom helpers in the `app/helpers` folder as ruby modules w
 
 ## User-Data
 
-You can provide a user-data script to customize the server upon launch.  The user-data scripts are located under the `app/user-data` folder.  Example:
+You can provide a user-data script to customize the server upon launch.  The user-data scripts are located under the `app/user_data` folder.  Example:
 
-* app/user-data/myserver.yml
+* app/user_data/myserver.yml
 
 The user-data script is generated on the machine that is running the forger command. If this is your local macosx machine, then the context of your local macosx machine is available. To see the generated user-data script, you can run the create command in `--noop` mode and then inspect the generated script.  Example:
 
@@ -113,23 +107,27 @@ To use the user-data script when creating an EC2 instance, use the `user_data` h
 
 ### User-Data Layouts
 
-User-data scripts support layouts.  This is useful if you have common setup and finish code with your user-data scripts. Here's an example: `app/user-data/layouts/default.sh`:
+User-data scripts support layouts.  This is useful if you have common setup and finish code with your user-data scripts. Here's an example: `app/user_data/layouts/default.sh`:
 
-    #!/bin/bash
-    # do some setup
-    <%= yield %>
-    # finish work
+```bash
+#!/bin/bash
+# do some setup
+<%= yield %>
+# finish work
+```
 
-And `app/user-data/box.sh`:
+And `app/user_data/box.sh`:
 
     yum install -y vim
 
 The resulting generated user-data script will be:
 
-    #!/bin/bash
-    # do some setup
-    yum install -y vim
-    # finish work
+```bash
+#!/bin/bash
+# do some setup
+yum install -y vim
+# finish work
+```
 
 You can specify the layout to use when you call the `user_data` helper method in your profile. Example: `profiles/box.yml`:
 
@@ -172,20 +170,14 @@ A `config/settings.yml` file controls the internal behavior of forger. It is dif
 
 ```yaml
 development:
-  # maps your AWS_PROFILE back to FORGER_ENV=development
-  # aws_profiles:
-  #   my-profile
-
   # By setting s3_folder, forger will automatically tarball and upload your scripts
   # to set. You then can then use the extract_scripts helper method to download
   # the scripts onto the server.
-  s3_folder: boltops-infra-stag/ec2
-
+  s3_folder: my-bucket/forger
   # compile_clean: true # uncomment to clean at the end of a compile
   # extract_scripts:
   #   to: "/opt"
   #   as: "ec2-user"
-  # cloudwatch: true # forger create --cloudwatch
 
 production:
 ```
@@ -194,7 +186,7 @@ production:
 
 There is only one hook: `before_run_instances`.  You can configure this with `config/hooks.yml`:  Example:
 
-```
+```yaml
 ---
 before_run_instances: /path/to/my/script.sh
 ```
@@ -255,7 +247,7 @@ Examples are in the [example](docs/example) folder.  You will have to update set
 
 ### Dependencies
 
-This tool mainly uses the ruby aws-sdk. Though it does use the aws cli to check your region: `aws configure get region`. So it is dependent on the `aws cli`.
+This tool mainly uses the ruby aws-sdk. Though it does use the aws cli to check your region: `aws configure get region`. It also the uses `aws s3 sync` to perform the scripts upload. So it is dependent on the the `aws cli`.
 
 ## Contributing
 

@@ -17,13 +17,13 @@ function terminate_instance() {
   fi
 
   INSTANCE_ID=$(wget -q -O - http://169.254.169.254/latest/meta-data/instance-id)
-  REGION=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed 's/\(.*\)[a-z]/\1/')
-  SPOT_INSTANCE_REQUEST_ID=$(aws ec2 describe-instances --instance-ids "$INSTANCE_ID" --region $REGION | jq -r '.Reservations[].Instances[].SpotInstanceRequestId')
+  SPOT_INSTANCE_REQUEST_ID=$(aws ec2 describe-instances --instance-ids "$INSTANCE_ID" | jq -r '.Reservations[].Instances[].SpotInstanceRequestId')
 
-  if [ -n "$SPOT_INSTANCE_REQUEST_ID" ]; then
+  # jq returns null
+  if [ "$SPOT_INSTANCE_REQUEST_ID" != "null" ]; then
     cancel_spot_request
   fi
-  aws ec2 terminate-instances --instance-ids "$INSTANCE_ID" --region $REGION
+  aws ec2 terminate-instances --instance-ids "$INSTANCE_ID"
 }
 
 # on-demand instance example:
@@ -33,16 +33,14 @@ function terminate_instance() {
 # $ aws ec2 describe-instances --instance-ids i-08318bb7f33c216bd | jq '.Reservations[].Instances[].SpotInstanceRequestId'
 # "sir-dzci5wsh"
 function cancel_spot_request() {
-  REGION=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed 's/\(.*\)[a-z]/\1/')
-  aws ec2 cancel-spot-instance-requests --spot-instance-request-ids "$SPOT_INSTANCE_REQUEST_ID" --region $REGION
+  aws ec2 cancel-spot-instance-requests --spot-instance-request-ids "$SPOT_INSTANCE_REQUEST_ID"
 }
 
 # When image doesnt exist at all, an empty string is returned.
 function ami_state() {
   local ami_id
   ami_id=$1
-  REGION=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed 's/\(.*\)[a-z]/\1/')
-  aws ec2 describe-images --region $REGION --image-ids "$ami_id" --owners self | jq -r '.Images[].State'
+  aws ec2 describe-images --image-ids "$ami_id" --owners self | jq -r '.Images[].State'
 }
 
 function wait_for_ami() {
