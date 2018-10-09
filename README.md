@@ -10,10 +10,8 @@ Example:
 
 ## Usage
 
-```sh
-forger create NAME --profile PROFILE
-forger create myserver --profile myserver
-```
+    forger create NAME --profile PROFILE
+    forger create myserver --profile myserver
 
 In a nutshell, the profile parameters are passed to the ruby aws-sdk [AWS::EC2::Client#run_instances](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Client.html#run_instances-instance_method) method.  This allows you to specify any parameter you wish that is available in the aws-sdk. To check out what a profile looks like check out [example default](docs/example/profiles/default.yml)
 
@@ -21,32 +19,24 @@ In a nutshell, the profile parameters are passed to the ruby aws-sdk [AWS::EC2::
 
 You can do a test run with the `--noop` flag.  This will print out what settings will be used to launch the instance.  This is one good way to inspect the generated user-data script.
 
-```sh
-forger create myserver --profile myserver --noop
-cat tmp/user-data.txt # to view generated user-data script
-```
+    forger create myserver --profile myserver --noop
+    cat tmp/user-data.txt # to view generated user-data script
 
 ## Conventional Profile Name
 
 If there is a profile name that matches the ec2 specified instance name, you can omit the `--profile` flag. Example
 
-```sh
-forger create webserver --profile webserver
-forger create webserver # same as above
-```
+    forger create webserver --profile webserver
+    forger create webserver # same as above
 
 It is useful to add a random string to the end of your server name, but not use it for the `--profile` flag.  Example:
 
-```
-forger create myserver-abc --profile myserver
-forger create myserver-123 --profile myserver
-```
+    forger create myserver-abc --profile myserver
+    forger create myserver-123 --profile myserver
 
 You can use the `--randomize` option to do this automatically:
 
-```
-forger create myserver --randomize
-```
+    forger create myserver --randomize
 
 ## Project Structure
 
@@ -85,23 +75,17 @@ You can provide a user-data script to customize the server upon launch.  The use
 
 The user-data script is generated on the machine that is running the forger command. If this is your local macosx machine, then the context of your local macosx machine is available. To see the generated user-data script, you can run the create command in `--noop` mode and then inspect the generated script.  Example:
 
-```sh
-forger create myserver --noop
-cat tmp/user-data.txt
-```
+    forger create myserver --noop
+    cat tmp/user-data.txt
 
 Another way to view the generated user-data scripts is the `forger compile` command.  It generates the files in the `tmp` folder.  Example:
 
-```
-forger compile # generates files in tmp folder
-```
+    forger compile # generates files in tmp folder
 
 To use the user-data script when creating an EC2 instance, use the `user_data` helper method in the profile file.  Here's a grep of an example profile that uses the helper to show you want it looks like. Be sure to surround the ERB call with quotes because the user-data script context is base64 encoded.
 
-```
-$ grep user_data profiles/default.yml
-user_data: "<%= user_data("bootstrap") %>"
-```
+    $ grep user_data profiles/default.yml
+    user_data: "<%= user_data("bootstrap") %>"
 
 ### User-Data Layouts
 
@@ -116,9 +100,7 @@ User-data scripts support layouts.  This is useful if you have common setup and 
 
 And `app/user_data/box.sh`:
 
-```
-yum install -y vim
-```
+    yum install -y vim
 
 The resulting generated user-data script will be:
 
@@ -186,7 +168,7 @@ production:
 
 There is only one hook: `before_run_instances`.  You can configure this with `config/hooks.yml`:  Example:
 
-```
+```yaml
 ---
 before_run_instances: /path/to/my/script.sh
 ```
@@ -234,20 +216,16 @@ An example of a spot instance profile is provided in [example/profiles/spot.yml]
 
 ## More Help
 
-```sh
-forger create help
-forger ami help
-forger compile help
-forger help # general help
-```
+    forger create help
+    forger ami help
+    forger compile help
+    forger help # general help
 
 Examples are in the [example](docs/example) folder.  You will have to update settings like your subnet and security group ids.
 
 ## Installation
 
-```sh
-gem install forger
-```
+    gem install forger
 
 ### Dependencies
 
