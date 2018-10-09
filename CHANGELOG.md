@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [2.0.1]
+- Merge pull request #13 from tongueroo/aws-config-fix
+- configure_aws_cli: always write ~/.aws/config
+- fix s3 folder path when at top level of bucket
+
 ## [2.0.0]
 - Merge pull request #11 and #12 from tongueroo/new:
 - forger new: creates a starter project that works right off the bat
