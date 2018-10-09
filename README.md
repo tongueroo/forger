@@ -8,12 +8,28 @@ Example:
 * profiles/default.yml: Default settings. Used when no profile is specified.
 * profiles/myserver.yml: myserver profile.  Used when `--profile myserver` is specified.
 
-## Usage
+In a nutshell, the profile parameters are passed to the ruby aws-sdk [AWS::EC2::Client#run_instances](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Client.html#run_instances-instance_method) method.  This allows you to specify any parameter you wish that is available in the aws-sdk. To check out what a profile looks like check out [example default](docs/example/profiles/default.yml)
+
+## Usage: Quick Start
+
+    forger new ec2 # generates starter skeleton project
+    cd ec2
+    forger create myserver # creates instance
+
+## Useful new options
+
+By default, `forger new` generates a project with some starting values for the files in the `config` and `profiles` folders.  You likely want to edit these values using your own values. Things like security groups, subnets, iam role, and the s3_folder option are useful settings to modify.  You can also specify a lot of these values as a part of the `new` command. Example:
+
+    forger new ec2 --security-group sg-11223344 --iam MyIamRole --key-name my-keypair --s3-folder my-bucket/my-folder
+
+Notably, using the `--s3-folder` option generates a project that make use of the `app/scripts` files and insert an some bash code into your user-data script that downloads and extracts the files. For more help:
+
+    forger new -h
+
+## Usage: More Details
 
     forger create NAME --profile PROFILE
     forger create myserver --profile myserver
-
-In a nutshell, the profile parameters are passed to the ruby aws-sdk [AWS::EC2::Client#run_instances](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Client.html#run_instances-instance_method) method.  This allows you to specify any parameter you wish that is available in the aws-sdk. To check out what a profile looks like check out [example default](docs/example/profiles/default.yml)
 
 ## Noop mode
 
