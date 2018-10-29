@@ -22,14 +22,15 @@ class Forger::Script
     end
 
     def upload(tarball_path)
+      if @options[:noop]
+        puts "NOOP: Not uploading file to s3"
+        return
+      end
+
       puts "Uploading scripts.tgz (#{filesize}) to #{s3_dest}".colorize(:green)
       obj = s3_resource.bucket(bucket_name).object(key)
       start_time = Time.now
-      if @options[:noop]
-        puts "NOOP: Not uploading file to s3"
-      else
-        upload_to_s3(obj, tarball_path)
-      end
+      upload_to_s3(obj, tarball_path)
       time_took = pretty_time(Time.now-start_time).colorize(:green)
       puts "Time to upload code to s3: #{time_took}"
     end
