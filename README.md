@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/tongueroo/forger.svg?style=svg)](https://circleci.com/gh/tongueroo/forger)
 
-Tool to create AWS ec2 instances consistently with pre-configured settings.  The pre-configured settings are stored in the profiles folder of the current project directory.
+Tool to create AWS EC2 instances consistently with pre-configured settings.  The pre-configured settings are stored in the profiles folder of the current project directory.
 Example:
 
 * profiles/default.yml: Default settings. Used when no profile is specified.
@@ -42,7 +42,7 @@ You can do a test run with the `--noop` flag.  This will print out what settings
 
 ## Conventional Profile Name
 
-If there is a profile name that matches the ec2 specified instance name, you can omit the `--profile` flag. Example
+If there is a profile name that matches the EC2 specified instance name, you can omit the `--profile` flag. Example
 
     forger create webserver --profile webserver
     forger create webserver # same as above
@@ -231,6 +231,16 @@ Spot instance is natively supported by the AWS `run_instances` command by adding
 * [https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Types/SpotMarketOptions.html](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Types/SpotMarketOptions.html)
 
 An example of a spot instance profile is provided in [example/profiles/spot.yml](docs/example/profiles/spot.yml).
+
+## CloudWatch Support
+
+The output of the logs like `/var/log/cloud-init-output.log` can get sent to CloudWatch. This gets enabled with the `--cloudwatch` flag.  Example:
+
+    forger create myserver --cloudwatch
+
+CloudWatch support only works for some OSes and is still somewhat experimental.  Here's the OS check in the source: [lib/forger/scripts/cloudwatch.sh](https://github.com/tongueroo/forger/blob/master/lib/forger/scripts/cloudwatch.sh#L16).
+
+Note, CloudWatch logs take a few seconds to send from the EC2 instance to CloudWatch. So when using the `--auto-terminate` option the instance might be terminated before all the logs get sent.  So you might not capture all the logs. You can add a sleep 10 at the bottom of your user-data script if you think this is happening.
 
 ## More Help
 
