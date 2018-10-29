@@ -1,5 +1,9 @@
 #!/bin/bash -eux
 
+# extract forger happens very early and the top of the user data script.
+# Set the -e flag here to stop the script if there any errors.
+set -e
+
 # Downloads and extract the scripts.
 # The extracted folder from github looks like this:
 #   branch-name.tar.gz => forger-branch-name
