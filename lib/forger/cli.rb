@@ -18,7 +18,7 @@ module Forger
 
     long_desc Help.text(:new)
     New.cli_options.each do |args|
-      option *args
+      option(*args)
     end
     register(New, "new", "new NAME", "Generates new forger project")
 

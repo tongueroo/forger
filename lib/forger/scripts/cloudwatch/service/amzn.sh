@@ -14,3 +14,5 @@ script
   chkconfig awslogs on
 end script
 EOL
+
+start awslogs

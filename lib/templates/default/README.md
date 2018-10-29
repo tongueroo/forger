@@ -41,8 +41,8 @@ It is useful to verify that the instance has launched and completed its bootstra
     EC2 instance box created: i-03f3c96eaec8ea359 🎉
     Visit https://console.aws.amazon.com/ec2/home to check on the status
     To view instance's cloudwatch logs visit:
-      https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#logEventViewer:group=ec2;stream=i-03f3c96eaec8ea359/var/log/cloud-init-output.log
-      cw tail -f ec2 i-03f3c96eaec8ea359/var/log/cloud-init-output.log
+      https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#logEventViewer:group=forger;stream=i-03f3c96eaec8ea359/var/log/cloud-init-output.log
+      cw tail -f forger i-03f3c96eaec8ea359/var/log/cloud-init-output.log
     Note: It takes a little time for the instance to launch and report logs.
     Pro tip: The CloudWatch Console Link has been added to your copy-and-paste clipboard.
     $

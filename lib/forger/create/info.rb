@@ -72,14 +72,14 @@ class Forger::Create
 
       region = cloudwatch_log_region
       stream = "#{instance_id}/var/log/cloud-init-output.log"
-      url = "https://#{region}.console.aws.amazon.com/cloudwatch/home?region=#{region}#logEventViewer:group=ec2;stream=#{stream}"
-      cw_init_log = "cw tail -f ec2 #{stream}"
+      url = "https://#{region}.console.aws.amazon.com/cloudwatch/home?region=#{region}#logEventViewer:group=forger;stream=#{stream}"
+      cw_init_log = "cw tail -f forger #{stream}"
       puts "To view instance's cloudwatch logs visit:"
       puts "  #{url}"
 
       puts "  #{cw_init_log}" if show_cw
       if show_cw && @options[:auto_terminate]
-        cw_terminate_log = "cw tail -f ec2 #{instance_id}/var/log/auto-terminate.log"
+        cw_terminate_log = "cw tail -f forger #{instance_id}/var/log/auto-terminate.log"
         puts "  #{cw_terminate_log}"
       end
 
