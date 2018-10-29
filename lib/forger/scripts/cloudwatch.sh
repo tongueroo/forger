@@ -13,7 +13,7 @@ LOG_GROUP_NAME=$1
 # shellcheck disable=SC1091
 source "/opt/forger/shared/functions.sh"
 OS=$(os_name)
-if [ "$OS" != "amazonlinux2" ] && [ "$OS" != "ubuntu" ] ; then
+if [ "$OS" != "amzn" ] && [ "$OS" != "amazonlinux2" ] && [ "$OS" != "ubuntu" ] ; then
   echo "Sorry, cloudwatch logging with the forger tool is supported for amazonlinux2 and ubuntu only"
   exit
 fi
