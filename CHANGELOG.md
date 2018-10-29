@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [2.0.2]
+- Merge pull request #14 from tongueroo/fixes
+- allow cloudwatch support for amzn ami
+- rename cloudwatch group to forger
+- stop user data when there are errors
+
 ## [2.0.1]
 - Merge pull request #13 from tongueroo/aws-config-fix
 - configure_aws_cli: always write ~/.aws/config
