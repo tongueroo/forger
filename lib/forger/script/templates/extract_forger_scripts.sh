@@ -1,4 +1,4 @@
-#!/bin/bash -eux
+#!/bin/bash
 
 # extract forger happens very early and the top of the user data script.
 # Set the -e flag here to stop the script if there any errors.
@@ -70,3 +70,5 @@ function extract_forger_scripts() {
 }
 
 extract_forger_scripts
+
+set +e

@@ -1,4 +1,4 @@
-#!/bin/bash -eux
+#!/bin/bash
 function schedule_termination() {
   chmod +x /etc/rc.local
   sed -i 's/exit 0//' /etc/rc.local

@@ -1,4 +1,4 @@
-#!/bin/bash -exu
+#!/bin/bash
 
 # yum install already has configured
 #   /usr/lib/systemd/system/awslogsd.service

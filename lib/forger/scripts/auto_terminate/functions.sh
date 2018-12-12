@@ -1,4 +1,4 @@
-#!/bin/bash -eux
+#!/bin/bash
 
 # Key is that instance will not be terminated if source image is the same as the
 # original image id.

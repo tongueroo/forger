@@ -1,3 +1,3 @@
-#!/bin/bash -eux
+#!/bin/bash
 
 /opt/forger/cloudwatch/service/"$OS".sh

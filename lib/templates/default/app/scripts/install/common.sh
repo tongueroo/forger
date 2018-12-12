@@ -1,4 +1,4 @@
-#!/bin/bash -exu
+#!/bin/bash
 
 # https://forums.aws.amazon.com/thread.jspa?threadID=270511
 (

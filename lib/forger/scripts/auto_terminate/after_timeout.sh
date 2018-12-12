@@ -1,4 +1,4 @@
-#!/bin/bash -exu
+#!/bin/bash
 
 # This is another copy the /opt/forger/auto_terminate.sh script because the
 # /opt/forger/auto_terminate.sh also gets removed when it gets called.  Specifically,

@@ -1,4 +1,4 @@
-#/bin/bash -exu
+#/bin/bash
 
 # The awslogs-agent-setup.py setup creates a systemd unit is called awslogs.
 systemctl daemon-reload

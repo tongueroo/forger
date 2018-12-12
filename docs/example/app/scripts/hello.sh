@@ -1,3 +1,3 @@
-#!/bin/bash -exu
+#!/bin/bash
 
 echo "hello world"

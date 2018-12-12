@@ -1,4 +1,4 @@
-#!/bin/bash -exu
+#!/bin/bash
 
 if [ $# -eq 0 ]; then
   command=$(basename "$0")

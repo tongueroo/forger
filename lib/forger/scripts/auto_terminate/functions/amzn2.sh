@@ -1,4 +1,4 @@
-#!/bin/bash -eux
+#!/bin/bash
 function schedule_termination() {
   chmod +x /etc/rc.d/rc.local
   echo "/opt/forger/auto_terminate.sh after_ami >> /var/log/auto-terminate.log 2>&1" >> /etc/rc.d/rc.local

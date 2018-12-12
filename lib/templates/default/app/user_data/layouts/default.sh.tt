@@ -1,4 +1,4 @@
-#!/bin/bash -exu
+#!/bin/bash
 
 export HOME=/root # In user-data env USER=root but HOME is not set
 cd ~ # user-data starts off in / so go to $HOME

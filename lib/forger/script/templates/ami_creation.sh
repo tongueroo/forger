@@ -1,4 +1,6 @@
-#!/bin/bash -eux
+#!/bin/bash
+
+set -e
 
 # Create AMI Bundle
 AMI_NAME="<%= @ami_name %>"
@@ -10,3 +12,5 @@ SOURCE_AMI_ID=$(wget -q -O - http://169.254.169.254/latest/meta-data/ami-id)
 echo "$SOURCE_AMI_ID" > /var/log/source-ami-id.txt
 mkdir -p /opt/forger/data
 aws ec2 create-image --name "$AMI_NAME" --instance-id "$INSTANCE_ID" --region "$REGION" > /opt/forger/data/ami-id.txt
+
+set +e

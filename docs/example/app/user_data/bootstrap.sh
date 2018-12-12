@@ -1,4 +1,4 @@
-#!/bin/bash -exu
+#!/bin/bash
 
 export HOME=/root # user-data env runs in weird shell where user is root but HOME is not set
 

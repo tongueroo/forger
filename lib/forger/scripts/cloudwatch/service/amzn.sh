@@ -1,4 +1,4 @@
-#!/bin/bash -exu
+#!/bin/bash
 
 cat > /etc/init/awslogs.conf <<- EOL
 #upstart-job

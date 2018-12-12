@@ -1,4 +1,4 @@
-#!/bin/bash -eux
+#!/bin/bash
 
 function configure_aws_cli() {
   local home_dir
