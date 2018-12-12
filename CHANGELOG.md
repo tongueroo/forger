@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [2.0.3]
+- fix noop option for s3 upload
+- remove -eux bash flags to quiet scripts
+
 ## [2.0.2]
 - Merge pull request #14 from tongueroo/fixes
 - allow cloudwatch support for amzn ami
