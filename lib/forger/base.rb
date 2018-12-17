@@ -1,8 +1,8 @@
 module Forger
   class Base
     # constants really only used by script classes
-    SCRIPTS_INFO_PATH = "tmp/data/scripts_info.txt"
-    BUILD_ROOT = "tmp"
+    BUILD_ROOT = "/tmp/forger/#{File.basename(Dir.pwd)}"
+    SCRIPTS_INFO_PATH = "#{BUILD_ROOT}/data/scripts_info.txt"
 
     def initialize(options={})
       @options = options.clone

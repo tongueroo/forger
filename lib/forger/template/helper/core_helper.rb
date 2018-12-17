@@ -24,7 +24,7 @@ module Forger::Template::Helper::CoreHelper
     result = scripts.join(divider)
 
     # save the unencoded user-data script for easy debugging
-    temp_path = "#{Forger.root}/tmp/user-data.txt"
+    temp_path = "#{Forger.build_root}/user-data.txt"
     FileUtils.mkdir_p(File.dirname(temp_path))
     IO.write(temp_path, result)
 

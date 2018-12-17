@@ -40,6 +40,10 @@ module Forger
       @@env = env
     end
 
+    def build_root
+      Base::BUILD_ROOT
+    end
+
     private
     # Do not use the Setting class to load the profile because it can cause an
     # infinite loop then if we decide to use Forger.env from within settings class.
