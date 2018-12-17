@@ -122,7 +122,7 @@ class Forger::Create
       data = data.deep_stringify_keys
 
       if data["user_data"]
-        message = "base64-encoded: cat tmp/user-data.txt to view"
+        message = "base64-encoded: cat #{Forger.build_root}/user-data.txt to view"
         data["user_data"] = message
       end
 

@@ -38,7 +38,7 @@ Notably, using the `--s3-folder` option generates a project that make use of the
 You can do a test run with the `--noop` flag.  This will print out what settings will be used to launch the instance.  This is one good way to inspect the generated user-data script.
 
     forger create myserver --profile myserver --noop
-    cat tmp/user-data.txt # to view generated user-data script
+    cat /tmp/forger/ec2/user-data.txt # to view generated user-data script
 
 ## Conventional Profile Name
 
@@ -94,7 +94,7 @@ You can provide a user-data script to customize the server upon launch.  The use
 The user-data script is generated on the machine that is running the forger command. If this is your local macosx machine, then the context of your local macosx machine is available. To see the generated user-data script, you can run the create command in `--noop` mode and then inspect the generated script.  Example:
 
     forger create myserver --noop
-    cat tmp/user-data.txt
+    cat /tmp/forger/ec2/user-data.txt
 
 Another way to view the generated user-data scripts is the `forger compile` command.  It generates the files in the `tmp` folder.  Example:
 
