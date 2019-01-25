@@ -1,0 +1,67 @@
+# Ruby CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-ruby/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/ruby:2.5.3
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - run:
+          name: submodule sync
+          command: |
+            git submodule sync
+            git submodule update --init
+
+      # Download and cache dependencies
+      # Cannot cache with Gemfile.lock since it is gitignore.
+      # Not caching with Gemfile, would rather not.
+      # - restore_cache:
+      #     keys:
+      #     - v2-dependencies-{{ checksum "Gemfile.lock" }}
+      #     # fallback to using the latest cache if no exact match is found
+      #     - v2-dependencies-
+
+      - run:
+          name: install dependencies
+          command: |
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
+
+      # - save_cache:
+      #     paths:
+      #       - ./vendor/bundle
+      #     key: v2-dependencies-{{ checksum "Gemfile.lock" }}
+
+      # test require this
+      - run:
+          name: configure git
+          command: |
+            git config --global user.email "tongueroo@gmail.com"
+            git config --global user.name "Tung Nguyen"
+
+      # run tests!
+      - run:
+          name: run tests
+          command: |
+            mkdir /tmp/test-results
+
+            cat >.rspec <<EOL
+            --format documentation
+            --require spec_helper
+            EOL
+
+            bundle exec rspec
+
+      # collect reports
+      - store_test_results:
+          path: /tmp/test-results
+      - store_artifacts:
+          path: /tmp/test-results
+          destination: test-results

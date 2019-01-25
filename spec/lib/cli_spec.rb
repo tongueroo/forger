@@ -11,7 +11,8 @@ describe Forger::CLI do
 
     it "ERB evaluates dotenv files" do
       out = execute("exe/forger create server #{@args}")
-      user_data = IO.readlines("/tmp/forger/forger/user-data.txt")
+      project_name = ENV['CIRCLECI'] ? 'repo' : 'forger'
+      user_data = IO.readlines("/tmp/forger/#{project_name}/user-data.txt")
       found = !user_data.select { |l| l =~ /test_key: test-key-value/ }.empty?
       expect(found).to be true
     end
