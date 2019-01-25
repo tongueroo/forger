@@ -20,7 +20,7 @@ class Forger::Script
     end
 
     def compile_folder(folder, layout_path=false)
-      puts "Compiling app/#{folder} to tmp/app/#{folder}.".colorize(:green)
+      puts "Compiling app/#{folder} to tmp/app/#{folder}.".color(:green)
       Dir.glob("#{Forger.root}/app/#{folder}/**/*").each do |path|
         next if File.directory?(path)
         next if path.include?("layouts")

@@ -1,6 +1,6 @@
 $:.unshift(File.expand_path("../", __FILE__))
 require "forger/version"
-require "colorize"
+require "rainbow/ext/string"
 require "render_me_pretty"
 require "memoist"
 

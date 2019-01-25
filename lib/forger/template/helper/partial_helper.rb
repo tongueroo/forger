@@ -55,11 +55,11 @@ private
     end
 
     if paths.size > 1 # ambiguous match
-      puts "ERROR: Multiple possible partials found:".colorize(:red)
+      puts "ERROR: Multiple possible partials found:".color(:red)
       paths.each do |path|
         puts "  #{path}"
       end
-      puts "Please specify an extension in the name to remove the ambiguity.".colorize(:green)
+      puts "Please specify an extension in the name to remove the ambiguity.".color(:green)
       exit 1
     end
 

@@ -4,7 +4,7 @@ class Forger::Script
   class Compress < Forger::Base
     def compress
       reset
-      puts "Tarballing #{BUILD_ROOT}/app/scripts folder to scripts.tgz".colorize(:green)
+      puts "Tarballing #{BUILD_ROOT}/app/scripts folder to scripts.tgz".color(:green)
       tarball_path = create_tarball
       save_scripts_info(tarball_path)
       puts "Tarball created at #{tarball_path}"

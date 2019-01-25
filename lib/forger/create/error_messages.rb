@@ -24,7 +24,7 @@ EOL
     end
 
     def print_error_message(exception, message)
-      puts "ERROR: Unable to launch the instance.".colorize(:red)
+      puts "ERROR: Unable to launch the instance.".color(:red)
       puts message
       puts exception.message
       puts "For the full internal backtrace re-run the command with DEBUG=1"

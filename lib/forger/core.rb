@@ -27,7 +27,7 @@ module Forger
 
     def validate_in_project!
       unless File.exist?("#{root}/profiles")
-        puts "Could not find a profiles folder in the current directory.  It does not look like you are running this command within a forger project.  Please confirm that you are in a forger project and try again.".colorize(:red)
+        puts "Could not find a profiles folder in the current directory.  It does not look like you are running this command within a forger project.  Please confirm that you are in a forger project and try again.".color(:red)
         exit
       end
     end

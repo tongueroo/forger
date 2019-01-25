@@ -27,18 +27,18 @@ class Forger::Script
         return
       end
 
-      puts "Uploading scripts.tgz (#{filesize}) to #{s3_dest}".colorize(:green)
+      puts "Uploading scripts.tgz (#{filesize}) to #{s3_dest}".color(:green)
       obj = s3_resource.bucket(bucket_name).object(key)
       start_time = Time.now
       upload_to_s3(obj, tarball_path)
-      time_took = pretty_time(Time.now-start_time).colorize(:green)
+      time_took = pretty_time(Time.now-start_time).color(:green)
       puts "Time to upload code to s3: #{time_took}"
     end
 
     def upload_to_s3(obj, tarball_path)
       obj.upload_file(tarball_path)
     rescue Aws::S3::Errors::PermanentRedirect => e
-      puts "ERROR: #{e.class} #{e.message}".colorize(:red)
+      puts "ERROR: #{e.class} #{e.message}".color(:red)
       puts "The bucket you are trying to upload scripts to is in a different region than the region the instance is being launched in."
       puts "You must configured FORGER_S3_ENDPOINT env variable to prevent this error. Example:"
       puts "  FORGER_S3_ENDPOINT=https://s3.us-west-2.amazonaws.com"
@@ -46,7 +46,7 @@ class Forger::Script
       exit 1
     rescue Aws::S3::Errors::AccessDenied, Aws::S3::Errors::AllAccessDisabled
       e = $!
-      puts "ERROR: #{e.class} #{e.message}".colorize(:red)
+      puts "ERROR: #{e.class} #{e.message}".color(:red)
       puts "You do not have permission to upload scripts to this bucket: #{bucket_name}.  Are you sure the right bucket is configured?"
       if ENV['AWS_PROFILE']
         puts "Also maybe check your AWS_PROFILE env. Current AWS_PROFILE=#{ENV['AWS_PROFILE']}"

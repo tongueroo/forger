@@ -16,7 +16,7 @@ module Forger::Template::Helper::AmiHelper
     if image
       image.image_id
     else
-      puts "latest_ami helper method could not find an AMI with the query of: #{query.inspect}".colorize(:red)
+      puts "latest_ami helper method could not find an AMI with the query of: #{query.inspect}".color(:red)
       exit 1
     end
   end

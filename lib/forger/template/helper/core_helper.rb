@@ -9,7 +9,7 @@ module Forger::Template::Helper::CoreHelper
 
     path = "#{Forger.root}/app/user_data/#{name}"
     unless File.exist?(path)
-      puts "ERROR: user-data script #{path.colorize(:red)} does not exist"
+      puts "ERROR: user-data script #{path.color(:red)} does not exist"
       exit
     end
     result = RenderMePretty.result(path, context: self, layout: layout_path)
@@ -50,7 +50,7 @@ module Forger::Template::Helper::CoreHelper
 
     # other named layouts should error if it doesnt exit
     unless File.exist?(layout_path)
-      puts "ERROR: Layout #{layout_path} does not exist. Are you sure it exists?  Exiting".colorize(:red)
+      puts "ERROR: Layout #{layout_path} does not exist. Are you sure it exists?  Exiting".color(:red)
       exit 1
     end
 

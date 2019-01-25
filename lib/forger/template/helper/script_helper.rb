@@ -10,7 +10,7 @@ module Forger::Template::Helper::ScriptHelper
     user = options[:as] || "ec2-user"
 
     if Dir.glob("#{Forger.root}/app/scripts*").empty?
-      puts "WARN: you are using the extract_scripts helper method but you do not have any app/scripts.".colorize(:yellow)
+      puts "WARN: you are using the extract_scripts helper method but you do not have any app/scripts.".color(:yellow)
       calling_line = caller[0].split(':')[0..1].join(':')
       puts "Called from: #{calling_line}"
       return ""
@@ -38,7 +38,7 @@ private
     lines = caller.reject { |l| l =~ %r{lib/forger} } # hide internal forger trace
     puts "  #{lines[0]}"
 
-    puts "Please configure your config/settings.yml with an s3_folder.".colorize(:red)
+    puts "Please configure your config/settings.yml with an s3_folder.".color(:red)
     exit 1
   end
 

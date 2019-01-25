@@ -17,7 +17,7 @@ module Forger
       Hook.run(:before_run_instances, @options)
       sync_scripts_to_s3
 
-      puts "Creating EC2 instance #{@name.colorize(:green)}"
+      puts "Creating EC2 instance #{@name.color(:green)}"
       info = Info.new(@options, params)
       info.ec2_params
       if @options[:noop]

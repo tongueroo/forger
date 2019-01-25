@@ -13,7 +13,7 @@ module Forger
       return @@data if @@data
 
       if @check_project && !File.exist?(project_settings_path)
-        puts "ERROR: No settings file at #{project_settings_path}.  Are you sure you are in a forger project?".colorize(:red)
+        puts "ERROR: No settings file at #{project_settings_path}.  Are you sure you are in a forger project?".color(:red)
         exit 1
       end
 

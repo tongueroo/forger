@@ -62,7 +62,7 @@ class Forger::Create
     end
 
     def display_ssh(command)
-      puts "=> #{command.join(' ')}".colorize(:green)
+      puts "=> #{command.join(' ')}".color(:green)
     end
 
     def retry_until_success(*command)

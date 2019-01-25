@@ -15,15 +15,15 @@ module Forger
       file = profile_file(profile_name)
       return if File.exist?(file)
 
-      puts "Unable to find a #{file.colorize(:green)} profile file."
-      puts "Please double check that it exists or that you specified the right profile.".colorize(:red)
+      puts "Unable to find a #{file.color(:green)} profile file."
+      puts "Please double check that it exists or that you specified the right profile.".color(:red)
       exit 1
     end
 
     def load_profile(file)
       return {} unless File.exist?(file)
 
-      puts "Using profile: #{file}".colorize(:green)
+      puts "Using profile: #{file}".color(:green)
       text = RenderMePretty.result(file, context: context)
       begin
         data = YAML.load(text)
@@ -31,7 +31,7 @@ module Forger
         tmp_file = file.sub("profiles", Forger.build_root)
         FileUtils.mkdir_p(File.dirname(tmp_file))
         IO.write(tmp_file, text)
-        puts "There was an error evaluating in your yaml file #{file}".colorize(:red)
+        puts "There was an error evaluating in your yaml file #{file}".color(:red)
         puts "The evaludated yaml file has been saved at #{tmp_file} for debugging."
         puts "ERROR: #{e.message}"
         exit 1
