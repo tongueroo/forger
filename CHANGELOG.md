@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [2.0.5]
+- add circle config: circleci 2.0
+- use rainbow gem for terminal colors
+
 ## [2.0.4]
 - Merge pull request #15 from tongueroo/tmp-write-area: move write operations to /tmp area
 
