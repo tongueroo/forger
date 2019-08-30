@@ -60,9 +60,10 @@ module Forger::Template::Helper::CoreHelper
   # provides access to config/* settings as variables
   #   FORGER_ENV=development => config/development.yml
   #   FORGER_ENV=production => config/production.yml
-  def config
-    Forger.config
+  def vars
+    Forger.vars
   end
+  alias_method :variables, :vars
 
   # provides access to config/settings.yml as variables
   def settings
