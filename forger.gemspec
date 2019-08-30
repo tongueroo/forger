@@ -6,8 +6,8 @@ require "forger/version"
 Gem::Specification.new do |spec|
   spec.name          = "forger"
   spec.version       = Forger::VERSION
-  spec.authors       = ["Tung Nguyen"]
-  spec.email         = ["tongueroo@gmail.com"]
+  spec.author        = "Tung Nguyen"
+  spec.email         = "tongueroo@gmail.com"
   spec.summary       = "Tool to create AWS ec2 instances"
   spec.homepage      = "https://github.com/tongueroo/forger"
   spec.license       = "MIT"
@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rainbow"
   spec.add_dependency "render_me_pretty"
   spec.add_dependency "thor"
+  spec.add_dependency "zeitwerk"
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "byebug"

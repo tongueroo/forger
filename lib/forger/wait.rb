@@ -1,6 +1,4 @@
 module Forger
-  autoload :Waiter, 'forger/waiter'
-
   class Wait < Command
     desc "ami", "Wait until AMI available."
     long_desc Help.text("wait:ami")

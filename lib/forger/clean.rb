@@ -1,6 +1,4 @@
 module Forger
-  autoload :Cleaner, 'forger/cleaner'
-
   class Clean < Command
     desc "ami", "Clean until AMI available."
     long_desc Help.text("clean:ami")

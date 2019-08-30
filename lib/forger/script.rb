@@ -1,9 +1,5 @@
 module Forger
   class Script
-    autoload :Compile, "forger/script/compile"
-    autoload :Compress, "forger/script/compress"
-    autoload :Upload, "forger/script/upload"
-
     def initialize(options={})
       @options = options
     end

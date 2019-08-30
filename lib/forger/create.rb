@@ -3,11 +3,6 @@ require 'active_support/core_ext/hash'
 
 module Forger
   class Create < Base
-    autoload :Params, "forger/create/params"
-    autoload :ErrorMessages, "forger/create/error_messages"
-    autoload :Waiter, "forger/create/waiter"
-    autoload :Info, "forger/create/info"
-
     include AwsService
     include ErrorMessages
 
