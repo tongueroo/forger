@@ -2,7 +2,7 @@
 
 ## Overview
 
-Forger supports uploading files and making them available to your the launched EC2 instances.
+Forger supports uploading files to s3 and making them available to your the launched EC2 instances.
 
 ## How it works
 
@@ -33,3 +33,7 @@ It essentially extracts the scripts from the `app/scripts` to `/opt/scripts`.
 ## ERB Support
 
 You can use ERB in the `app/scripts` files. So you can add dynamic logic based on ENV variables.
+
+## S3 Bucket
+
+Forger will automatically create the s3 bucket as needed. The s3 bucket is defined in the `forger` CloudFormation stack.
