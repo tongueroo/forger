@@ -62,7 +62,9 @@ module Forger
     # Do not use the Setting#data to load the profile because it can cause an
     # infinite loop then if we decide to use Forger.env from within settings class.
     def settings
-      YAML.load_file("#{Forger.root}/config/settings.yml")
+      path = "#{Forger.root}/config/settings.yml"
+      return {} unless File.exist?(path)
+      YAML.load_file(path)
     end
     memoize :settings
 
