@@ -10,7 +10,7 @@ module Forger::Template::Helper::CoreHelper
     path = "#{Forger.root}/app/user_data/#{name}"
     unless File.exist?(path)
       puts "ERROR: user-data script #{path.color(:red)} does not exist"
-      exit
+      exit 1
     end
     result = RenderMePretty.result(path, context: self, layout: layout_path)
     # Must prepend and append scripts in user_data here because we need to
@@ -122,7 +122,7 @@ private
   def load_custom_helpers
     Dir.glob("#{Forger.root}/app/helpers/**/*_helper.rb").each do |path|
       filename = path.sub(%r{.*/},'').sub('.rb','')
-      module_name = filename.classify
+      module_name = filename.camelize
 
       require path
       self.class.send :include, module_name.constantize

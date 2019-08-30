@@ -5,12 +5,8 @@ cd ~ # user-data starts off in / so go to $HOME
 
 <%%= add_ssh_key %>
 
-<% if options[:s3_folder] -%>
-<%%= extract_scripts(to: "/opt") %>
-<% else -%>
 # Uncomment to use extract_scripts and use app/scripts
-<%%# extract_scripts(to: "/opt") %>
-<% end -%>
+<%%=# extract_scripts(to: "/opt") %>
 
 <%%= yield %>
 

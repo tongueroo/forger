@@ -8,17 +8,8 @@ base:
 # There are separate files to separate user defined variables and internal
 # setting configs.
 development:
-  # By setting s3_folder, forger will automatically tarball and upload your scripts
-  # to set. You then can then use the extract_scripts helper method to download
-  # the scripts onto the server.
-  # s3_folder: mybucket/path/to/folder # simple string
   # compile_clean: true # uncomment to clean
   # extract_scripts:
   #   to: "/opt"
   #   as: "ec2-user"
   aws_profile: my-aws-profile
-<% if @options[:s3_folder] -%>
-  s3_folder: <%= @options[:s3_folder] %>
-<% else -%>
-  # s3_folder: my-s3-bucket/ec2
-<% end -%>

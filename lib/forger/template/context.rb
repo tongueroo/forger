@@ -16,7 +16,7 @@ module Forger::Template
     def load_custom_helpers
       Dir.glob("#{Forger.root}/app/helpers/**/*_helper.rb").each do |path|
         filename = path.sub(%r{.*/},'').sub('.rb','')
-        module_name = filename.classify
+        module_name = filename.camelize
 
         # Prepend a period so require works FORGER_ROOT is set to a relative path
         # without a period.

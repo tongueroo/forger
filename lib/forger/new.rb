@@ -12,7 +12,6 @@ module Forger
         [:git, type: :boolean, default: true, desc: "Git initialize the project"],
         [:iam, desc: "iam_instance_profile to use in the profiles/default.yml"],
         [:key_name, desc: "key name to use with launched instance in profiles/default.yml"],
-        [:s3_folder, desc: "s3_folder setting for config/settings.yml."],
         [:security_group, desc: "Security group to use. For config/development.yml network settings."],
         [:subnet, desc: "Subnet to use. For config/development.yml network settings."],
         [:vpc_id, desc: "Vpc id. For config/development.yml network settings. Will use default sg and subnet"],
@@ -20,9 +19,9 @@ module Forger
     end
 
     cli_options.each do |args|
-      class_option *args
+      class_option(*args)
     end
-    
+
     def configure_network_settings
       return if ENV['TEST']
 

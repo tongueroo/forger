@@ -16,8 +16,6 @@ class Forger::Create
     end
 
     def spot(instance_id)
-      puts "Max monthly price: $#{monthly_spot_price}/mo" if monthly_spot_price
-
       retries = 0
       begin
         resp = ec2.describe_instances(instance_ids: [instance_id])

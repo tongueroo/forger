@@ -36,23 +36,7 @@ module Forger
       handle_ec2_service_error!(e)
     end
 
-    # Configured by config/settings.yml.
-    # Example: config/settings.yml:
-    #
-    # Format 1: Simple String
-    #
-    #   development:
-    #     s3_folder: mybucket/path/to/folder
-    #
-    # Format 2: Hash
-    #
-    #   development:
-    #     s3_folder:
-    #       default: mybucket/path/to/folder
-    #       dev_profile1: mybucket/path/to/folder
-    #       dev_profile1: another-bucket/storage/path
     def sync_scripts_to_s3
-      return unless Forger.settings["s3_folder"]
       upload = Script::Upload.new(@options)
       return if upload.empty?
       upload.run

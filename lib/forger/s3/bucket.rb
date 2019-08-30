@@ -8,24 +8,22 @@ class Forger::S3
 
     class << self
       @@name = nil
-      def name(autocreate=true)
+      def name
         return @@name if @@name # only memoize once bucket has been created
 
         stack = new.find_stack
-        if !stack
-          autocreate ? ensure_bucket_exists : return
-        end
+        return unless stack
 
         resp = cfn.describe_stack_resources(stack_name: STACK_NAME)
         bucket = resp.stack_resources.find { |r| r.logical_resource_id == "Bucket" }
         @@name = bucket.physical_resource_id # actual bucket name
       end
 
-      def ensure_bucket_exists
+      def ensure_exists!
         bucket = new
+        return if bucket.exist?
         bucket.create
       end
-
     end
 
     def initialize(options={})
@@ -45,12 +43,12 @@ class Forger::S3
       !!bucket_name
     end
 
-    def bucket_name(autocreate=true)
-      self.class.name(autocreate)
+    def bucket_name
+      self.class.name
     end
 
     def show
-      if bucket_name(false) # dont autocreate
+      if bucket_name
         puts "Forger bucket name: #{bucket_name}"
       else
         puts "Forger bucket does not exist yet."
