@@ -65,7 +65,7 @@ app/partials  | Your partials that can to be included in other scripts.  This is
 app/scripts  | Where you define common scripts that can be used to configure the server. These scripts can be automatically uploaded to an s3 bucket for later downloading in your user-data script by setting the `s3_folder` settings option.
 app/user_data  | Your user-data scripts that are used to bootstrap EC2 instance.
 app/user_data/layouts  | user-data scripts support layouts. You user-data layouts go in here.
-config/[FORGER_ENV].yml  | The config file where you set configs that you want available in your templating logic.  Examples are: `config/development.yml` and `config/production.yml`. You access the config variables with the `<%= config["var"] %>` helper.
+config/[FORGER_ENV].yml  | The config file where you set configs that you want available in your templating logic.  Examples are: `config/variables/development.rb` and `config/variables/production.rb`. You access the config variables with ERB `<%= @var %>`.
 profiles  | Your profile files.  These files mainly contain parameters that are passed to the aws-sdk run_instances API method.
 tmp  | Where the generated scripts get compiled to. You can manually invoke the compilation via `forger compile` to inspect what is generated.  This is automatically done as part of the `forger` create command.
 
@@ -76,7 +76,7 @@ You can use ERB in the profile files. Some useful helper methods are documented 
 Helper  | Description
 ------------- | -------------
 user_data | Allows you to embed a generated user_data script.  More details on the user-data are provided in the user data section below.
-config | Access to the variables set in config/[AWS\_EC2\_ENV].yml.  Examples are `config/development.yml` and `config/production.yml`.
+config | Access to the variables set in config/[AWS\_EC2\_ENV].yml.  Examples are `config/variables/development.rb` and `config/variables/production.rb`.
 latest_ami | Returns an AMI id by searching the AMI name pattern and sorting in reverse order.  Example: `latest_ami("ruby-2.5.0_*")` would return the latest ruby AMIs are named with timestamps at the end like so: `ruby-2.5.0_2018-01-30-05-36-02` and `ruby-2.5.0_2018-01-29-05-36-02`.
 search_ami | Returns a collection of AMI image objects based on a search pattern. The query searches on the AMI name.
 extract_scripts | Use this in your bash script to extract the `app/scripts` files that get uploaded to s3.
@@ -142,7 +142,7 @@ If there's a `layouts/default.sh`, then it will automatically be used without ha
 
 ### Config
 
-You can set variables in a config file and they are available when ERB is available: profiles, user-data, scripts, etc.  Example `config/development.yml`:
+You can set variables in a config file and they are available when ERB is available: profiles, user-data, scripts, etc.  Example `config/variables/development.rb`:
 
 ```yaml
 ---
@@ -159,8 +159,8 @@ The variables are accessed via the `config` helper method. Here's a filtered exa
 ```yaml
 image_id: ami-4fffc834 # Amazon Lambda AMI
 instance_type: t2.medium
-security_group_ids: <%= config["security_group_ids"] %>
-subnet_id: <%= config["subnets"].shuffle %>
+security_group_ids: <%= @security_group_ids %>
+subnet_id: <%= @subnets.shuffle %>
 ...
 ```
 

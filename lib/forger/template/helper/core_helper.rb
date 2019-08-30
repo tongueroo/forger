@@ -58,8 +58,8 @@ module Forger::Template::Helper::CoreHelper
   end
 
   # provides access to config/* settings as variables
-  #   FORGER_ENV=development => config/development.yml
-  #   FORGER_ENV=production => config/production.yml
+  #   FORGER_ENV=development => config/variables/development.rb
+  #   FORGER_ENV=production  => config/variables/production.rb
   def vars
     Forger.vars
   end
