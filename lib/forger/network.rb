@@ -2,7 +2,7 @@
 # If no @vpc_id is provided to the initializer then the default vpc is used.
 module Forger
   class Network
-    include Forger::AwsService
+    include Forger::AwsServices
     extend Memoist
 
     def initialize(vpc_id)

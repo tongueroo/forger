@@ -1,6 +1,6 @@
 class Forger::Create
   class Info
-    include Forger::AwsService
+    include Forger::AwsServices
 
     attr_reader :params
     def initialize(options, params)

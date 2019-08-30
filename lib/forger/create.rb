@@ -3,7 +3,7 @@ require 'active_support/core_ext/hash'
 
 module Forger
   class Create < Base
-    include AwsService
+    include AwsServices
     include ErrorMessages
 
     def run

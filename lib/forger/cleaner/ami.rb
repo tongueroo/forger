@@ -1,6 +1,6 @@
 module Forger::Cleaner
   class Ami < Forger::Base
-    include Forger::AwsService
+    include Forger::AwsServices
 
     def clean
       query = @options[:query]
