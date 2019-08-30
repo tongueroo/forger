@@ -13,10 +13,8 @@ development:
   # extract_scripts:
   #   to: "/opt"
   #   as: "ec2-user"
-  # aws_profiles:
-  #   - profile1
+  # aws_profile: profile1
 
 production:
   # s3_folder: mybucket/folder
-  # aws_profiles:
-  #   - profile2
+  # aws_profile: profile2

@@ -16,8 +16,7 @@ development:
   # extract_scripts:
   #   to: "/opt"
   #   as: "ec2-user"
-  aws_profiles:
-    - my-aws-profile
+  aws_profile: my-aws-profile
 <% if @options[:s3_folder] -%>
   s3_folder: <%= @options[:s3_folder] %>
 <% else -%>

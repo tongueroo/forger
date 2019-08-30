@@ -32,3 +32,5 @@ module Forger
 end
 
 Forger::Dotenv.load!
+
+Forger.set_aws_profile!
