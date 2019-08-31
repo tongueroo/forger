@@ -5,11 +5,6 @@ module Forger
   module Core
     extend Memoist
 
-    @@vars = nil
-    def vars
-      @@vars ||= Variables.new.data
-    end
-
     def settings
       Setting.new.data
     end

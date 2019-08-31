@@ -23,6 +23,7 @@ mkdir -p #{to}
 aws s3 cp #{scripts_s3_path} #{to}/
 (
   cd #{to}
+  rm -rf #{to}/scripts # cleanup
   tar zxf #{to}/#{scripts_name}
   chmod -R a+x #{to}/scripts
   chown -R #{user}:#{user} #{to}/scripts

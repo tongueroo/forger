@@ -14,6 +14,12 @@ module Forger
     common_options = Proc.new do
       option :auto_terminate, type: :boolean, default: false, desc: "automatically terminate the instance at the end of user-data"
       option :cloudwatch, type: :boolean, desc: "enable cloudwatch logging, supported for amazonlinux2 and ubuntu"
+      option :ami_name, desc: "when specified, an ami creation script is appended to the user-data script"
+      option :randomize, type: :boolean, desc: "append random characters to end of name"
+      option :source_ami, desc: "override the source image_id in profile"
+      option :wait, type: :boolean, default: true, desc: "Wait until the instance is ready and report dns name"
+      option :ssh, type: :boolean, desc: "Ssh into instance immediately after it's ready"
+      option :ssh_user, default: "ec2-user", desc: "User to use to with the ssh option to log into instance"
     end
 
     long_desc Help.text(:new)
@@ -24,12 +30,6 @@ module Forger
 
     desc "create NAME", "create ec2 instance"
     long_desc Help.text(:create)
-    option :ami_name, desc: "when specified, an ami creation script is appended to the user-data script"
-    option :randomize, type: :boolean, desc: "append random characters to end of name"
-    option :source_ami, desc: "override the source image_id in profile"
-    option :wait, type: :boolean, default: true, desc: "Wait until the instance is ready and report dns name"
-    option :ssh, type: :boolean, desc: "Ssh into instance immediately after it's ready"
-    option :ssh_user, default: "ec2-user", desc: "User to use to with the ssh option to log into instance"
     common_options.call
     def create(name)
       Create.new(options.merge(name: name)).run
