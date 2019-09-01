@@ -10,8 +10,8 @@ user_data: "<%= user_data("bootstrap.sh") %>"
 iam_instance_profile:
   name: <%= ENV['IAM_INSTANCE_PROFILE'] %>
 # public network settings
-security_group_ids: <%= config["security_group_ids"].inspect %>
-subnet_id: <%= config["subnets"].shuffle.first %>
+security_group_ids: <%= @security_group_ids.inspect %>
+subnet_id: <%= @subnets.shuffle.first %>
 block_device_mappings:
   - device_name: /dev/xvda
     ebs:

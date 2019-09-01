@@ -15,10 +15,15 @@ class Forger::Script
 
     def run
       compiler.compile_scripts if @compile
+      ensure_bucket_exists
       compressor.compress
       upload(tarball_path)
       compressor.clean
       compiler.clean if @compile and Forger.settings["compile_clean"]
+    end
+
+    def ensure_bucket_exists
+      Forger::S3::Bucket.ensure_exists! if Forger::Template::Helper.extract_scripts_registered?
     end
 
     def upload(tarball_path)
@@ -28,30 +33,11 @@ class Forger::Script
       end
 
       puts "Uploading scripts.tgz (#{filesize}) to #{s3_dest}".color(:green)
-      obj = s3_resource.bucket(bucket_name).object(key)
+      obj = s3_resource.bucket(bucket_name).object(s3_key)
       start_time = Time.now
-      upload_to_s3(obj, tarball_path)
+      obj.upload_file(tarball_path)
       time_took = pretty_time(Time.now-start_time).color(:green)
       puts "Time to upload code to s3: #{time_took}"
-    end
-
-    def upload_to_s3(obj, tarball_path)
-      obj.upload_file(tarball_path)
-    rescue Aws::S3::Errors::PermanentRedirect => e
-      puts "ERROR: #{e.class} #{e.message}".color(:red)
-      puts "The bucket you are trying to upload scripts to is in a different region than the region the instance is being launched in."
-      puts "You must configured FORGER_S3_ENDPOINT env variable to prevent this error. Example:"
-      puts "  FORGER_S3_ENDPOINT=https://s3.us-west-2.amazonaws.com"
-      puts "Check your ~/.aws/config for the region being used for the ec2 instance."
-      exit 1
-    rescue Aws::S3::Errors::AccessDenied, Aws::S3::Errors::AllAccessDisabled
-      e = $!
-      puts "ERROR: #{e.class} #{e.message}".color(:red)
-      puts "You do not have permission to upload scripts to this bucket: #{bucket_name}.  Are you sure the right bucket is configured?"
-      if ENV['AWS_PROFILE']
-        puts "Also maybe check your AWS_PROFILE env. Current AWS_PROFILE=#{ENV['AWS_PROFILE']}"
-      end
-      exit 1
     end
 
     def empty?
@@ -69,33 +55,17 @@ class Forger::Script
     end
 
     def s3_dest
-      "s3://#{bucket_name}/#{key}"
+      "s3://#{bucket_name}/#{s3_key}"
     end
 
-    def key
-      # Example key: ec2/development/scripts/scripts-md5
+    def s3_key
+      # Example s3_key: ec2/development/scripts/scripts-md5
+      dest_folder = "#{Forger.env}/scripts"
       "#{dest_folder}/#{File.basename(tarball_path)}"
     end
 
-    # Example:
-    #   s3_folder: s3://infra-bucket/ec2
-    #   bucket_name: infra-bucket
     def bucket_name
-      s3_folder.sub('s3://','').split('/').first
-    end
-
-    # Removes s3://bucket-name and adds Forger.env. Example:
-    #   s3_folder: s3://infra-bucket/ec2
-    #   bucket_name: ec2/development/scripts
-    def dest_folder
-      folder = s3_folder.sub('s3://','').split('/')[1..-1].join('/')
-      folder = nil if folder == ''
-      [folder, "#{Forger.env}/scripts"].compact.join('/')
-    end
-
-    # s3_folder example:
-    def s3_folder
-      Forger.settings["s3_folder"]
+      Forger::S3::Bucket.name
     end
 
     def s3_resource

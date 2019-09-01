@@ -1,6 +1,6 @@
 module Forger::Waiter
   class Ami < Forger::Base
-    include Forger::AwsService
+    include Forger::AwsServices
 
     def wait
       delay = 30

@@ -1,6 +1,6 @@
 class Forger::Create
   class Info
-    include Forger::AwsService
+    include Forger::AwsServices
 
     attr_reader :params
     def initialize(options, params)
@@ -16,8 +16,6 @@ class Forger::Create
     end
 
     def spot(instance_id)
-      puts "Max monthly price: $#{monthly_spot_price}/mo" if monthly_spot_price
-
       retries = 0
       begin
         resp = ec2.describe_instances(instance_ids: [instance_id])
@@ -33,7 +31,15 @@ class Forger::Create
         end
       end
 
-      spot_id = resp.reservations.first.instances.first.spot_instance_request_id
+      reservation = resp.reservations.first
+      # Super edge case when reserverations not immediately found yet
+      until reservation
+        reservation = resp.reservations.first
+        seconds = 0.5
+        puts "Reserveration not found. Sleeping for #{seconds} and will try again."
+        sleep seconds
+      end
+      spot_id = reservation.instances.first.spot_instance_request_id
       return unless spot_id
 
       puts "Spot instance request id: #{spot_id}"

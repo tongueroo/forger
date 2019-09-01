@@ -1,5 +1,5 @@
 module Forger::Template::Helper::AmiHelper
-  include Forger::AwsService
+  include Forger::AwsServices
 
   # Example:
   #

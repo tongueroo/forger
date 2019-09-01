@@ -8,15 +8,30 @@ module Forger::Template
 
     def initialize(options={})
       @options = options
+      load_variables
       load_custom_helpers
     end
 
   private
+    # Load variables from:
+    #   config/variables/development.rb
+    #   config/variables/production.rb
+    #   etc
+    def load_variables
+      load_variables_file(:base)
+      load_variables_file(Forger.env)
+    end
+
+    def load_variables_file(type)
+      path = "#{Forger.root}/config/variables/#{type}.rb"
+      instance_eval(IO.read(path), path) if File.exist?(path)
+    end
+
     # Load custom helper methods from project
     def load_custom_helpers
       Dir.glob("#{Forger.root}/app/helpers/**/*_helper.rb").each do |path|
         filename = path.sub(%r{.*/},'').sub('.rb','')
-        module_name = filename.classify
+        module_name = filename.camelize
 
         # Prepend a period so require works FORGER_ROOT is set to a relative path
         # without a period.

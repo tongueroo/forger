@@ -2,7 +2,7 @@
 # If no @vpc_id is provided to the initializer then the default vpc is used.
 module Forger
   class Network
-    include Forger::AwsService
+    include Forger::AwsServices
     extend Memoist
 
     def initialize(vpc_id)
@@ -20,7 +20,7 @@ module Forger
         default_vpc.vpc_id
       else
         puts "A default vpc was not found in this AWS account and region.".color(:red)
-        puts "Because there is no default vpc, please specify the --vpc-id option.  More info: http://ufoships.com/reference/ufo-init/"
+        puts "Because there is no default vpc, please specify the --vpc-id option."
         exit 1
       end
     end

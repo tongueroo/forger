@@ -4,8 +4,8 @@ instance_type: t2.medium
 key_name: default
 max_count: 1
 min_count: 1
-security_group_ids: <%= config["security_group_ids"] %>
-subnet_id: <%= config["subnets"].shuffle.first %>
+security_group_ids: <%= @security_group_ids %>
+subnet_id: <%= @subnets.shuffle.first %>
 user_data: "<%= user_data("bootstrap") %>"
 iam_instance_profile:
   name: IAMProfileName

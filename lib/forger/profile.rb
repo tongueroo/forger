@@ -23,10 +23,23 @@ module Forger
     def load_profile(file)
       return {} unless File.exist?(file)
 
+      base_file, base_data = profile_file(:base), {}
+      if File.exist?(base_file)
+        puts "Detected profiles/base.yml"
+        base_data = yaml_load(base_file)
+      end
+
       puts "Using profile: #{file}".color(:green)
+      data = yaml_load(file)
+      data = base_data.merge(data)
+      data.has_key?("run_instances") ? data["run_instances"] : data
+    end
+
+    def yaml_load(file)
       text = RenderMePretty.result(file, context: context)
       begin
-        data = YAML.load(text)
+        data = YAML.load(text) # data
+        data ? data : {} # in case the file is empty
       rescue Psych::SyntaxError => e
         tmp_file = file.sub("profiles", Forger.build_root)
         FileUtils.mkdir_p(File.dirname(tmp_file))
@@ -36,9 +49,8 @@ module Forger
         puts "ERROR: #{e.message}"
         exit 1
       end
-      data ? data : {} # in case the file is empty
-      data.has_key?("run_instances") ? data["run_instances"] : data
     end
+
 
     # Determines a valid profile_name. Falls back to default
     def profile_name

@@ -6,9 +6,9 @@ require "forger/version"
 Gem::Specification.new do |spec|
   spec.name          = "forger"
   spec.version       = Forger::VERSION
-  spec.authors       = ["Tung Nguyen"]
-  spec.email         = ["tongueroo@gmail.com"]
-  spec.summary       = "Tool to create AWS ec2 instances"
+  spec.author        = "Tung Nguyen"
+  spec.email         = "tongueroo@gmail.com"
+  spec.summary       = "Create EC2 Instances with preconfigured settings"
   spec.homepage      = "https://github.com/tongueroo/forger"
   spec.license       = "MIT"
 
@@ -19,8 +19,10 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "activesupport"
+  spec.add_dependency "aws-sdk-cloudformation"
   spec.add_dependency "aws-sdk-ec2"
   spec.add_dependency "aws-sdk-s3"
+  spec.add_dependency "cfn-status"
   spec.add_dependency "dotenv"
   spec.add_dependency "filesize"
   spec.add_dependency "hashie"
@@ -28,6 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rainbow"
   spec.add_dependency "render_me_pretty"
   spec.add_dependency "thor"
+  spec.add_dependency "zeitwerk"
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "byebug"

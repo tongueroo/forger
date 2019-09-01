@@ -1,6 +1,6 @@
 module Forger
   class Destroy < Base
-    include AwsService
+    include AwsServices
 
     def run(instance_id)
       puts "Destroying #{instance_id}"

@@ -1,6 +1,6 @@
 class Forger::Create
   class Waiter < Forger::Base
-    include Forger::AwsService
+    include Forger::AwsServices
 
     def wait
       @instance_id = @options[:instance_id]

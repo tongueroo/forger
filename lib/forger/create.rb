@@ -3,12 +3,7 @@ require 'active_support/core_ext/hash'
 
 module Forger
   class Create < Base
-    autoload :Params, "forger/create/params"
-    autoload :ErrorMessages, "forger/create/error_messages"
-    autoload :Waiter, "forger/create/waiter"
-    autoload :Info, "forger/create/info"
-
-    include AwsService
+    include AwsServices
     include ErrorMessages
 
     def run
@@ -28,7 +23,7 @@ module Forger
 
       instance_id = resp.instances.first.instance_id
       info.spot(instance_id)
-      puts "EC2 instance #{@name} created: #{instance_id} 🎉"
+      puts "EC2 instance with profile #{@name.color(:green)} created: #{instance_id} 🎉"
       puts "Visit https://console.aws.amazon.com/ec2/home to check on the status"
       info.cloudwatch(instance_id)
 
@@ -41,23 +36,7 @@ module Forger
       handle_ec2_service_error!(e)
     end
 
-    # Configured by config/settings.yml.
-    # Example: config/settings.yml:
-    #
-    # Format 1: Simple String
-    #
-    #   development:
-    #     s3_folder: mybucket/path/to/folder
-    #
-    # Format 2: Hash
-    #
-    #   development:
-    #     s3_folder:
-    #       default: mybucket/path/to/folder
-    #       dev_profile1: mybucket/path/to/folder
-    #       dev_profile1: another-bucket/storage/path
     def sync_scripts_to_s3
-      return unless Forger.settings["s3_folder"]
       upload = Script::Upload.new(@options)
       return if upload.empty?
       upload.run

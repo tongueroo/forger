@@ -1,7 +1,7 @@
 module Forger::Template::Helper::ScriptHelper
   # Bash code that is meant to included in user-data
   def extract_scripts(options={})
-    check_s3_folder_settings!
+    @@extract_scripts_registered = true
 
     settings_options = settings["extract_scripts"] || {}
     options = settings_options.merge(options)
@@ -23,6 +23,7 @@ mkdir -p #{to}
 aws s3 cp #{scripts_s3_path} #{to}/
 (
   cd #{to}
+  rm -rf #{to}/scripts # cleanup
   tar zxf #{to}/#{scripts_name}
   chmod -R a+x #{to}/scripts
   chown -R #{user}:#{user} #{to}/scripts
@@ -31,15 +32,8 @@ BASH_CODE
   end
 
 private
-  def check_s3_folder_settings!
-    return if settings["s3_folder"]
+  def register_extract_scripts
 
-    puts "The extract_scripts helper method aws called.  It requires the s3_folder to be set at:"
-    lines = caller.reject { |l| l =~ %r{lib/forger} } # hide internal forger trace
-    puts "  #{lines[0]}"
-
-    puts "Please configure your config/settings.yml with an s3_folder.".color(:red)
-    exit 1
   end
 
   def scripts_name
