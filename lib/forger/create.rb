@@ -23,7 +23,7 @@ module Forger
 
       instance_id = resp.instances.first.instance_id
       info.spot(instance_id)
-      puts "EC2 instance #{@name} created: #{instance_id} 🎉"
+      puts "EC2 instance with profile #{@name.color(:green)} created: #{instance_id} 🎉"
       puts "Visit https://console.aws.amazon.com/ec2/home to check on the status"
       info.cloudwatch(instance_id)
 

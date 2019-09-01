@@ -31,7 +31,15 @@ class Forger::Create
         end
       end
 
-      spot_id = resp.reservations.first.instances.first.spot_instance_request_id
+      reservation = resp.reservations.first
+      # Super edge case when reserverations not immediately found yet
+      until reservation
+        reservation = resp.reservations.first
+        seconds = 0.5
+        puts "Reserveration not found. Sleeping for #{seconds} and will try again."
+        sleep seconds
+      end
+      spot_id = reservation.instances.first.spot_instance_request_id
       return unless spot_id
 
       puts "Spot instance request id: #{spot_id}"
