@@ -25,7 +25,15 @@ config/variables/base.rb:
 config/variables/development.rb:
 
 ```ruby
-@subnets = %w[subnet-111 subnet-222]
+---
+instance_type: t2.medium
+key_name: default
+max_count: 1
+min_count: 1
+security_group_ids: <%= @security_group_ids %>
+subnet_id: <%= @subnets.shuffle.first %>
+iam_instance_profile:
+  name: IAMProfileName
 ```
 
 ## Variables Layering
@@ -38,4 +46,8 @@ You access the variables files with ERB. Example:
 
 profiles/server.yml:
 
-<%= @subnets %>
+```yaml
+---
+security_group_ids: <%= @security_group_ids %>
+subnet_id: <%= @subnets.shuffle.first %>
+```

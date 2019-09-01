@@ -23,6 +23,7 @@ The generates `extract_scripts` helper, generates a snippet of bash that looks s
     aws s3 cp s3://forger-bucket-EXAMPLE/development/scripts/scripts-md5.tgz /opt/
     (
       cd /opt
+      rm -rf /opt/scripts
       tar zxf /opt/scripts-md5.tgz
       chmod -R a+x /opt/scripts
       chown -R ec2-user:ec2-user /opt/scripts
