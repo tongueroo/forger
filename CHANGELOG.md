@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [3.0.0]
+* there are some breaking changes with this release
+* automatically created a forger managed s3 bucket when extract_scripts usage detected
+* `config/variables` support instead of `config/FORGER_ENV.yml` files
+* variables definitions are Ruby instead of YAML
+* removed config helper. use instance variables directly.
+* introduced base.yml profile concept
+* fix os_name and cloudwatch logging for amzn2
+* cleanup: remove vars helper
+* use zeitwerk for autoloading
+* change aws\_profiles option to aws\_profile
+
 ## [2.0.5]
 - add circle config: circleci 2.0
 - use rainbow gem for terminal colors
