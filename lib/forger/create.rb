@@ -8,9 +8,7 @@ module Forger
 
     def run
       Profile.new(@options).check!
-
       Hook.run(:before_run_instances, @options)
-      sync_scripts_to_s3
 
       puts "Creating EC2 instance #{@name.color(:green)}"
       info = Info.new(@options, params)
@@ -19,6 +17,10 @@ module Forger
         puts "NOOP mode enabled. EC2 instance not created."
         return
       end
+
+      # sync_scripts_to_s3 must called after params is called because params generation is where user_data in profile
+      # is called and can set @@extract_scripts_registered when extract_scripts is used
+      sync_scripts_to_s3
       resp = run_instances(params)
 
       instance_id = resp.instances.first.instance_id

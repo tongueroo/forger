@@ -45,13 +45,6 @@ class Forger::Create
       puts "Spot instance request id: #{spot_id}"
     end
 
-    def monthly_spot_price
-      max_price = @params[:instance_market_options][:spot_options][:max_price].to_f
-      monthly_price = max_price * 24 * 30
-      "%.2f" % monthly_price
-    rescue
-    end
-
     def launch_template
       launch_template = params[:launch_template]
       return unless launch_template
