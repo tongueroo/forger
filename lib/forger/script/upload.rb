@@ -14,8 +14,9 @@ class Forger::Script
     end
 
     def run
-      compiler.compile_scripts if @compile
+      return if empty?
       ensure_bucket_exists
+      compiler.compile_scripts if @compile
       compressor.compress
       upload(tarball_path)
       compressor.clean
@@ -23,7 +24,7 @@ class Forger::Script
     end
 
     def ensure_bucket_exists
-      Forger::S3::Bucket.ensure_exists! if Forger::Template::Helper.extract_scripts_registered?
+      Forger::S3::Bucket.ensure_exists!
     end
 
     def upload(tarball_path)

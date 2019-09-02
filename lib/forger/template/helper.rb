@@ -8,10 +8,5 @@ module Forger::Template
     include ScriptHelper
     include SshKeyHelper
     extend self
-
-    @@extract_scripts_registered = false
-    def extract_scripts_registered?
-      @@extract_scripts_registered
-    end
   end
 end

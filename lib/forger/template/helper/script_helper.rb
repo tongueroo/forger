@@ -1,8 +1,6 @@
 module Forger::Template::Helper::ScriptHelper
   # Bash code that is meant to included in user-data
   def extract_scripts(options={})
-    @@extract_scripts_registered = true
-
     settings_options = settings["extract_scripts"] || {}
     options = settings_options.merge(options)
     # defaults also here in case they are removed from settings
