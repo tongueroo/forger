@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [3.0.1]
+- edge case when reserverations not immediately found yet
+- fix `sync_scripts_to_s3` with clean slate no forger bucket created yet
+- simplify app/scripts upload s3 bucket logic
+
 ## [3.0.0]
 * there are some breaking changes with this release
 * automatically created a forger managed s3 bucket when extract_scripts usage detected
