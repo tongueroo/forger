@@ -34,6 +34,7 @@ class Forger::Create
       reservation = resp.reservations.first
       # Super edge case when reserverations not immediately found yet
       until reservation
+        resp = ec2.describe_instances(instance_ids: [instance_id])
         reservation = resp.reservations.first
         seconds = 0.5
         puts "Reserveration not found. Sleeping for #{seconds} and will try again."
