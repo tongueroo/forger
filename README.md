@@ -1,5 +1,7 @@
 # Forger
 
+[![BoltOps Badge](https://img.boltops.com/boltops/badges/boltops-badge.png)](https://www.boltops.com)
+
 [![CircleCI](https://circleci.com/gh/tongueroo/forger.svg?style=svg)](https://circleci.com/gh/tongueroo/forger)
 
 Tool to create AWS EC2 instances consistently with pre-configured settings.  The pre-configured settings are stored in the profiles folder of the current project directory.
