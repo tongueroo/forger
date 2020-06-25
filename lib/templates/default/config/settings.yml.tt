@@ -12,4 +12,4 @@ development:
   # extract_scripts:
   #   to: "/opt"
   #   as: "ec2-user"
-  aws_profile: my-aws-profile
+  # aws_profile: my-aws-profile

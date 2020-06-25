@@ -6,7 +6,7 @@ cd ~ # user-data starts off in / so go to $HOME
 <%%= add_ssh_key %>
 
 # Uncomment to use extract_scripts and use app/scripts
-<%%=# extract_scripts(to: "/opt") %>
+<%%= extract_scripts(to: "/opt") %>
 
 <%%= yield %>
 
