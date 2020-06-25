@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [3.0.2]
+- #17 fix starter template for new cfn_status interface
+
 ## [3.0.1]
 - edge case when reserverations not immediately found yet
 - fix `sync_scripts_to_s3` with clean slate no forger bucket created yet
