@@ -17,8 +17,8 @@ iam_instance_profile:
 #   name: ExampleIamProfile
 <% end -%>
 # public network settings
-security_group_ids: <%%= config["security_group_ids"] %>
-subnet_id: <%%= config["subnets"].shuffle.first %>
+security_group_ids: <%%= @security_group_ids %>
+subnet_id: <%%= @subnets.shuffle.first %>
 # block_device_mappings:
 #   - device_name: /dev/xvda
 #     ebs:

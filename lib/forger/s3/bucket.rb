@@ -1,4 +1,4 @@
-require "cfn/status"
+require "cfn_status"
 
 class Forger::S3
   class Bucket
@@ -59,7 +59,7 @@ class Forger::S3
     def create
       puts "Creating #{STACK_NAME} stack with the s3 bucket"
       cfn.create_stack(stack_name: STACK_NAME, template_body: template_body)
-      status = ::Cfn::Status.new(STACK_NAME)
+      status = CfnStatus.new(STACK_NAME)
       status.wait
     end
 

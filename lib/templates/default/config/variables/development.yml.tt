@@ -1,6 +1,0 @@
----
-subnets:
-  - <%= @subnet %>
-security_group_ids:
-  - <%= @security_group %>
-key1: <%%= ENV['KEY1'] %>
